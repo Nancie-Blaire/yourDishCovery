@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Background</title>
+  <style>
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.background {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+/* TREE */
+.tree {
+  position: absolute;
+  top: -30%;
+  left: 0%;
+  width: 30vw;
+  max-width: 4000px;
+  z-index: 2;
+}
+
+/* OPEN SIGN */
+.open-sign {
+  position: absolute;
+  top: 30%;
+  left: 10%;
+  width: 10vw;
+  max-width: 100px;
+  z-index: 3;
+}
+
+/* DishCovery SIGN */
+.dishcovery-sign {
+  position: absolute;
+  top: -2%;
+  right: 0.0%;
+  width: 30vw;
+  max-width: 2000px;
+  z-index: 3;
+}
+
+/* MENU BOARD */
+.menu-board {
+  position: absolute;
+  bottom: 0%;
+  right: 5%;
+  top: 61%;  /* Adjust this to bring the menu board closer */
+  width: 30vw;
+  max-width: 10000px;
+  z-index: 3;
+}
+
+@media (max-width: 768px) {
+  .tree, .open-sign, .dishcovery-sign, .menu-board {
+    width: 70vw;
+  }
+
+  .dishcovery-sign {
+    top: 5%;
+    right: 0%;
+    width:90vw;
+
+  }
+
+  .open-sign {
+    top: 35%;
+    left: 5%;
+  }
+
+  /* Adjust the top position of the menu board to reduce the space */
+  .menu-board {
+    top: 75%;
+    width: 80vw;  /* Reduced top position */
+    right: -5%;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <div class="background">
+    <img src="images/homeBg.jpg" class="bg-img" alt="Cafe Background">
+
+    <!-- DishCovery Sign -->
+    <img src="images/signboard.png" class="dishcovery-sign" alt="DishCovery Sign">
+
+    <!-- Tree -->
+    <img src="images/tree.png" class="tree" alt="Tree">
+    
+    <!-- Chalkboard/Menu -->
+    <img src="images/menu-board.png" class="menu-board" alt="Menu Board">
+  </div>
+</body>
+</html>

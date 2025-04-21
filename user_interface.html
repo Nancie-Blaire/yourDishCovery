@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DishCovery User Interface</title>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js"></script>
+  </head>
+  <body>
+    <h1>Welcome to DishCovery! Explore Recipes 🍴</h1>
+
+    <div>
+      <button onclick="filterRecipes('jollibee')">Jollibee</button>
+      <button onclick="filterRecipes('mcdo')">McDo</button>
+      <button onclick="filterRecipes('kfc')">KFC</button>
+      <button onclick="filterRecipes('home')">Home Recipe</button>
+      <button onclick="window.location.href='random.html'">Go to Random</button>
+    </div>
+
+    <div id="recipe-list"></div>
+
+    <script type="module">
+      // Firebase configuration
+      const firebaseConfig = {
+      apiKey: "AIzaSyCA2KS4aKwM5P4_et3wifB4sRg23tvaK04",
+      authDomain: "dish-4be2b.firebaseapp.com",
+      projectId: "dish-4be2b",
+      storageBucket: "dish-4be2b.appspot.com", 
+      messagingSenderId: "479066048512",
+      appId: "1:479066048512:web:7489944044adddc4c570e5",
+      measurementId: "G-8D2QSMQWT2",
+      databaseURL: "https://dish-4be2b-default-rtdb.firebaseio.com" // Added database URL
+    };
+
+
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+      import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
+
+      const app = initializeApp(firebaseConfig);
+      const database = getDatabase(app);
+
+      function loadRecipes() {
+        const recipeList = document.getElementById("recipe-list");
+        recipeList.innerHTML = "";
+
+        const recipeRef = ref(database, 'recipes');
+        get(recipeRef).then((snapshot) => {
+          if (snapshot.exists()) {
+            const recipes = snapshot.val();
+            for (let id in recipes) {
+              const recipe = recipes[id];
+              const recipeCard = document.createElement("div");
+              recipeCard.innerHTML = `
+                <h3>${recipe.name}</h3>
+                <img src="${recipe.image}" alt="${recipe.name}" width="200" />
+                <p>${recipe.description}</p>
+              `;
+              recipeList.appendChild(recipeCard);
+            }
+          } else {
+            recipeList.innerHTML = "<p>No recipes available!</p>";
+          }
+        }).catch((error) => {
+          console.error("Error fetching data: ", error);
+        });
+      }
+
+      function filterRecipes(category) {
+        const recipeList = document.getElementById("recipe-list");
+        recipeList.innerHTML = "";
+
+        const recipeRef = ref(database, 'recipes');
+        get(recipeRef).then((snapshot) => {
+          if (snapshot.exists()) {
+            const recipes = snapshot.val();
+            let filtered = [];
+
+            if (category === "random") {
+              filtered = Object.values(recipes);
+              const randomRecipe = filtered[Math.floor(Math.random() * filtered.length)];
+              filtered = [randomRecipe];
+            } else {
+              filtered = Object.values(recipes).filter(r => r.category === category);
+            }
+
+            if (filtered.length === 0) {
+              recipeList.innerHTML = "<p>No recipes found!</p>";
+            } else {
+              filtered.forEach((recipe) => {
+                const recipeCard = document.createElement("div");
+                recipeCard.innerHTML = `
+                  <h3>${recipe.name}</h3>
+                  <img src="${recipe.image}" alt="${recipe.name}" width="200" />
+                  <p>${recipe.description}</p>
+                `;
+                recipeList.appendChild(recipeCard);
+              });
+            }
+          }
+        });
+      }
+
+      // expose functions to global scope so the buttons can access them
+      window.filterRecipes = filterRecipes;
+      window.loadRecipes = loadRecipes;
+
+
+    </script>
+  </body>
+</html>
