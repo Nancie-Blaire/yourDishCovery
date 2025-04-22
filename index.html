@@ -1,568 +1,175 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DishCovery Admin Page</title>
-
-  <!-- Firebase SDK - Use modular imports instead of script tags -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DishCovery - Homepage</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
+    * {
       margin: 0;
-      padding: 10px;
-      background-color: #f4f4f9;
-    }
-
-    h1 {
-      text-align: center;
-      color: #333;
-      font-size: 1.8rem;
-    }
-
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      background-color: white;
-      padding: 15px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    label {
-      font-weight: bold;
-      margin-bottom: 5px;
-      display: block;
-    }
-
-    input, textarea, select, button {
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 1rem;
-      width: 100%;
+      padding: 0;
       box-sizing: border-box;
     }
 
-    textarea {
-      min-height: 100px;
-      resize: vertical;
+    html, body {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
     }
 
-    button {
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      cursor: pointer;
-      transition: background-color 0.3s;
-      padding: 12px;
+    .background {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
     }
 
-    button:hover {
-      background-color: #45a049;
-    }
-
-    .category-tabs {
-      display: flex;
-      margin: 20px 0;
-      border-bottom: 1px solid #ddd;
-      flex-wrap: wrap;
-    }
-
-    .category-tab {
-      padding: 8px 12px;
-      cursor: pointer;
-      background-color: #f1f1f1;
-      border: 1px solid #ddd;
-      border-bottom: none;
-      margin-right: 5px;
-      margin-bottom: 5px;
-      border-top-left-radius: 5px;
-      border-top-right-radius: 5px;
-      font-size: 0.9rem;
-    }
-
-    .category-tab.active {
-      background-color: white;
-      border-bottom: 1px solid white;
-      margin-bottom: -1px;
-      font-weight: bold;
-    }
-
-    .category-section {
-      margin-top: 20px;
-      padding: 15px;
-      background-color: #fafafa;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .category-section h2 {
-      margin-bottom: 20px;
-      color: #333;
-      font-size: 1.5rem;
-    }
-
-    .recipe-list {
-      margin-top: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    .recipe-card {
-      display: flex;
-      flex-direction: column;
-      background-color: white;
-      border-radius: 8px;
-      padding: 15px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      gap: 15px;
-      transition: box-shadow 0.3s;
-    }
-
-    .recipe-card:hover {
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    }
-
-    .recipe-card-header {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .recipe-card img {
-      width: 80px;
-      height: 80px;
+    .bg-img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
-      border-radius: 8px;
+      z-index: 0;
     }
 
-    .recipe-info {
-      flex-grow: 1;
+    .tree {
+      position: absolute;
+      top: -25vh;
+      left: 0;
+      width: 30vw;
+      max-width: 400px;
+      z-index: 2;
     }
 
-    .recipe-info h3 {
-      margin-top: 0;
-      margin-bottom: 8px;
-      font-size: 1.2rem;
+    .dishcovery-sign {
+      position: absolute;
+      top: -3%;
+      right: -1%;
+      width: 30vw;
+      max-width: 500px;
+      z-index: 3;
     }
 
-    .recipe-info p {
-      margin: 0;
-      font-size: 0.9rem;
-    }
-
-    .button-group {
+    .menu-board-container {
+      position: absolute;
+      top: 80%;
+      right: -1%;
+      width: 25vw;
+      max-width: 400px;
+      z-index: 3;
+      transform: translateY(-50%);
       display: flex;
-      gap: 10px;
-      margin-top: 10px;
+      justify-content: center;
     }
 
-    .button-group button {
-      background-color: #f44336;
-      flex: 1;
-      padding: 8px;
+    .menu-board {
+      width: 100%;
+
     }
 
-    .button-group button:hover {
-      background-color: #e53935;
+    .start-button {
+      position: absolute;
+      font-size: 1.2rem;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      padding: 10px 10px;
+      background-color: #fffce7dd;
+      border: 2px solid #4a3f2b;
+      border-radius: 10px;
+      cursor: pointer;
+      z-index: 4;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      color: #333;
+      top: 50%;
+      left: 67%;
+      transform: translate(-50%, -50%);
     }
 
-    .hidden {
-      display: none;
+    .start-button:hover {
+      background-color: #fff8c6;
+      transform: translate(-50%, -50%) scale(1.05);
     }
 
-    /* Responsive styles */
-    @media (min-width: 768px) {
-      .recipe-card {
-        flex-direction: row;
-        align-items: center;
+    @media (max-width: 768px) {
+      .tree {
+        width: 50vw;
+        top: -40vh;
       }
 
-      .recipe-card-header {
-        flex: 1;
+      .dishcovery-sign {
+        top: -5%;
+        width: 60vw;
       }
 
-      .button-group {
-        margin-top: 0;
-        width: auto;
+      .menu-board-container {
+        top: 90%;
+        width: 50vw;
+        right: -2%;
+      }
+
+      .start-button {
+        font-size: 1rem;
+        padding: 8px 18px;
       }
     }
 
-    @media (max-width: 600px) {
-      body {
-        padding: 5px;
+    @media (max-width: 480px) {
+      .tree {
+        width: 50vw;
+        top: -10vh;
       }
 
-      .container {
-        padding: 10px;
+      .dishcovery-sign {
+        top: -2%;
+        width: 70vw;
       }
-
-      h1 {
-        font-size: 1.5rem;
+      
+      .menu-board-container {
+        top: 80%;
+        width: 50vw;
+        right: -2%;
       }
-
-      .category-tab {
-        padding: 6px 10px;
-        font-size: 0.8rem;
-      }
-
-      .category-section {
-        padding: 10px;
-      }
-
-      .recipe-card img {
-        width: 60px;
-        height: 60px;
-      }
-
-      .button-group button {
-        font-size: 0.9rem;
+      
+      .start-button {
+        font-size: 0.95rem;
+        padding: 6px 12px;
       }
     }
   </style>
 </head>
 <body>
-
-  <div class="container">
-    <h1>Admin: Manage Recipes</h1>
-
-    <!-- Form for adding a new recipe -->
-    <form id="recipeForm">
-      <label>
-        Category:
-        <select id="category" required>
-          <option value="">Select one</option>
-          <option value="jollibee">Jollibee</option>
-          <option value="mcdo">McDo</option>
-          <option value="kfc">KFC</option>
-          <option value="home">Home Recipe</option>
-          <option value="random">Random (logos)</option>
-        </select>
-      </label>
-
-      <div id="nameField" class="hidden">
-        <label>Name: <input type="text" id="name" /></label>
-      </div>
-
-      <div id="descField" class="hidden">
-        <label>Description: <textarea id="description"></textarea></label>
-      </div>
-
-      <div id="ingredientsField" class="hidden">
-        <label>Ingredients: <textarea id="ingredients"></textarea></label>
-      </div>
-
-      <div id="imageField" class="hidden">
-        <label>Image URL: <input type="text" id="image" /></label>
-      </div>
-
-      <input type="hidden" id="editRecipeId" value="" />
-      <button type="submit" id="submitButton">Add Recipe</button>
-    </form>
-
-    <!-- Category Tabs -->
-    <div class="category-tabs">
-      <div class="category-tab active" data-category="jollibee">Jollibee</div>
-      <div class="category-tab" data-category="mcdo">McDo</div>
-      <div class="category-tab" data-category="kfc">KFC</div>
-      <div class="category-tab" data-category="home">Home Recipe</div>
-      <div class="category-tab" data-category="random">Random</div>
-    </div>
-
-    <!-- Category Content Sections -->
-    <div id="jollibeeSection" class="category-section">
-      <h2>Jollibee</h2>
-      <div class="recipe-list" id="jollibeeList"></div>
-    </div>
-
-    <div id="mcdoSection" class="category-section hidden">
-      <h2>McDo</h2>
-      <div class="recipe-list" id="mcdoList"></div>
-    </div>
-
-    <div id="kfcSection" class="category-section hidden">
-      <h2>KFC</h2>
-      <div class="recipe-list" id="kfcList"></div>
-    </div>
-
-    <div id="homeSection" class="category-section hidden">
-      <h2>Home Recipes</h2>
-      <div class="recipe-list" id="homeList"></div>
-    </div>
-
-    <div id="randomSection" class="category-section hidden">
-      <h2>Random (Logos)</h2>
-      <div class="recipe-list" id="randomList"></div>
+  <div class="background">
+    <img src="images/homeBg.jpg" class="bg-img" alt="Cafe Background" />
+    <img src="images/signboard.png" class="dishcovery-sign" alt="DishCovery Sign" />
+    <img src="images/tree.png" class="tree" alt="Tree" />
+    <div class="menu-board-container">
+      <img src="images/menu-board.png" class="menu-board" alt="Menu Board" />
+      <a href="categories.html" class="start-button">Start</a>
     </div>
   </div>
 
-
-  <script type="module">
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-    import { getDatabase, ref, get, set, remove, push, update } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-analytics.js";
-    // TODO: Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
-
-    // Your web app's Firebase configuration
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-    const firebaseConfig = {
-      apiKey: "AIzaSyCA2KS4aKwM5P4_et3wifB4sRg23tvaK04",
-      authDomain: "dish-4be2b.firebaseapp.com",
-      projectId: "dish-4be2b",
-      storageBucket: "dish-4be2b.appspot.com", 
-      messagingSenderId: "479066048512",
-      appId: "1:479066048512:web:7489944044adddc4c570e5",
-      measurementId: "G-8D2QSMQWT2",
-      databaseURL: "https://dish-4be2b-default-rtdb.firebaseio.com" // Added database URL
-    };
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
-    const db = getDatabase(app);
-
-    const categorySelect = document.getElementById("category");
-    const nameField = document.getElementById("nameField");
-    const descField = document.getElementById("descField");
-    const ingredientsField = document.getElementById("ingredientsField");
-    const imageField = document.getElementById("imageField");
-    const recipeForm = document.getElementById("recipeForm");
-    const editRecipeId = document.getElementById("editRecipeId");
-    const submitButton = document.getElementById("submitButton");
-    const categoryTabs = document.querySelectorAll(".category-tab");
-
-    // Expose functions to global scope so they can be called from HTML
-    window.app = {
-      editRecipe: function(id) {
-        const recipeRef = ref(db, `recipes/${id}`);
-        get(recipeRef).then((snapshot) => {
-          if (snapshot.exists()) {
-            const recipe = snapshot.val();
-            
-            // Set form fields
-            categorySelect.value = recipe.category;
-            categorySelect.dispatchEvent(new Event('change')); // Trigger the change event
-            
-            document.getElementById("name").value = recipe.name || "";
-            document.getElementById("description").value = recipe.description || "";
-            document.getElementById("ingredients").value = recipe.ingredients || "";
-            document.getElementById("image").value = recipe.image || "";
-            editRecipeId.value = id;
-            
-            // Change button text
-            submitButton.textContent = "Update Recipe";
-            
-            // Scroll to the form
-            recipeForm.scrollIntoView({ behavior: 'smooth' });
-          }
-        }).catch(error => {
-          console.error("Error getting recipe:", error);
-          alert("Error getting recipe: " + error.message);
-        });
-      },
-      
-      deleteRecipe: function(id) {
-        if (confirm("Are you sure you want to delete this recipe?")) {
-          const recipeRef = ref(db, `recipes/${id}`);
-          remove(recipeRef).then(() => {
-            alert("Recipe deleted successfully!");
-            
-            // Find active tab and reload its recipes
-            const activeTab = document.querySelector('.category-tab.active');
-            if (activeTab) {
-              const activeCategory = activeTab.getAttribute('data-category');
-              loadRecipes(activeCategory);
-            }
-          }).catch(error => {
-            console.error("Error deleting recipe:", error);
-            alert("Error deleting recipe: " + error.message);
-          });
-        }
+  <script>
+    const signboard = document.querySelector('.dishcovery-sign');
+    let tapCount = 0;
+    let timeout;
+  
+    signboard.addEventListener('click', () => {
+      tapCount++;
+  
+      if (tapCount === 1) {
+        // Start/reset timeout on first tap
+        timeout = setTimeout(() => {
+          tapCount = 0;
+        }, 1000); // 1 second window to do 3 taps
       }
-    };
-
-    // Show/hide inputs based on selected category
-    categorySelect.addEventListener("change", () => {
-      const value = categorySelect.value;
-      
-      // Hide all fields first
-      nameField.classList.add("hidden");
-      descField.classList.add("hidden");
-      ingredientsField.classList.add("hidden");
-      imageField.classList.add("hidden");
-      
-      // Show relevant fields based on category
-      if (value === "jollibee" || value === "mcdo" || value === "kfc" || value === "random") {
-        nameField.classList.remove("hidden");
-        imageField.classList.remove("hidden");
-      } else if (value === "home") {
-        nameField.classList.remove("hidden");
-        descField.classList.remove("hidden");
-        ingredientsField.classList.remove("hidden");
-        imageField.classList.remove("hidden");
+  
+      if (tapCount === 3) {
+        clearTimeout(timeout);
+        tapCount = 0;
+        // Redirect to login page
+        window.location.href = 'admin-login/login.html'; // 🛠️ update this if your login page has a different name
       }
-    });
-
-    // Tab switching functionality
-    categoryTabs.forEach(tab => {
-      tab.addEventListener('click', function() {
-        // Update active tab
-        categoryTabs.forEach(t => t.classList.remove('active'));
-        this.classList.add('active');
-        
-        // Get category
-        const category = this.getAttribute('data-category');
-        
-        // Hide all sections
-        document.querySelectorAll('.category-section').forEach(section => {
-          section.classList.add('hidden');
-        });
-        
-        // Show selected section
-        document.getElementById(`${category}Section`).classList.remove('hidden');
-        
-        // Load recipes for selected category
-        loadRecipes(category);
-      });
-    });
-
-    // Load recipes for a specific category
-    function loadRecipes(category) {
-      const recipeRef = ref(db, 'recipes');
-      get(recipeRef).then((snapshot) => {
-        if (snapshot.exists()) {
-          const recipes = snapshot.val();
-          const listElement = document.getElementById(`${category}List`);
-          listElement.innerHTML = "";
-
-          let foundRecipes = false;
-          for (let id in recipes) {
-            const recipe = recipes[id];
-            if (recipe.category === category) {
-              foundRecipes = true;
-              const recipeCard = document.createElement("div");
-              recipeCard.classList.add("recipe-card");
-              
-              // Create better structure for responsive layout
-              recipeCard.innerHTML = `
-                <div class="recipe-card-header">
-                  <img src="${recipe.image}" alt="${recipe.name}" onerror="this.src='https://via.placeholder.com/80'">
-                  <div class="recipe-info">
-                    <h3>${recipe.name}</h3>
-                    ${recipe.description ? `<p>${recipe.description}</p>` : ''}
-                  </div>
-                </div>
-                <div class="button-group">
-                  <button onclick="window.app.editRecipe('${id}')">Edit</button>
-                  <button onclick="window.app.deleteRecipe('${id}')">Delete</button>
-                </div>
-              `;
-              
-              listElement.appendChild(recipeCard);
-            }
-          }
-          
-          if (!foundRecipes) {
-            listElement.innerHTML = "<p>No recipes found in this category.</p>";
-          }
-        } else {
-          const listElement = document.getElementById(`${category}List`);
-          listElement.innerHTML = "<p>No recipes found in this category.</p>";
-        }
-      }).catch(error => {
-        console.error("Error loading recipes:", error);
-        alert("Error loading recipes: " + error.message);
-      });
-    }
-
-    // Reset form
-    function resetForm() {
-      recipeForm.reset();
-      editRecipeId.value = "";
-      submitButton.textContent = "Add Recipe";
-      
-      // Hide all fields
-      nameField.classList.add("hidden");
-      descField.classList.add("hidden");
-      ingredientsField.classList.add("hidden");
-      imageField.classList.add("hidden");
-    }
-
-    // Handle form submission (both add and edit)
-    recipeForm.addEventListener("submit", function(e) {
-      e.preventDefault();
-      
-      const id = editRecipeId.value;
-      const isEditing = id !== "";
-      const category = categorySelect.value;
-      
-      if (!category) {
-        alert("Please select a category");
-        return;
-      }
-      
-      const recipeData = {
-        category: category,
-        name: document.getElementById("name").value,
-        description: document.getElementById("description").value || "",
-        ingredients: document.getElementById("ingredients").value || "",
-        image: document.getElementById("image").value
-      };
-      
-      if (!recipeData.name || !recipeData.image) {
-        alert("Name and Image URL are required");
-        return;
-      }
-      
-      let savePromise;
-      
-      if (isEditing) {
-        // Update existing recipe
-        const recipeRef = ref(db, `recipes/${id}`);
-        savePromise = update(recipeRef, recipeData);
-      } else {
-        // Add new recipe
-        const recipesRef = ref(db, "recipes");
-        savePromise = push(recipesRef, recipeData);
-      }
-      
-      savePromise.then(() => {
-        alert(isEditing ? "Recipe updated successfully!" : "New recipe added!");
-        resetForm();
-        
-        // Find active tab and reload its recipes
-        const activeTab = document.querySelector('.category-tab.active');
-        if (activeTab) {
-          const activeCategory = activeTab.getAttribute('data-category');
-          loadRecipes(activeCategory);
-        }
-      }).catch(error => {
-        console.error("Error saving recipe:", error);
-        alert("Error: " + error.message);
-      });
-    });
-
-    // Initialize: Show the first tab's content and load its recipes
-    document.addEventListener('DOMContentLoaded', function() {
-      // Show the first category's fields if a category is selected
-      if (categorySelect.value) {
-        categorySelect.dispatchEvent(new Event('change'));
-      }
-      
-      // Load recipes for the default category (jollibee)
-      loadRecipes("jollibee");
     });
   </script>
-
+  
 </body>
 </html>
