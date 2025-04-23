@@ -36,14 +36,14 @@
   padding: 0;
   cursor: pointer;
   position: absolute;
-  top: 35%;    /* Adjusts vertical position */
-  left: 50%;   /* Keeps it horizontally centered */
+  top: 35vh;    /* Adjusts vertical position */
+  left: 49.5vw;   /* Keeps it horizontally centered */
   transform: translate(-50%, -50%); /* Centers the button */
   z-index: 1;
 }
 
 .image-button img {
-  width: 50vw;      /* 50% of the viewport width */
+  width: 60vw;      /* 50% of the viewport width */
   max-width: 300px; /* Cap the max size to avoid it growing too large */
   height: auto;
   border-radius: 10%;
@@ -54,31 +54,19 @@
   transform: scale(1.05);
 }
 
-/* Media query for screens smaller than 768px (tablets and phones) */
-@media (max-width: 768px) {
-  .image-button img {
-    width: 60vw;       /* 60% of the viewport width */
-    max-width: 240px;  /* Cap size to 200px */
-  }
-  
-  /* Adjust the position for phones */
-  .image-button {
-    top: 38vh;   /* Moves the button higher vertically */
-    left: 50vw;  /* Moves the button to the center horizontally */
-    transform: translate(-50%, -50%); /* Keeps the button centered */
-  }
-}
 
-@media (max-width: 480px) {
+@media (max-width: 1080px) {
   .image-button img {
-    width: 60vw;       /* Make it a bit larger on very small screens */
-    max-width: 210px;  /* Limit size to 180px */
+    width: 90vw;       /* Make the button larger on smaller screens */
+    max-width: 990px;  /* Max size to fit well */
   }
 
   .image-button {
-    top: 38vh;   /* Further adjust for small phones */
+    top: 38vh;
+    left: 48vw;   /* Move the button even higher on small screens */
   }
 }
+
 
   </style>
 </head>
