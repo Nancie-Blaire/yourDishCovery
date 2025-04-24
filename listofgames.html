@@ -85,19 +85,34 @@
     <img src="images/listofgames.png" class="bg-img" alt="Cafe Background" />
 
     <div class="image-button">
-      <img src="images/dinodinebutton.png" alt="Dino Dine" onclick="goToDinoDine()" />
-      <img id="forkspoonknife" src="images/forkspoonknife.png" alt="Fork Spoon Knife" onclick="goToForkSpoonKnife()" />
+      <img id="btn-game-dinodine" src="images/dinodinebutton.png" alt="Dino Dine" />
+      <img id="btn-randomizer" src="images/forkspoonknife.png" alt="Recipe Randomizer" />
+      
     </div>
   </div>
 
   <script>
-    function goToDinoDine() {
-      window.location.href = "dinodine.html";
+    // Default fallback function (can be removed if not used elsewhere)
+    function redirectToPage() {
+      window.location.href = "/Game_DinoDine/game_DinoDine.html";
     }
-
-    function goToForkSpoonKnife() {
-      window.location.href = "forkspoonknife.html";
-    }
+  
+    // Recipe Randomizer Button
+    document
+      .getElementById("btn-randomizer")
+      .addEventListener("click", function () {
+        console.log("Recipe Randomizer Button clicked!");
+        window.location.href = "/Recipe_Randomizer/recipeRandomizer.html";
+      });
+  
+    // Dino Dine Button
+    document
+      .getElementById("btn-game-dinodine")
+      .addEventListener("click", function () {
+        console.log("Dino Dine Button clicked!");
+        window.location.href = "/Game_DinoDine/game_DinoDine.html";
+      });
   </script>
+  
 </body>
 </html>
