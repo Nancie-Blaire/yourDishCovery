@@ -1,0 +1,133 @@
+h1,
+h3,
+h2,
+p {
+  text-align: center;
+}
+.button1 {
+  text-align: center;
+}
+#button1 {
+  display: block;
+  margin: 0 auto;
+}
+h2 {
+  margin-top: 50px;
+}
+h3 {
+  letter-spacing: 2px;
+}
+h1,
+h2 {
+  letter-spacing: 1px;
+}
+
+#foodImage {
+  display: block;
+  margin: 0 auto;
+  width: 300px; /* Set a fixed width */
+  height: 300px; /* Set a fixed height */
+  object-fit: cover; /* Ensure all images fit within the fixed dimensions */
+}
+
+/* Set the default image */
+#foodImage[src=""] {
+  content: url("images/food_icon.jpg");
+}
+
+/* Added styles for the recipe section */
+/* Recipe Section Container */
+#recipeSection {
+  display: none;
+  margin-top: 20px;
+  padding: 20px;
+  border: 2px solid #4caf50; /* Green border for a fresh look */
+  border-radius: 10px;
+  background-color: #fefefe; /* Light background for readability */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+  font-family: Arial, sans-serif;
+}
+
+/* Recipe Headings */
+.recipe-heading {
+  text-align: center;
+  font-size: 1.5em;
+  color: #4caf50; /* Green color for headings */
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Ingredients List */
+.recipe-ingredients {
+  list-style-type: square; /* Square bullets for ingredients */
+  margin-left: 20px;
+  padding-left: 10px;
+}
+
+.recipe-ingredients li {
+  margin-bottom: 8px;
+  font-size: 1em;
+  color: #333; /* Dark text for readability */
+}
+
+/* Instructions List */
+.recipe-instructions {
+  list-style-type: decimal; /* Numbered steps for instructions */
+  margin-left: 20px;
+  padding-left: 10px;
+}
+
+.recipe-instructions li {
+  margin-bottom: 10px;
+  font-size: 1em;
+  color: #555; /* Slightly lighter text for instructions */
+}
+
+/* Add Hover Effect for List Items */
+.recipe-ingredients li:hover,
+.recipe-instructions li:hover {
+  color: #4caf50; /* Highlight on hover */
+  font-weight: bold;
+}
+
+/* Added styles for the filter section */
+#filterSection {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+}
+
+#filterSection h3 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+#filterSection label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 1em;
+  color: #333;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  #recipeSection {
+    padding: 15px;
+    font-size: 0.9em;
+  }
+
+  .recipe-heading {
+    font-size: 1.2em;
+  }
+}

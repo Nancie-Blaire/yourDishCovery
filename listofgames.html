@@ -1,88 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DishCovery - List of Games</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    html, body {
-      height: 100%;
-      width: 100%;
-      overflow: hidden;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DishCovery - List of Games</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-    .background {
-      position: relative;
-      width: 100vw;
-      height: 100vh;
-    }
+      html,
+      body {
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        font-family: Arial, sans-serif;
+      }
 
-    .bg-img {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: 0;
-    }
+      .background {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+      }
 
-    .image-button {
-  border: none;
-  background: none;
-  padding: 0;
-  cursor: pointer;
-  position: absolute;
-  top: 35vh;    /* Adjusts vertical position */
-  left: 49.5vw;   /* Keeps it horizontally centered */
-  transform: translate(-50%, -50%); /* Centers the button */
-  z-index: 1;
-}
+      .bg-img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 0;
+      }
 
-.image-button img {
-  width: 60vw;      /* 50% of the viewport width */
-  max-width: 300px; /* Cap the max size to avoid it growing too large */
-  height: auto;
-  border-radius: 10%;
-  transition: transform 0.2s ease;
-}
+      .button-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        z-index: 1;
+      }
 
-.image-button:hover img {
-  transform: scale(1.05);
-}
+      .image-button img {
+        width: 60vw;
+        max-width: 300px;
+        height: auto;
+        border-radius: 10%;
+        transition: transform 0.2s ease;
+        cursor: pointer;
+      }
 
+      .image-button img:hover {
+        transform: scale(1.05);
+      }
 
-@media (max-width: 1080px) {
-  .image-button img {
-    width: 90vw;       /* Make the button larger on smaller screens */
-    max-width: 990px;  /* Max size to fit well */
-  }
+      .button-container button {
+        width: 60vw;
+        max-width: 300px;
+        padding: 10px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 10px;
+        background-color: rgba(255, 255, 255, 0.8);
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
 
-  .image-button {
-    top: 38vh;
-    left: 48vw;   /* Move the button even higher on small screens */
-  }
-}
+      .button-container button:hover {
+        background-color: rgba(255, 255, 255, 1);
+      }
 
+      @media (max-width: 1080px) {
+        .image-button img,
+        .button-container button {
+          width: 90vw;
+          max-width: 990px;
+        }
 
-  </style>
-</head>
-<body>
-  <div class="background">
-    <img src="images/listofgames.png" class="bg-img" alt="Cafe Background" />
-    
-    <button class="image-button" onclick="redirectToPage()">
-      <img src="images/dinodinebutton.png" alt="Button Image" />
-    </button>
-  </div>
+        .button-container {
+          top: 40%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="background">
+      <img src="images/listofgames.png" class="bg-img" alt="Cafe Background" />
 
-  <script>
-    function redirectToPage() {
-      window.location.href = "target-page.html"; // Replace with your actual target page
-    }
-  </script>
-</body>
+      <div class="button-container">
+        <div class="image-button" onclick="redirectToPage()">
+          <img src="images/dinodinebutton.png" alt="DinoDine Button" />
+        </div>
+
+        <button id="btn-randomizer">Randomizer</button>
+        <button id="btn-game-spinthewheel">Spin The Wheel</button>
+      </div>
+    </div>
+
+    <script>
+      function redirectToPage() {
+        window.location.href = "/Game_DinoDine/game_DinoDine.html";
+      }
+
+      document
+        .getElementById("btn-randomizer")
+        .addEventListener("click", function () {
+          console.log("Recipe Randomizer Button clicked!");
+          window.location.href = "/Recipe_Randomizer/recipeRandomizer.html";
+        });
+
+      document
+        .getElementById("btn-game-dinodine")
+        .addEventListener("click", function () {
+          console.log("Dino Dine Button clicked!");
+          window.location.href = "/Game_DinoDine/game_DinoDine.html";
+        });
+
+      document
+        .getElementById("btn-game-spinthewheel")
+        .addEventListener("click", function () {
+          console.log("Spin The Wheel Button clicked!");
+          window.location.href = "/Game_SpinTheWheel/wheel.html";
+        });
+    </script>
+  </body>
 </html>

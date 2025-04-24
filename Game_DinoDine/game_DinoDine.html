@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dino Game</title>
+    <style>
+      * {
+        padding: 0px;
+        margin: 0px;
+      }
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        height: 100vh;
+
+        user-select: none;
+        touch-action: none;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        outline: none;
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+      }
+      canvas {
+        border: 0.1px solid grey;
+      }
+      h1 {
+        font-size: 7vh;
+      }
+      h2 {
+        font-size: 5vh;
+        color: #000000;
+        text-align: center;
+        margin-top: 20px;
+        letter-spacing: 2vh;
+      }
+      h2.got-food {
+        letter-spacing: 0vh;
+      }
+      #home {
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin: 10px;
+      }
+    </style>
+    <script src="game_DinoDine.js" defer type="module"></script>
+  </head>
+  <body>
+    <button id="home">Home</button>
+    <h1>Dino Dine</h1>
+    <canvas id="game"></canvas>
+    <h2></h2>
+    <script>
+      document.addEventListener("keydown", (event) => {
+        if (event.code === "Space" && waitingToStart) {
+          reset();
+        }
+      });
+
+      document.addEventListener("mousedown", () => {
+        if (waitingToStart) {
+          reset();
+        }
+      });
+
+      document.addEventListener("touchstart", () => {
+        if (waitingToStart) {
+          reset();
+        }
+      });
+    </script>
+  </body>
+</html>

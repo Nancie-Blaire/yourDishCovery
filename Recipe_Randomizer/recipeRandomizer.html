@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <link rel="stylesheet" href="recipeRandomizer.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Welcome to DishCovery!</h1>
+    </div>
+
+    <h3>A RANDOM FOOD GENERATOR</h3>
+
+    <img
+      id="foodImage"
+      src="../images/food_icon.jpg"
+      ;
+      alt="Food Image"
+      style="display: block; margin: 0 auto; max-width: 300px; height: auto"
+    />
+    <h2></h2>
+    <button id="button1">Anong ulam?</button>
+    <button id="speakButton">Speak</button>
+    <button id="homeButton">Home</button>
+    <p id="output">Listening...</p>
+
+    <!-- Added a recipe section to display ingredients and instructions -->
+    <div id="recipeSection">
+      <div id="recipeContent"></div>
+    </div>
+
+    <!-- Add a filter section for ingredients -->
+    <div id="filterSection">
+      <h3>Filter Ingredients</h3>
+      <label
+        ><input type="checkbox" value="Radish" id="filterRadish" />
+        Radish</label
+      >
+      <label
+        ><input type="checkbox" value="Spices" id="filterSpices" />
+        Spices</label
+      >
+      <label
+        ><input
+          type="checkbox"
+          value="Evaporated Milk"
+          id="filterEvaporatedMilk"
+        />
+        Evaporated Milk</label
+      >
+    </div>
+
+    <script src="recipeRandomizer.js"></script>
+  </body>
+</html>
