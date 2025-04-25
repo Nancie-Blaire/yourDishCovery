@@ -25,107 +25,94 @@
         height: 100vh;
       }
 
-      .bg-img {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        z-index: 0;
-      }
+    .bg-img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+/*LAPTOP/PC SIZING*/
+    .image-button {
+      border: none;
+      background: none;
+      padding: 0;
+      cursor: pointer;
+      position: absolute;
+      top: 44vh;
+      left: 49.5vw;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-      .button-container {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 20px;
-        z-index: 1;
-      }
+    .image-button img {
+      width: 60vw;
+      max-width: 300px;
+      height: auto;
+      border-radius: 10%;
+      transition: transform 0.2s ease;
+      display: block;
+      margin: 10px auto;
+    }
 
+    .image-button img:hover {
+      transform: scale(1.05);
+    }
+
+    /* Responsive Portrait*/
+    @media (max-width: 1080px) {
       .image-button img {
-        width: 60vw;
-        max-width: 300px;
-        height: auto;
-        border-radius: 10%;
-        transition: transform 0.2s ease;
-        cursor: pointer;
+        width: 90vw;
+        max-width: 900px;
       }
 
-      .image-button img:hover {
-        transform: scale(1.05);
+      .image-button {
+        top: 44vh;
+        left: 50vw;
       }
 
-      .button-container button {
-        width: 60vw;
-        max-width: 300px;
-        padding: 10px;
-        font-size: 1rem;
-        border: none;
-        border-radius: 10px;
-        background-color: rgba(255, 255, 255, 0.8);
-        cursor: pointer;
-        transition: background-color 0.2s;
+      #forkspoonknife {
+        margin-top: 25px;
       }
+    }
+  </style>
+</head>
+<body>
+  <div class="background">
+    <img src="images/listofgames.png" class="bg-img" alt="Cafe Background" />
 
-      .button-container button:hover {
-        background-color: rgba(255, 255, 255, 1);
-      }
-
-      @media (max-width: 1080px) {
-        .image-button img,
-        .button-container button {
-          width: 90vw;
-          max-width: 990px;
-        }
-
-        .button-container {
-          top: 40%;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <div class="background">
-      <img src="images/listofgames.png" class="bg-img" alt="Cafe Background" />
-
-      <div class="button-container">
-        <div class="image-button" onclick="redirectToPage()">
-          <img src="images/dinodinebutton.png" alt="DinoDine Button" />
-        </div>
-
-        <button id="btn-randomizer">Randomizer</button>
-        <button id="btn-game-spinthewheel">Spin The Wheel</button>
-      </div>
+    <div class="image-button">
+      <img id="btn-game-dinodine" src="images/dinodinebutton.png" alt="Dino Dine" />
+      <img id="btn-randomizer" src="images/forkspoonknife.png" alt="Recipe Randomizer" />
+      
     </div>
+  </div>
 
-    <script>
-      function redirectToPage() {
+  <script>
+    // Default fallback function (can be removed if not used elsewhere)
+    function redirectToPage() {
+      window.location.href = "/Game_DinoDine/game_DinoDine.html";
+    }
+  
+    // Recipe Randomizer Button
+    document
+      .getElementById("btn-randomizer")
+      .addEventListener("click", function () {
+        console.log("Recipe Randomizer Button clicked!");
+        window.location.href = "/Recipe_Randomizer/recipeRandomizer.html";
+      });
+  
+    // Dino Dine Button
+    document
+      .getElementById("btn-game-dinodine")
+      .addEventListener("click", function () {
+        console.log("Dino Dine Button clicked!");
         window.location.href = "/Game_DinoDine/game_DinoDine.html";
-      }
-
-      document
-        .getElementById("btn-randomizer")
-        .addEventListener("click", function () {
-          console.log("Recipe Randomizer Button clicked!");
-          window.location.href = "/Recipe_Randomizer/recipeRandomizer.html";
-        });
-
-      document
-        .getElementById("btn-game-dinodine")
-        .addEventListener("click", function () {
-          console.log("Dino Dine Button clicked!");
-          window.location.href = "/Game_DinoDine/game_DinoDine.html";
-        });
-
-      document
-        .getElementById("btn-game-spinthewheel")
-        .addEventListener("click", function () {
-          console.log("Spin The Wheel Button clicked!");
-          window.location.href = "/Game_SpinTheWheel/wheel.html";
-        });
-    </script>
-  </body>
+      });
+  </script>
+  
+</body>
 </html>
