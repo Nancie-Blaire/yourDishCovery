@@ -1,6 +1,6 @@
 // Admin credentials (for testing)
 const adminUsername = "admin";
-const adminPassword = "12345dish"; // Change this for extra security!
+const adminPassword = "12345"; // Change this for extra security!
 
 document.getElementById("loginForm").addEventListener("submit", function(event) {
   event.preventDefault(); // Prevent form from refreshing the page
