@@ -8,7 +8,7 @@
     body {
       margin: 0;
       padding: 0;
-      background: url('your-brick-wall-background.jpg') no-repeat center center fixed;
+      background: url('images/brickwall.jpg') no-repeat center center fixed;
       background-size: cover;
       display: flex;
       justify-content: center;
@@ -18,12 +18,11 @@
 
     .container {
       display: flex;
-      gap: 40px;
-      align-items: center;
+      align-items: flex-end;
+      gap: 250px; /* Distance between recipe and resto */
     }
 
     .category-img {
-      width: 250px;
       height: auto;
       cursor: pointer;
       transition: box-shadow 0.3s ease;
@@ -31,33 +30,58 @@
     }
 
     .category-img:hover {
-      box-shadow: 0 0 25px 10px rgba(255, 255, 255, 0.5);
+      box-shadow: 0 0 25px 10px rgb(255, 255, 255);
+    }
+
+    .img-recipe,
+    .img-resto {
+      width: 500px;
+    }
+
+    .img-random {
+      width: 200px;
+      transform: translateY(-550px); /* Slightly higher */
+      z-index: 1;
+      margin: 0 -80px; /* Pulls image inward to balance spacing */
+      animation: pulseGlow 2s infinite ease-in-out; /* Pulsing glow effect */
+    }
+
+    @keyframes pulseGlow {
+      0% {
+        box-shadow: 0 0 10px -10px rgb(255, 185, 35);
+      }
+      50% {
+        box-shadow: 0 0 25px 10px rgb(255, 185, 35);
+      }
+      100% {
+        box-shadow: 0 0 10px -10px rgb(255, 255, 255);
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- RECIPE -->
+    <!-- Left: Recipe -->
     <img
-      src="recipe-box.png"
+      src="images/recipeboard.png"
       alt="Recipe"
-      class="category-img"
+      class="category-img img-recipe"
       onclick="location.href='listofgames.html?category=home'"
     />
 
-    <!-- CAN'T DECIDE -->
+    <!-- Center: Random (slightly higher with pulsing) -->
     <img
-      src="random-box.png"
-      alt="Can't Decide"
-      class="category-img"
+      src="images/randomboard.png"
+      alt="Can't Decide?"
+      class="category-img img-random"
       onclick="location.href='random.html'"
     />
 
-    <!-- RESTO -->
+    <!-- Right: Resto -->
     <img
-      src="resto-box.png"
+      src="images/restoboard.png"
       alt="Resto"
-      class="category-img"
+      class="category-img img-resto"
       onclick="location.href='listofgames.html?category=resto'"
     />
   </div>
