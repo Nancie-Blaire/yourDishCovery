@@ -1,23 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Categories</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DishCovery Categories</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: url('your-brick-wall-background.jpg') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
 
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js"></script>
-  </head>
-  <body>
-    <h1>Welcome to DishCovery! Explore Recipes 🍴</h1>
-    <button onclick="location.href='listofgames.html?category=jollibee'">Jollibee</button>
-    <button onclick="location.href='listofgames.html?category=mcdo'">McDo</button>
-    <button onclick="location.href='listofgames.html?category=kfc'">KFC</button>
-    <button onclick="location.href='listofgames.html?category=home'">Home Recipe</button>
-    <button onclick="location.href='random.html'">Go to Random</button>
-    
+    .container {
+      display: flex;
+      gap: 40px;
+      align-items: center;
+    }
 
- 
-  </body>
+    .category-img {
+      width: 250px;
+      height: auto;
+      cursor: pointer;
+      transition: box-shadow 0.3s ease;
+      border-radius: 15px;
+    }
+
+    .category-img:hover {
+      box-shadow: 0 0 25px 10px rgba(255, 255, 255, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- RECIPE -->
+    <img
+      src="recipe-box.png"
+      alt="Recipe"
+      class="category-img"
+      onclick="location.href='listofgames.html?category=home'"
+    />
+
+    <!-- CAN'T DECIDE -->
+    <img
+      src="random-box.png"
+      alt="Can't Decide"
+      class="category-img"
+      onclick="location.href='random.html'"
+    />
+
+    <!-- RESTO -->
+    <img
+      src="resto-box.png"
+      alt="Resto"
+      class="category-img"
+      onclick="location.href='listofgames.html?category=resto'"
+    />
+  </div>
+</body>
 </html>
