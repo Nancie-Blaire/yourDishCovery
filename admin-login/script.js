@@ -10,8 +10,8 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
 
   if (username === adminUsername && password === adminPassword) {
     // Redirect to the admin dashboard page
-    window.location.href = "../adminPage.html";
-  } else {
+    window.location.href = "../admin-page/adminPage.html";
+  } else { 
     // Show error message if credentials are incorrect
     document.getElementById("error-message").style.display = "block";
   }

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DishCovery Admin Page</title>
+    <link rel="stylesheet" href="adminPage.css" />
+  </head>
+  <body>
+    <div class="container">
+      <button id="home">Back</button>
+      <h1>Admin: Manage Recipes</h1>
+
+      <!-- Form for adding a new recipe -->
+      <form id="recipeForm">
+        <label>
+          Category:
+          <select id="category" required>
+            <option value="">Select one</option>
+            <option value="jollibee">Jollibee</option>
+            <option value="mcdo">McDo</option>
+            <option value="kfc">KFC</option>
+            <option value="home">Home Recipe</option>
+            <option value="random">Random (logos)</option>
+          </select>
+        </label>
+
+        <div id="nameField" class="hidden">
+          <label>Name: <input type="text" id="name" /></label>
+        </div>
+
+        <div id="descField" class="hidden">
+          <label>Description: <textarea id="description"></textarea></label>
+        </div>
+
+        <div id="ingredientsField" class="hidden">
+          <label>Ingredients: <textarea id="ingredients"></textarea></label>
+        </div>
+
+        <div id="imageField" class="hidden">
+          <label>Image URL: <input type="text" id="image" /></label>
+        </div>
+
+        <input type="hidden" id="editRecipeId" value="" />
+        <button type="submit" id="submitButton">Add Recipe</button>
+      </form>
+
+      <!-- Category Tabs -->
+      <div class="category-tabs">
+        <div class="category-tab active" data-category="jollibee">Jollibee</div>
+        <div class="category-tab" data-category="mcdo">McDo</div>
+        <div class="category-tab" data-category="kfc">KFC</div>
+        <div class="category-tab" data-category="home">Home Recipe</div>
+        <div class="category-tab" data-category="random">Random</div>
+      </div>
+
+      <!-- Category Content Sections -->
+      <div id="jollibeeSection" class="category-section">
+        <h2>Jollibee</h2>
+        <div class="recipe-list" id="jollibeeList"></div>
+      </div>
+
+      <div id="mcdoSection" class="category-section hidden">
+        <h2>McDo</h2>
+        <div class="recipe-list" id="mcdoList"></div>
+      </div>
+
+      <div id="kfcSection" class="category-section hidden">
+        <h2>KFC</h2>
+        <div class="recipe-list" id="kfcList"></div>
+      </div>
+
+      <div id="homeSection" class="category-section hidden">
+        <h2>Home Recipes</h2>
+        <div class="recipe-list" id="homeList"></div>
+      </div>
+
+      <div id="randomSection" class="category-section hidden">
+        <h2>Random (Logos)</h2>
+        <div class="recipe-list" id="randomList"></div>
+      </div>
+    </div>
+    <script type="module" src="adminPage.js"></script>
+  </body>
+</html>

@@ -31,9 +31,11 @@ body {
 
 #wheel {
   max-height: inherit;
-  width: inherit;
-  top: 0;
-  padding: 0;
+  width: 100%; /* Ensure the canvas takes full width */
+  height: 100%; /* Ensure the canvas takes full height */
+  display: block; /* Ensure the canvas is visible */
+  margin: 0 auto; /* Center the canvas horizontally */
+  background-color: transparent; /* Ensure no background color hides the wheel */
 }
 @keyframes rotate {
   100% {
