@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DishCovery - List of Games</title>
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DishCovery - List of Games</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-      html,
-      body {
-        height: 100%;
-        width: 100%;
-        overflow: hidden;
-        font-family: Arial, sans-serif;
-      }
+    html,
+    body {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
 
-      .background {
-        position: relative;
-        width: 100vw;
-        height: 100vh;
-      }
+    .background {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+    }
 
     .bg-img {
       position: absolute;
@@ -32,14 +32,15 @@
       object-fit: cover;
       z-index: 0;
     }
-/*LAPTOP/PC SIZING*/
-    .image-button {
+
+    /* LAPTOP/PC SIZING */
+    .image-dinodine-button{
       border: none;
       background: none;
       padding: 0;
       cursor: pointer;
       position: absolute;
-      top: 44vh;
+      top: 35vh;
       left: 49.5vw;
       transform: translate(-50%, -50%);
       z-index: 1;
@@ -47,8 +48,37 @@
       flex-direction: column;
       align-items: center;
     }
-
-    .image-button img {
+    .image-forkspoonknife-button{
+      border: none;
+      background: none;
+      padding: 0;
+      cursor: pointer;
+      position: absolute;
+      top: 51vh;
+      left: 49.5vw;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .image-wheelnmeal-button{
+      border: none;
+      background: none;
+      padding: 0;
+      cursor: pointer;
+      position: absolute;
+      top: 68vh;
+      left: 49.5vw;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .image-dinodine-button img,
+    .image-forkspoonknife-button img,
+    .image-wheelnmeal-button img {
       width: 60vw;
       max-width: 300px;
       height: auto;
@@ -58,61 +88,74 @@
       margin: 10px auto;
     }
 
-    .image-button img:hover {
+    /* Hover effect */
+    .image-dinodine-button img:hover,
+    .image-forkspoonknife-button img:hover,
+    .image-wheelnmeal-button img:hover {
       transform: scale(1.05);
     }
 
-    /* Responsive Portrait*/
-    @media (max-width: 1080px) {
-      .image-button img {
-        width: 90vw;
-        max-width: 900px;
-      }
+/* Responsive Portrait */
+@media (max-width: 1080px) {
+  .image-dinodine-button img,
+  .image-forkspoonknife-button img,
+  .image-wheelnmeal-button img {
+    width: 90vw;
+    max-width: 900px;
+  }
 
-      .image-button {
-        top: 44vh;
-        left: 50vw;
-      }
+  .image-dinodine-button{
+    top: 39vh;
+    left: 50vw;
+  }
+  .image-forkspoonknife-button{
+    top: 52vh;
+    left: 50vw;
+  }
+  .image-wheelnmeal-button {
+    top: 65vh;
+    left: 50vw;
+  }
+}
 
-      #forkspoonknife {
-        margin-top: 25px;
-      }
-    }
   </style>
 </head>
 <body>
   <div class="background">
     <img src="images/listofgames.png" class="bg-img" alt="Cafe Background" />
+  </div>
 
-    <div class="image-button">
-      <img id="btn-game-dinodine" src="images/dinodinebutton.png" alt="Dino Dine" />
-      <img id="btn-randomizer" src="images/forkspoonknife.png" alt="Recipe Randomizer" />
-      
-    </div>
+  <!-- HINIWALAY KO NG DIV KSI SA PHONE NAHAHIGHLIGHT LAHAT NG BUTTONS KPAG HINOLD -->
+  <div class="image-dinodine-button">
+    <img id="btn-game-dinodine" src="images/dinodinebutton.png" alt="Dino Dine" />
+  </div>
+
+  <div class="image-forkspoonknife-button">
+    <img id="btn-forkspoonknife" src="images/forkspoonknife.png" alt="Fork Spoon Knife" />
+  </div>
+
+  <div class="image-wheelnmeal-button">
+    <img id="btn-wheelnmeal" src="images/wheelnmeal.png" alt="Wheel N Meal" />
   </div>
 
   <script>
-    // Default fallback function (can be removed if not used elsewhere)
-    function redirectToPage() {
-      window.location.href = "/Game_DinoDine/game_DinoDine.html";
-    }
-  
-    // Recipe Randomizer Button
-    document
-      .getElementById("btn-randomizer")
-      .addEventListener("click", function () {
-        console.log("Recipe Randomizer Button clicked!");
-        window.location.href = "/Recipe_Randomizer/recipeRandomizer.html";
-      });
-  
     // Dino Dine Button
-    document
-      .getElementById("btn-game-dinodine")
-      .addEventListener("click", function () {
-        console.log("Dino Dine Button clicked!");
-        window.location.href = "/Game_DinoDine/game_DinoDine.html";
-      });
+    document.getElementById("btn-game-dinodine").addEventListener("click", function () {
+      console.log("Dino Dine Button clicked!");
+      window.location.href = "/Game_DinoDine/game_DinoDine.html";
+    });
+
+    // Fork Spoon Knife Button
+    document.getElementById("btn-forkspoonknife").addEventListener("click", function () {
+      console.log("Fork Spoon Knife Button clicked!");
+      window.location.href = "/Game_ForkSpoonKnife/game_ForkSpoonKnife.html"; // Update to your actual page
+    });
+
+    // Wheel N Meal Button
+    document.getElementById("btn-wheelnmeal").addEventListener("click", function () {
+      console.log("Wheel N Meal Button clicked!");
+      window.location.href = "/Game_SpinTheWheel/wheel.html"; // Update to your actual page
+    });
   </script>
-  
 </body>
 </html>
