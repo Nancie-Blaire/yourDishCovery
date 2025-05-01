@@ -47,30 +47,30 @@ const submitButton = document.getElementById("submitButton");
 const categoryTabs = document.querySelectorAll(".category-tab");
 
 window.app = {
-  editRecipe: function (id) {
-    const recipeRef = ref(db, `recipes/${id}`);
+  editRecipe: function (category, id) {
+    const recipeRef = ref(db, `recipes/${category}/${id}`);
     get(recipeRef)
       .then((snapshot) => {
         if (snapshot.exists()) {
           const recipe = snapshot.val();
-
+  
           // Set form fields
-          categorySelect.value = recipe.category;
-          categorySelect.dispatchEvent(new Event("change")); // Trigger the change event
-
+          categorySelect.value = category;
+          categorySelect.dispatchEvent(new Event("change"));
+  
           document.getElementById("name").value = recipe.name || "";
-          document.getElementById("description").value =
-            recipe.description || "";
-          document.getElementById("ingredients").value =
-            recipe.ingredients || "";
+          document.getElementById("description").value = recipe.description || "";
+          document.getElementById("ingredients").value = recipe.ingredients || "";
           document.getElementById("image").value = recipe.image || "";
           editRecipeId.value = id;
-
+  
           // Change button text
           submitButton.textContent = "Update Recipe";
-
+  
           // Scroll to the form
           recipeForm.scrollIntoView({ behavior: "smooth" });
+        } else {
+          alert("Recipe not found.");
         }
       })
       .catch((error) => {
@@ -81,20 +81,16 @@ window.app = {
 
   deleteRecipe: function (id) {
     if (confirm("Are you sure you want to delete this recipe?")) {
-      const recipeRef = ref(db, `recipes/${id}`);
+      const activeTab = document.querySelector(".category-tab.active");
+      if (!activeTab) return alert("No active category selected");
+  
+      const category = activeTab.getAttribute("data-category");
+      const recipeRef = ref(db, `recipes/${category}/${id}`);
+  
       remove(recipeRef)
         .then(() => {
           alert("Recipe deleted successfully!");
-
-          // Find active tab and reload its recipes
-          const activeTab = document.querySelector(
-            ".category-tab.active"
-          );
-          if (activeTab) {
-            const activeCategory =
-              activeTab.getAttribute("data-category");
-            loadRecipes(activeCategory);
-          }
+          loadRecipes(category);
         })
         .catch((error) => {
           console.error("Error deleting recipe:", error);
@@ -102,6 +98,7 @@ window.app = {
         });
     }
   },
+  
 };
 
 // Show/hide inputs based on selected category
@@ -184,7 +181,7 @@ function loadRecipes(category) {
               </div>
             </div>
             <div class="button-group">
-              <button onclick="window.app.editRecipe('${id}')">Edit</button>
+              <button onclick="window.app.editRecipe('${category}', '${id}')">Edit</button>
               <button onclick="window.app.deleteRecipe('${id}')">Delete</button>
             </div>
           `;
