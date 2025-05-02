@@ -47,15 +47,15 @@ const submitButton = document.getElementById("submitButton");
 const categoryTabs = document.querySelectorAll(".category-tab");
 
 window.app = {
-  editRecipe: function (id) {
-    const recipeRef = ref(db, `recipes/${id}`);
+  editRecipe: function (id, category) {
+    const recipeRef = ref(db, `recipes/${category}/${id}`);
     get(recipeRef)
       .then((snapshot) => {
         if (snapshot.exists()) {
           const recipe = snapshot.val();
 
           // Set form fields
-          categorySelect.value = recipe.category;
+          categorySelect.value = category;
           categorySelect.dispatchEvent(new Event("change")); // Trigger the change event
 
           document.getElementById("name").value = recipe.name || "";
@@ -63,7 +63,6 @@ window.app = {
             recipe.description || "";
           document.getElementById("ingredients").value =
             recipe.ingredients || "";
-          document.getElementById("image").value = recipe.image || "";
           editRecipeId.value = id;
 
           // Change button text
@@ -71,6 +70,8 @@ window.app = {
 
           // Scroll to the form
           recipeForm.scrollIntoView({ behavior: "smooth" });
+        } else {
+          alert("Recipe not found.");
         }
       })
       .catch((error) => {
@@ -79,20 +80,17 @@ window.app = {
       });
   },
 
-  deleteRecipe: function (id) {
+  deleteRecipe: function (id, category) {
     if (confirm("Are you sure you want to delete this recipe?")) {
-      const recipeRef = ref(db, `recipes/${id}`);
+      const recipeRef = ref(db, `recipes/${category}/${id}`);
       remove(recipeRef)
         .then(() => {
           alert("Recipe deleted successfully!");
 
           // Find active tab and reload its recipes
-          const activeTab = document.querySelector(
-            ".category-tab.active"
-          );
+          const activeTab = document.querySelector(".category-tab.active");
           if (activeTab) {
-            const activeCategory =
-              activeTab.getAttribute("data-category");
+            const activeCategory = activeTab.getAttribute("data-category");
             loadRecipes(activeCategory);
           }
         })
@@ -184,8 +182,8 @@ function loadRecipes(category) {
               </div>
             </div>
             <div class="button-group">
-              <button onclick="window.app.editRecipe('${id}')">Edit</button>
-              <button onclick="window.app.deleteRecipe('${id}')">Delete</button>
+              <button onclick="window.app.editRecipe('${id}', '${category}')">Edit</button>
+              <button onclick="window.app.deleteRecipe('${id}', '${category}')">Delete</button>
             </div>
           `;
 
@@ -219,7 +217,7 @@ function resetForm() {
 }
 
 // Handle form submission (both add and edit)
-recipeForm.addEventListener("submit", function (e) {
+recipeForm.addEventListener("submit", async function (e) {
   e.preventDefault();
 
   const id = editRecipeId.value;
@@ -235,14 +233,45 @@ recipeForm.addEventListener("submit", function (e) {
     name: document.getElementById("name").value,
     description: document.getElementById("description").value || "",
     ingredients: document.getElementById("ingredients").value || "",
-    image: document.getElementById("image").value,
   };
 
-  if (!recipeData.name || !recipeData.image) {
-    alert("Name and Image URL are required");
+  const imageFile = document.getElementById("imageUpload").files[0];
+
+  if (!recipeData.name || (!imageFile && !isEditing)) {
+    alert("Name and Image are required");
     return;
   }
 
+  if (imageFile) {
+    try {
+      // Convert the image file to Base64
+      const reader = new FileReader();
+      reader.onload = function () {
+        recipeData.image = reader.result; // Store Base64 string in recipeData
+        saveRecipeData(recipeData, id, isEditing, category);
+      };
+      reader.onerror = function (error) {
+        console.error("Error reading image file:", error);
+        alert("Error reading image file: " + error.message);
+      };
+      reader.readAsDataURL(imageFile); // Read the file as a Base64 string
+    } catch (error) {
+      console.error("Error processing image:", error);
+      alert("Error processing image: " + error.message);
+      return;
+    }
+  } else if (isEditing) {
+    // Keep the existing image if no new image is uploaded
+    const existingImage = document.querySelector(
+      `.recipe-card img[src*="${id}"]`
+    );
+    recipeData.image = existingImage ? existingImage.src : "";
+    saveRecipeData(recipeData, id, isEditing, category);
+  }
+});
+
+// Function to save recipe data to Firebase
+function saveRecipeData(recipeData, id, isEditing, category) {
   let savePromise;
 
   if (isEditing) {
@@ -273,7 +302,7 @@ recipeForm.addEventListener("submit", function (e) {
       console.error("Error saving recipe:", error);
       alert("Error: " + error.message);
     });
-});
+}
 
 // Ensure recipes are loaded on page load
 document.addEventListener("DOMContentLoaded", function () {
