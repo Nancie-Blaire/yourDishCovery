@@ -47,15 +47,15 @@ const submitButton = document.getElementById("submitButton");
 const categoryTabs = document.querySelectorAll(".category-tab");
 
 window.app = {
-  editRecipe: function (id, category) {
-    const recipeRef = ref(db, `recipes/${category}/${id}`);
+  editRecipe: function (id) {
+    const recipeRef = ref(db, `recipes/${id}`);
     get(recipeRef)
       .then((snapshot) => {
         if (snapshot.exists()) {
           const recipe = snapshot.val();
-
+  
           // Set form fields
-          categorySelect.value = category;
+          categorySelect.value = recipe.category;
           categorySelect.dispatchEvent(new Event("change")); // Trigger the change event
 
           document.getElementById("name").value = recipe.name || "";
@@ -63,11 +63,12 @@ window.app = {
             recipe.description || "";
           document.getElementById("ingredients").value =
             recipe.ingredients || "";
+          document.getElementById("image").value = recipe.image || "";
           editRecipeId.value = id;
-
+  
           // Change button text
           submitButton.textContent = "Update Recipe";
-
+  
           // Scroll to the form
           recipeForm.scrollIntoView({ behavior: "smooth" });
         } else {
@@ -82,15 +83,18 @@ window.app = {
 
   deleteRecipe: function (id, category) {
     if (confirm("Are you sure you want to delete this recipe?")) {
-      const recipeRef = ref(db, `recipes/${category}/${id}`);
+      const recipeRef = ref(db, `recipes/${id}`);
       remove(recipeRef)
         .then(() => {
           alert("Recipe deleted successfully!");
 
           // Find active tab and reload its recipes
-          const activeTab = document.querySelector(".category-tab.active");
+          const activeTab = document.querySelector(
+            ".category-tab.active"
+          );
           if (activeTab) {
-            const activeCategory = activeTab.getAttribute("data-category");
+            const activeCategory =
+              activeTab.getAttribute("data-category");
             loadRecipes(activeCategory);
           }
         })
@@ -100,6 +104,7 @@ window.app = {
         });
     }
   },
+  
 };
 
 // Show/hide inputs based on selected category
@@ -182,8 +187,8 @@ function loadRecipes(category) {
               </div>
             </div>
             <div class="button-group">
-              <button onclick="window.app.editRecipe('${id}', '${category}')">Edit</button>
-              <button onclick="window.app.deleteRecipe('${id}', '${category}')">Delete</button>
+              <button onclick="window.app.editRecipe('${id}')">Edit</button>
+              <button onclick="window.app.deleteRecipe('${id}')">Delete</button>
             </div>
           `;
 

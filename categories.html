@@ -19,31 +19,26 @@
     .container {
       display: flex;
       align-items: flex-end;
-      gap: 250px; /* Distance between recipe and resto */
+      gap: 250px;
     }
 
     .category-img {
       height: auto;
-      cursor: pointer;
-      transition: box-shadow 0.3s ease;
       border-radius: 15px;
+      transition: box-shadow 0.3s ease;
     }
 
     .category-img:hover {
       box-shadow: 0 0 25px 10px rgb(255, 255, 255);
     }
 
-    .img-recipe,
-    .img-resto {
-      width: 500px;
-    }
-
     .img-random {
       width: 200px;
-      transform: translateY(-550px); /* Slightly higher */
+      transform: translateY(-550px);
       z-index: 1;
-      margin: 0 -80px; /* Pulls image inward to balance spacing */
-      animation: pulseGlow 2s infinite ease-in-out; /* Pulsing glow effect */
+      margin: 0 -80px;
+      animation: pulseGlow 2s infinite ease-in-out;
+      cursor: pointer;
     }
 
     @keyframes pulseGlow {
@@ -57,34 +52,136 @@
         box-shadow: 0 0 10px -10px rgb(255, 255, 255);
       }
     }
+
+    .carousel-wrapper {
+      position: relative;
+      width: 500px;
+      cursor: default;
+    }
+
+    .board-img {
+      width: 100%;
+      border-radius: 15px;
+    }
+
+    .board-clickable {
+      cursor: pointer;
+    }
+
+    .food-img {
+      position: absolute;
+      bottom: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 120px;
+      object-fit: contain;
+      display: none;
+    }
+
+    .food-img.active {
+      display: block;
+    }
+
+    .arrow {
+      position: absolute;
+      bottom: 70px;
+      font-size: 3rem;
+      color: white;
+      background-color: rgba(0, 0, 0, 0.4);
+      border-radius: 50%;
+      padding: 5px 12px;
+      cursor: pointer;
+      user-select: none;
+      z-index: 10;
+    }
+
+    .arrow.left {
+      left: 10%;
+    }
+
+    .arrow.right {
+      right: 10%;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- Left: Recipe -->
-    <img
-  src="images/recipeboard.png"
-  alt="Recipe"
-  class="category-img img-recipe"
-  onclick="location.href='listofgames.html?category=home_recipe'"
-/>
 
-    <!-- Center: Random (slightly higher with pulsing) -->
-    <!-- Center: Random (slightly higher with pulsing) -->
-<img
-src="images/randomboard.png"
-alt="Can't Decide?"
-class="category-img img-random"
-onclick="location.href='Game_SpinTheWheel/wheel.html?category=random'"
-/>
+    <!-- Recipe board: whole board is clickable, no more image carousel or arrows -->
+    <div class="carousel-wrapper" onclick="location.href='listofgames.html?category=home_recipe'">
+      <img src="images/recipeboard.png" class="board-img board-clickable" />
+</div>
 
-    <!-- Right: Resto -->
-    <img
-  src="images/restoboard.png"
-  alt="Resto"
-  class="category-img img-resto"
-  onclick="location.href='listofgames.html?category=resto'"
-/>
+
+    <!-- Random button -->
+      <img
+        src="images/randomboard.png"
+        alt="Can't Decide?"
+        class="category-img img-random"
+        onclick="location.href='Game_SpinTheWheel/wheel.html?category=random'"
+    />
+
+    <!-- Resto board: board not clickable, only the carousel images are -->
+    <div class="carousel-wrapper">
+      <img src="images/restoboard.png" class="board-img" />
+      <img src="images/jabee.png" class="food-img active" onclick="location.href='listofgames.html?category=home_recipe'" />
+      <img src="images/mcdo.png" class="food-img" onclick="location.href='listofgames.html?category=home_recipe'" />
+      <img src="images/kfc.png" class="food-img" onclick="location.href='listofgames.html?category=home_recipe'" />
+      <div class="arrow left" onclick="prevResto();">&#8592;</div>
+      <div class="arrow right" onclick="nextResto();">&#8594;</div>
+    </div>
+
   </div>
+
+  <script>
+    // RECIPE
+    let currentRecipe = 0;
+    const recipeImages = [
+      document.getElementById('recipe0'),
+      document.getElementById('recipe1'),
+      document.getElementById('recipe2')
+    ];
+
+    function updateRecipe() {
+      recipeImages.forEach((img, index) => {
+        img.classList.toggle('active', index === currentRecipe);
+      });
+    }
+
+    function prevRecipe() {
+      currentRecipe = (currentRecipe - 1 + recipeImages.length) % recipeImages.length;
+      updateRecipe();
+    }
+
+    function nextRecipe() {
+      currentRecipe = (currentRecipe + 1) % recipeImages.length;
+      updateRecipe();
+    }
+
+    setInterval(nextRecipe, 10000);
+
+    // RESTO
+    let currentResto = 0;
+    const restoImages = document.querySelectorAll('.container .carousel-wrapper:last-child .food-img');
+
+    function updateResto() {
+      restoImages.forEach((img, index) => {
+        img.classList.toggle('active', index === currentResto);
+      });
+    }
+
+    function prevResto() {
+      currentResto = (currentResto - 1 + restoImages.length) % restoImages.length;
+      updateResto();
+    }
+
+    function nextResto() {
+      currentResto = (currentResto + 1) % restoImages.length;
+      updateResto();
+    }
+
+    setInterval(nextResto, 10000);
+  </script>
 </body>
 </html>
