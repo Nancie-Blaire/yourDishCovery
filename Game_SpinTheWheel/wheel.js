@@ -48,6 +48,28 @@ async function fetchFoods(category) {
   return uniqueFoods;
 }
 
+// Function to fetch foods and their images from the database
+async function fetchFoodsWithImages(category) {
+  const foods = [];
+  const snapshot = await get(ref(db, `recipes/${category}`));
+
+  if (snapshot.exists()) {
+    const recipes = snapshot.val();
+    for (const key in recipes) {
+      if (recipes[key].name && recipes[key].image) {
+        foods.push({ name: recipes[key].name, image: recipes[key].image }); // Collect food names and Base64 images
+      } else {
+        console.warn(`Skipped recipe without name or image in category ${category}:`, recipes[key]); // Debugging
+      }
+    }
+  } else {
+    console.warn(`No recipes found in category: ${category}`); // Debugging
+  }
+
+  console.log("Fetched Foods with Images:", foods); // Debugging
+  return foods;
+}
+
 // Function to determine selected value based on final angle
 const valueGenerator = (angleValue) => {
   // Convert the chart rotation to the actual angle on the wheel
@@ -76,23 +98,160 @@ async function refreshWheel() {
   await initializeWheel(); // Re-initialize the wheel with the latest data
 }
 
+// Custom plugin to draw images as section backgrounds
+const imageBackgroundPlugin = {
+  id: "imageBackgroundPlugin",
+  beforeDraw(chart) {
+    const ctx = chart.ctx;
+    const dataset = chart.data.datasets[0];
+    const meta = chart.getDatasetMeta(0);
+
+    if (!dataset || !dataset.backgroundImages) return;
+
+    // Ensure chart dimensions are valid
+    const centerX = chart.width / 2 || 0;
+    const centerY = chart.height / 2 || 0;
+    const radius = chart.outerRadius || Math.min(chart.width, chart.height) / 2;
+
+    console.log(`Chart Dimensions: centerX=${centerX}, centerY=${centerY}, radius=${radius}`); // Debugging
+
+    meta.data.forEach((arc, index) => {
+      const image = dataset.backgroundImages[index];
+      const fallbackColor = dataset.backgroundColor[index];
+      console.log(`Rendering segment ${index}:`, { image, fallbackColor }); // Debugging
+
+      if (!image) {
+        console.warn(`No image available for segment ${index}, using fallback color.`); // Debugging
+      }
+
+      const startAngle = arc.startAngle || 0;
+      const endAngle = arc.endAngle || 0;
+      const segmentAngle = endAngle - startAngle;
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(centerX, centerY); // Center of the wheel
+      ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+      ctx.closePath();
+      ctx.clip();
+
+      if (image) {
+        // Rotate the canvas to align the image with the segment
+        ctx.translate(centerX, centerY);
+        ctx.rotate(startAngle + segmentAngle / 2); // Rotate to the center of the segment
+
+        // Adjust the image orientation to align properly
+        ctx.rotate(Math.PI / 2); // Rotate 90 degrees to align the top of the image with the segment
+
+        // Draw the image centered on the segment
+        const imgWidth = radius * 2;
+        const imgHeight = radius * 2;
+        ctx.drawImage(
+          image,
+          -radius, // Top-left x-coordinate relative to the center
+          -radius, // Top-left y-coordinate relative to the center
+          imgWidth,
+          imgHeight
+        );
+
+        // Restore the canvas state
+        ctx.rotate(-Math.PI / 2); // Undo the additional rotation
+        ctx.rotate(-(startAngle + segmentAngle / 2)); // Undo the segment rotation
+        ctx.translate(-centerX, -centerY); // Undo translation
+      } else {
+        // Fill with fallback color if image is not available
+        ctx.fillStyle = fallbackColor || "#FFFFFF"; // Default to white if no fallback color
+        ctx.fill();
+      }
+
+      ctx.restore();
+    });
+  },
+};
+
 // Function to initialize the wheel
 async function initializeWheel() {
   const urlParams = new URLSearchParams(window.location.search);
   const category = urlParams.get("category") || "random"; // Default to "random" if no category is specified
 
-  const foodNames = await fetchFoods(category); // Fetch foods for the selected category
+  const foodData = await fetchFoodsWithImages(category); // Fetch foods and their images for the selected category
 
-  if (foodNames.length === 0) {
+  if (foodData.length === 0) {
     finalValue.innerHTML = `<p>No foods available for this category.</p>`;
     spinBtn.disabled = true;
     return;
   }
 
-  const data = Array(foodNames.length).fill(1); // Equal distribution for all foods
-  const pieColors = foodNames.map(
-    () => `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`
+  const foodNames = foodData.map((food) => food.name);
+  const fallbackColors = ["#FF5733", "#33FF57", "#3357FF", "#F3FF33", "#FF33A8"]; // Example fallback colors
+
+  const foodImages = await Promise.all(
+    foodData.map((food) => {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.src = food.image; // Base64 image string
+        img.onload = () => {
+          console.log(`Image loaded successfully for ${food.name}`); // Debugging
+
+          // Preprocess the image using an offscreen canvas
+          const offscreenCanvas = document.createElement("canvas");
+          const size = 200; // Resize to 200x200 pixels
+          offscreenCanvas.width = size;
+          offscreenCanvas.height = size;
+          const offscreenCtx = offscreenCanvas.getContext("2d");
+
+          // Draw the image onto the offscreen canvas, cropping or resizing as needed
+          const aspectRatio = img.width / img.height;
+          console.log(`Original Image Dimensions for ${food.name}:`, img.width, img.height); // Debugging
+          if (aspectRatio > 1) {
+            // Landscape image: crop width
+            const cropWidth = img.height * aspectRatio;
+            offscreenCtx.drawImage(
+              img,
+              (img.width - cropWidth) / 2, // Crop horizontally
+              0,
+              cropWidth,
+              img.height,
+              0,
+              0,
+              size,
+              size
+            );
+          } else {
+            // Portrait or square image: crop height
+            const cropHeight = img.width / aspectRatio;
+            offscreenCtx.drawImage(
+              img,
+              0,
+              (img.height - cropHeight) / 2, // Crop vertically
+              img.width,
+              cropHeight,
+              0,
+              0,
+              size,
+              size
+            );
+          }
+
+          // Create a new Image object from the processed canvas
+          const processedImg = new Image();
+          processedImg.src = offscreenCanvas.toDataURL();
+          console.log(`Processed Image Dimensions for ${food.name}:`, size, size); // Debugging
+          resolve(processedImg);
+        };
+        img.onerror = (err) => {
+          console.error(`Failed to load image for ${food.name}:`, err);
+          resolve(null); // Fallback if the image fails to load
+        };
+      });
+    })
   );
+
+  const backgroundColors = foodImages.map((img, index) =>
+    img ? "transparent" : fallbackColors[index % fallbackColors.length]
+  );
+
+  const data = Array(foodNames.length).fill(1); // Equal distribution for all foods
 
   const segmentSize = 360 / foodNames.length; // Size of each segment
   rotationValues = foodNames.map((name, index) => ({
@@ -114,11 +273,18 @@ async function initializeWheel() {
 
   // Initialize the Chart.js instance
   myChart = new Chart(wheel, {
-    plugins: [ChartDataLabels],
+    plugins: [ChartDataLabels, imageBackgroundPlugin],
     type: "pie",
     data: {
       labels: foodNames,
-      datasets: [{ backgroundColor: pieColors, data: data, borderColor: "#000" }],
+      datasets: [
+        {
+          backgroundColor: backgroundColors, // Use fallback color if image fails
+          backgroundImages: foodImages, // Attach images to the dataset
+          data: data,
+          borderColor: "#000",
+        },
+      ],
     },
     options: {
       responsive: true,
@@ -128,7 +294,7 @@ async function initializeWheel() {
         tooltip: false,
         legend: { display: false },
         datalabels: {
-          color: "#fff",
+          color: "#000",
           formatter: (_, context) => context.chart.data.labels[context.dataIndex],
           font: (context) => {
             const label = context.chart.data.labels[context.dataIndex];

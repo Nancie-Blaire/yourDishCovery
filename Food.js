@@ -6,11 +6,11 @@ export default class Food {
     this.width = width;
     this.height = height;
     this.image = image;
-    this.id = id; // Store the unique ID as the placeholder
+    this.id = id; // Unique ID for the food
   }
 
-  update(speed, gameSpeed, frameTimeDelta, scaleRatio) {
-    this.x -= speed * gameSpeed * frameTimeDelta * scaleRatio;
+  update(speed, frameTimeDelta, scaleRatio) {
+    this.x -= speed * frameTimeDelta * scaleRatio; // Adjust position based on speed, frame time, and scale ratio
   }
 
   draw() {

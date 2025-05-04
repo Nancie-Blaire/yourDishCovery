@@ -56,10 +56,10 @@ export default class FoodController {
     this.nextFoodInterval -= frameTimeDelta;
 
     this.foods.forEach((food) => {
-      food.update(this.speed, gameSpeed, frameTimeDelta, this.scaleRatio);
+      food.update(this.speed * gameSpeed, frameTimeDelta, this.scaleRatio); // Ensure speed is scaled by gameSpeed
     });
 
-    this.foods = this.foods.filter((food) => food.x > -food.width);
+    this.foods = this.foods.filter((food) => food.x > -food.width); // Remove foods that move off-screen
   }
 
   draw() {

@@ -59,6 +59,10 @@
     <canvas id="game"></canvas>
     <h2></h2>
     <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const category = urlParams.get("category") || "random"; // Default to "random" if no category is specified
+      console.log(`Selected category: ${category}`); // Debugging
+
       document.addEventListener("keydown", (event) => {
         if (event.code === "Space" && waitingToStart) {
           reset();

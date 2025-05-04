@@ -2,6 +2,24 @@ import Player from "./Player.js";
 import Ground from "./Ground.js";
 import FoodController from "./FoodController.js";
 import Score from "./Score.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+
+// Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyCA2KS4aKwM5P4_et3wifB4sRg23tvaK04",
+  authDomain: "dish-4be2b.firebaseapp.com",
+  projectId: "dish-4be2b",
+  storageBucket: "dish-4be2b.appspot.com",
+  messagingSenderId: "479066048512",
+  appId: "1:479066048512:web:7489944044adddc4c570e5",
+  measurementId: "G-8D2QSMQWT2",
+  databaseURL: "https://dish-4be2b-default-rtdb.firebaseio.com",
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
 
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
@@ -19,14 +37,6 @@ const GROUND_WIDTH = 2400;
 const GROUND_HEIGHT = 24;
 const GROUND_AND_FOOD_SPEED = 0.5;
 
-const FOODS_CONFIG = [
-  { width: 110 / 1.5, height: 100 / 1.5, image: "images/adobo.jpg" },
-  { width: 110 / 1.5, height: 100 / 1.5, image: "images/fried_chicken.jpg" },
-  { width: 110 / 1.5, height: 100 / 1.5, image: "images/sinigang.jpg" },
-  { width: 110 / 1.5, height: 100 / 1.5, image: "images/mcdo.png" },
-  { width: 110 / 1.5, height: 100 / 1.5, image: "images/kfc.png" },
-];
-
 //Game Objects
 let player = null;
 let ground = null;
@@ -42,6 +52,9 @@ let waitingToStart = true; // Define and initialize globally
 
 // Ensure waitingToStart is accessible globally
 window.waitingToStart = waitingToStart;
+
+// Global mapping of placeholder IDs to food details
+const foodMapping = {};
 
 function createSprites() {
   const playerWidthInGame = PLAYER_WIDTH * scaleRatio;
@@ -67,23 +80,6 @@ function createSprites() {
     groundHeightInGame,
     GROUND_AND_FOOD_SPEED,
     scaleRatio
-  );
-
-  const foodImages = FOODS_CONFIG.map((food) => {
-    const image = new Image();
-    image.src = food.image;
-    return {
-      image: image,
-      width: food.width * scaleRatio,
-      height: food.height * scaleRatio,
-    };
-  });
-
-  foodController = new FoodController(
-    ctx,
-    foodImages,
-    scaleRatio,
-    GROUND_AND_FOOD_SPEED
   );
 
   score = new Score(ctx, scaleRatio);
@@ -250,7 +246,7 @@ function gameLoop(currentTime) {
     const closestFood = foodController.getClosestFood(player.x);
     const h2Element = document.querySelector("h2");
     if (closestFood && h2Element) {
-      const foodName = getFoodNameFromImage(closestFood.image.src);
+      const foodName = getFoodNameFromId(closestFood.id); // Use the placeholder ID to get the name
       h2Element.classList.remove("got-food");
       h2Element.textContent = `${foodName}`;
     } else if (h2Element) {
@@ -266,7 +262,7 @@ function gameLoop(currentTime) {
       score.setHighScore();
 
       // Update the <h2> element with the food name on collision
-      const foodName = getFoodNameFromImage(collidedFood.image.src);
+      const foodName = getFoodNameFromId(collidedFood.id); // Use the placeholder ID to get the name
       const h2Element = document.querySelector("h2");
       if (h2Element) {
         h2Element.classList.add("got-food");
@@ -292,22 +288,85 @@ function gameLoop(currentTime) {
   requestAnimationFrame(gameLoop);
 }
 
-function getFoodNameFromImage(imageSrc) {
-  // Extract the file name from the full image source path
-  const fileName = imageSrc.split("/").pop();
+function getFoodNameFromId(foodId) {
+  console.log(`Looking for food with ID:`, foodId); // Log the ID
 
-  const foodMap = {
-    "adobo.jpg": "Adobo",
-    "fried_chicken.jpg": "Fried Chicken",
-    "sinigang.jpg": "Sinigang",
-    "mcdo.png": "McDo",
-    "kfc.png": "KFC",
-  };
+  // Retrieve the food name from the mapping
+  const food = foodMapping[foodId];
 
-  return foodMap[fileName] || "Unknown Food";
+  if (!food) {
+    console.warn(`No match found for ID:`, foodId); // Log the missing ID
+  }
+
+  return food ? food.name : "Unknown Food";
 }
 
-requestAnimationFrame(gameLoop);
+async function fetchFoods(category) {
+  const foods = [];
+  const snapshot = await get(ref(db, `recipes/${category}`));
+
+  if (snapshot.exists()) {
+    const recipes = snapshot.val();
+    console.log(`Fetched recipes for category "${category}":`, Object.keys(recipes)); // Log only keys for brevity
+
+    let idCounter = 1; // Counter for generating placeholder IDs
+    for (const key in recipes) {
+      if (recipes[key].name && recipes[key].image) {
+        const placeholderId = `id${idCounter++}`; // Generate placeholder ID (e.g., id1, id2)
+        foodMapping[placeholderId] = {
+          name: recipes[key].name,
+          image: recipes[key].image,
+        }; // Map placeholder ID to food details
+
+        foods.push({
+          id: placeholderId, // Use the placeholder ID
+          name: recipes[key].name,
+          image: recipes[key].image, // Base64 string
+          width: 110 / 1.5, // Default width
+          height: 100 / 1.5, // Default height
+        });
+      } else {
+        console.warn(`Skipped recipe without name or image:`, key); // Log only the key
+      }
+    }
+  } else {
+    console.warn(`No recipes found in category: ${category}`);
+  }
+
+  console.log(`Fetched foods for category "${category}":`, foods.map(food => food.name)); // Log only names
+  console.log(`Food mapping:`, foodMapping); // Log the mapping for debugging
+  return foods;
+}
+
+async function initializeGame() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const category = urlParams.get("category") || "random"; // Default to "random" if no category is specified
+
+  const fetchedFoods = await fetchFoods(category);
+
+  if (fetchedFoods.length === 0) {
+    alert("No foods available for this category.");
+    return;
+  }
+
+  const foodImages = fetchedFoods.map((food) => {
+    const image = new Image();
+    image.src = food.image; // Set the Base64 string as the image source
+    return {
+      id: food.id, // Include the placeholder ID for matching
+      image: image, // Image object
+      name: food.name,
+      width: food.width * scaleRatio,
+      height: food.height * scaleRatio,
+    };
+  });
+
+  foodController = new FoodController(ctx, foodImages, scaleRatio, GROUND_AND_FOOD_SPEED);
+  requestAnimationFrame(gameLoop);
+}
+
+// Replace the static FOODS_CONFIG initialization with dynamic fetching
+initializeGame();
 
 window.addEventListener("keyup", reset, { once: true });
 window.addEventListener("touchstart", reset, { once: true });
