@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fork Spoon Knife</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+
+    .background {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .bg-img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+
+    .image-spoon{
+      border: none;
+      background: none;
+      padding: 0;
+      cursor: pointer;
+      position: absolute;
+      top: 78vh;
+      left: 72vw;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .image-fork{
+      border: none;
+      background: none;
+      padding: 0;
+      cursor: pointer;
+      position: absolute;
+      top: 78vh;
+      left: 29vw;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .image-knife{
+      border: none;
+      background: none;
+      padding: 0;
+      cursor: pointer;
+      position: absolute;
+      top: 78vh;
+      left: 66vw;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .image-spoon img,
+    .image-fork img,
+    .image-knife img {
+      width: 35vw;
+      max-width: 75px;
+      height: auto;
+      border-radius: 10%;
+      transition: transform 0.2s ease;
+      display: block;
+      margin: 10px auto;
+    }
+
+    /*Hover Effect*/
+    .image-spoon img:hover,
+    .image-fork img:hover,
+    .image-knife img:hover {
+      transform: scale(1.05);
+    }
+ 
+
+
+
+</style>
+</head>
+<body>
+  <div class="background">
+    <img src="images/ForkSpoonKnifeBG.png" class="bg-img" alt="Wood Background" />
+  </div>
+
+  <div class="image-spoon">
+    <img id="btn-game-Spoon" src="images/Spoon.png" alt="Spoon" />
+  </div>
+
+  <div class="image-fork">
+    <img id="btn-game-fork" src="images/Fork.png" alt="Fork" />
+  </div>
+
+  <div class="image-knife">
+    <img id="btn-game-knife" src="images/Knife.png" alt="knife" />
+  </div>
+
+
+
+
+
+
+
+</body>
