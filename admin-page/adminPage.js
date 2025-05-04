@@ -104,7 +104,10 @@ window.app = {
 
 // Show/hide inputs based on selected category
 categorySelect.addEventListener("change", () => {
-  const value = categorySelect.value;
+  const value = categorySelect.value; // Get the selected category
+
+  // Debugging log to verify the selected category
+  console.log("Category changed:", value);
 
   // Hide all fields first
   nameField.classList.add("hidden");
@@ -113,12 +116,7 @@ categorySelect.addEventListener("change", () => {
   imageField.classList.add("hidden");
 
   // Show relevant fields based on category
-  if (
-    value === "jollibee" ||
-    value === "mcdo" ||
-    value === "kfc" ||
-    value === "random"
-  ) {
+  if (["jollibee", "mcdo", "kfc", "random"].includes(value)) {
     nameField.classList.remove("hidden");
     imageField.classList.remove("hidden");
   } else if (value === "home") {
@@ -156,50 +154,121 @@ categoryTabs.forEach((tab) => {
 
 // Load recipes for a specific category
 function loadRecipes(category) {
-  const categoryRef = ref(db, `recipes/${category}`);
-  get(categoryRef)
-    .then((snapshot) => {
-      const listElement = document.getElementById(`${category}List`);
-      listElement.innerHTML = "";
+  const listElement = document.getElementById(`${category}List`);
+  listElement.innerHTML = "";
 
-      if (snapshot.exists()) {
-        const recipes = snapshot.val();
-        let foundRecipes = false;
+  if (category === "random") {
+    // Fetch all foods from all categories
+    const categories = ["jollibee", "mcdo", "kfc", "home"];
+    const allRecipes = [];
 
-        for (let id in recipes) {
-          const recipe = recipes[id];
-          foundRecipes = true;
+    Promise.all(
+      categories.map((cat) =>
+        get(ref(db, `recipes/${cat}`)).then((snapshot) => {
+          if (snapshot.exists()) {
+            const recipes = snapshot.val();
+            for (let id in recipes) {
+              allRecipes.push({ id, ...recipes[id], category: cat });
+            }
+          }
+        })
+      )
+    )
+      .then(() => {
+        if (allRecipes.length === 0) {
+          listElement.innerHTML = "<p>No recipes found in any category.</p>";
+        } else {
+          allRecipes.forEach((recipe) => {
+            const recipeCard = document.createElement("div");
+            recipeCard.classList.add("recipe-card");
 
-          const recipeCard = document.createElement("div");
-          recipeCard.classList.add("recipe-card");
-
-          recipeCard.innerHTML = `
-            <div class="recipe-card-header">
-              <img src="${recipe.image}" alt="${recipe.name}" onerror="this.src='https://via.placeholder.com/80'">
-              <div class="recipe-info">
-                <h3>${recipe.name}</h3>
-                ${recipe.description ? `<p>${recipe.description}</p>` : ""}
+            recipeCard.innerHTML = `
+              <div class="recipe-card-header">
+                <img src="${recipe.image}" alt="${recipe.name}" onerror="this.src='https://via.placeholder.com/80'">
+                <div class="recipe-info">
+                  <h3>${recipe.name}</h3>
+                  ${recipe.description ? `<p>${recipe.description}</p>` : ""}
+                  <p><strong>Category:</strong> ${recipe.category}</p>
+                </div>
               </div>
-            </div>
-            <div class="button-group">
-              <button onclick="window.app.editRecipe('${id}', '${category}')">Edit</button>
-              <button onclick="window.app.deleteRecipe('${id}', '${category}')">Delete</button>
-            </div>
-          `;
+              <div class="button-group">
+                <button onclick="window.app.editRecipe('${recipe.id}', '${recipe.category}')">Edit</button>
+                <button onclick="window.app.deleteRecipe('${recipe.id}', '${recipe.category}')">Delete</button>
+              </div>
+            `;
 
-          listElement.appendChild(recipeCard);
+            listElement.appendChild(recipeCard);
+          });
         }
 
-        if (!foundRecipes) {
+        // Update the "random" category in Firebase
+        updateRandomCategory(allRecipes);
+      })
+      .catch((error) => {
+        console.error("Error loading recipes for random category:", error);
+        alert("Error loading recipes: " + error.message);
+      });
+  } else {
+    // Fetch recipes for the selected category
+    const categoryRef = ref(db, `recipes/${category}`);
+    get(categoryRef)
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          const recipes = snapshot.val();
+          for (let id in recipes) {
+            const recipe = recipes[id];
+
+            const recipeCard = document.createElement("div");
+            recipeCard.classList.add("recipe-card");
+
+            recipeCard.innerHTML = `
+              <div class="recipe-card-header">
+                <img src="${recipe.image}" alt="${recipe.name}" onerror="this.src='https://via.placeholder.com/80'">
+                <div class="recipe-info">
+                  <h3>${recipe.name}</h3>
+                  ${recipe.description ? `<p>${recipe.description}</p>` : ""}
+                </div>
+              </div>
+              <div class="button-group">
+                <button onclick="window.app.editRecipe('${id}', '${category}')">Edit</button>
+                <button onclick="window.app.deleteRecipe('${id}', '${category}')">Delete</button>
+              </div>
+            `;
+
+            listElement.appendChild(recipeCard);
+          }
+        } else {
           listElement.innerHTML = "<p>No recipes found in this category.</p>";
         }
-      } else {
-        listElement.innerHTML = "<p>No recipes found in this category.</p>";
-      }
+      })
+      .catch((error) => {
+        console.error("Error loading recipes:", error);
+        alert("Error loading recipes: " + error.message);
+      });
+  }
+}
+
+// Function to update the "random" category in Firebase
+function updateRandomCategory(allRecipes) {
+  const randomRef = ref(db, "recipes/random");
+  const randomData = {};
+
+  allRecipes.forEach((recipe) => {
+    const randomId = `${recipe.category}_${recipe.id}`; // Unique ID for random category
+    randomData[randomId] = {
+      name: recipe.name,
+      description: recipe.description || "",
+      ingredients: recipe.ingredients || "",
+      image: recipe.image || "",
+    };
+  });
+
+  set(randomRef, randomData)
+    .then(() => {
+      console.log("Random category updated successfully in Firebase.");
     })
     .catch((error) => {
-      console.error("Error loading recipes:", error);
-      alert("Error loading recipes: " + error.message);
+      console.error("Error updating random category in Firebase:", error);
     });
 }
 

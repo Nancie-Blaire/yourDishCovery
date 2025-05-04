@@ -27,40 +27,25 @@ let myChart; // Chart.js instance
 // Function to fetch foods from the database
 async function fetchFoods(category) {
   const foods = [];
-  if (category === "random") {
-    const categories = ["jollibee", "mcdo", "kfc", "home", "random"];
-    for (const cat of categories) {
-      const snapshot = await get(ref(db, `recipes/${cat}`));
-      if (snapshot.exists()) {
-        const recipes = snapshot.val();
-        for (const key in recipes) {
-          if (recipes[key].name) {
-            foods.push(recipes[key].name); // Collect all food names
-          } else {
-            console.warn(`Skipped recipe without name in category ${cat}:`, recipes[key]); // Debugging
-          }
-        }
+  const snapshot = await get(ref(db, `recipes/${category}`));
+
+  if (snapshot.exists()) {
+    const recipes = snapshot.val();
+    for (const key in recipes) {
+      if (recipes[key].name) {
+        foods.push(recipes[key].name); // Collect all food names
       } else {
-        console.warn(`No recipes found in category: ${cat}`); // Debugging
+        console.warn(`Skipped recipe without name in category ${category}:`, recipes[key]); // Debugging
       }
     }
   } else {
-    const snapshot = await get(ref(db, `recipes/${category}`));
-    if (snapshot.exists()) {
-      const recipes = snapshot.val();
-      for (const key in recipes) {
-        if (recipes[key].name) {
-          foods.push(recipes[key].name); // Collect all food names
-        } else {
-          console.warn(`Skipped recipe without name in category ${category}:`, recipes[key]); // Debugging
-        }
-      }
-    } else {
-      console.warn(`No recipes found in category: ${category}`); // Debugging
-    }
+    console.warn(`No recipes found in category: ${category}`); // Debugging
   }
-  console.log("Fetched Foods:", foods); // Debugging
-  return foods;
+
+  // Remove duplicates (if any)
+  const uniqueFoods = [...new Set(foods)];
+  console.log("Fetched Foods (Unique):", uniqueFoods); // Debugging
+  return uniqueFoods;
 }
 
 // Function to determine selected value based on final angle
@@ -94,9 +79,9 @@ async function refreshWheel() {
 // Function to initialize the wheel
 async function initializeWheel() {
   const urlParams = new URLSearchParams(window.location.search);
-  const category = urlParams.get("category") || "random";
+  const category = urlParams.get("category") || "random"; // Default to "random" if no category is specified
 
-  const foodNames = await fetchFoods(category);
+  const foodNames = await fetchFoods(category); // Fetch foods for the selected category
 
   if (foodNames.length === 0) {
     finalValue.innerHTML = `<p>No foods available for this category.</p>`;
