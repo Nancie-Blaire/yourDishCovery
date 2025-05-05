@@ -103,64 +103,70 @@
     .arrow.right {
       right: 10%;
     }
+
+    /* Responsive behavior on smaller screens */
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+        justify-content: center;
+        height: auto;
+        padding: 20px 0;
+      }
+
+      .container {
+        flex-direction: column;
+        align-items: center;
+        gap: 40px;
+      }
+
+      .img-random {
+        transform: translateY(0);
+        margin: 0;
+        width: 180px;
+      }
+
+      .carousel-wrapper {
+        width: 90%;
+        max-width: 400px;
+      }
+
+      .arrow.left {
+        left: 5%;
+      }
+
+      .arrow.right {
+        right: 5%;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="container">
-
-    <!-- Recipe board: whole board is clickable, no more image carousel or arrows -->
-    <div class="carousel-wrapper" onclick="location.href='listofgames.html?category=home'">
+    <!-- Recipe board -->
+    <div class="carousel-wrapper" onclick="location.href='listofgames.html?category=home_recipe'">
       <img src="images/recipeboard.png" class="board-img board-clickable" />
-</div>
-
+    </div>
 
     <!-- Random button -->
-      <img
-        src="images/randomboard.png"
-        alt="Can't Decide?"
-        class="category-img img-random"
-        onclick="location.href='listofgames.html?category=random'"
+    <img
+      src="images/randomboard.png"
+      alt="Can't Decide?"
+      class="category-img img-random"
+      onclick="location.href='Game_SpinTheWheel/wheel.html?category=random'"
     />
 
-    <!-- Resto board: board not clickable, only the carousel images are -->
+    <!-- Resto board -->
     <div class="carousel-wrapper">
       <img src="images/restoboard.png" class="board-img" />
-      <img src="images/jabee.png" class="food-img active" onclick="location.href='listofgames.html?category=jollibee'" />
-      <img src="images/mcdo.png" class="food-img" onclick="location.href='listofgames.html?category=mcdo'" />
-      <img src="images/kfc.png" class="food-img" onclick="location.href='listofgames.html?category=kfc'" />
+      <img src="images/jabee.png" class="food-img active" onclick="location.href='listofgames.html?category=home_recipe'" />
+      <img src="images/mcdo.png" class="food-img" onclick="location.href='listofgames.html?category=home_recipe'" />
+      <img src="images/kfc.png" class="food-img" onclick="location.href='listofgames.html?category=home_recipe'" />
       <div class="arrow left" onclick="prevResto();">&#8592;</div>
       <div class="arrow right" onclick="nextResto();">&#8594;</div>
     </div>
-
   </div>
 
   <script>
-    // RECIPE
-    let currentRecipe = 0;
-    const recipeImages = [
-      document.getElementById('recipe0'),
-      document.getElementById('recipe1'),
-      document.getElementById('recipe2')
-    ];
-
-    function updateRecipe() {
-      recipeImages.forEach((img, index) => {
-        img.classList.toggle('active', index === currentRecipe);
-      });
-    }
-
-    function prevRecipe() {
-      currentRecipe = (currentRecipe - 1 + recipeImages.length) % recipeImages.length;
-      updateRecipe();
-    }
-
-    function nextRecipe() {
-      currentRecipe = (currentRecipe + 1) % recipeImages.length;
-      updateRecipe();
-    }
-
-    setInterval(nextRecipe, 10000);
-
     // RESTO
     let currentResto = 0;
     const restoImages = document.querySelectorAll('.container .carousel-wrapper:last-child .food-img');
