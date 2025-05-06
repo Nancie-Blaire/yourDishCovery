@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Fork Spoon Knife</title>
+  <script src="script.js" defer type="module"></script>
   <style>
     * {
       margin: 0;
@@ -94,17 +95,24 @@
     .image-spoon img:hover,
     .image-fork img:hover,
     .image-knife img:hover {
-      transform: scale(1.30);
+      transform: scale(1.40);
     }
  
+    .image-spoon img.clicked,
+    .image-fork img.clicked,
+    .image-knife img.clicked {
+      transform: scale(1.50);
+    }
+
+
+
     .system-image-spoon{
       border: none;
       background: none;
       padding: 0;
-      cursor: pointer;
       position: absolute;
-      top: 78vh;
-      left: 72vw;
+      top: 18vh;
+      left: 29vw;
       transform: translate(-50%, -50%);
       z-index: 1;
       display: flex;
@@ -112,7 +120,38 @@
       align-items: center;
     }
 
-    .system-image-spoon img {
+    .system-image-fork{
+      border: none;
+      background: none;
+      padding: 0;
+      position: absolute;
+      top: 18vh;
+      left: 65vw;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .system-image-knife{
+      border: none;
+      background: none;
+      padding: 0;
+      position: absolute;
+      top: 18vh;
+      left: 35vw;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+
+    .system-image-spoon img,
+    .system-image-fork img,
+    .system-image-knife img {
       width: 35vw;
       max-width: 75px;
       height: auto;
@@ -143,8 +182,17 @@
   </div>
 
   <div class="system-image-spoon">
-    <img src="images/Spoon.png" alt="Spoon" />
+    <img src="images/SystemSpoon.png" alt="Spoon" />
   </div>
+
+  <div class="system-image-fork">
+    <img src="images/SystemFork.png" alt="Fork" />
+  </div>
+
+  <div class="system-image-knife">
+    <img src="images/SystemKnife.png" alt="Knife" />
+  </div>
+  
   
 
 
