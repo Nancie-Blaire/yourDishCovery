@@ -94,10 +94,33 @@
     .image-spoon img:hover,
     .image-fork img:hover,
     .image-knife img:hover {
-      transform: scale(1.05);
+      transform: scale(1.30);
     }
  
+    .system-image-spoon{
+      border: none;
+      background: none;
+      padding: 0;
+      cursor: pointer;
+      position: absolute;
+      top: 78vh;
+      left: 72vw;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
+    .system-image-spoon img {
+      width: 35vw;
+      max-width: 75px;
+      height: auto;
+      border-radius: 10%;
+      transition: transform 0.2s ease;
+      display: block;
+      margin: 10px auto;
+    }
 
 
 </style>
@@ -119,8 +142,10 @@
     <img id="btn-game-knife" src="images/Knife.png" alt="knife" />
   </div>
 
-
-
+  <div class="system-image-spoon">
+    <img src="images/Spoon.png" alt="Spoon" />
+  </div>
+  
 
 
 
