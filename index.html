@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+
   <title>DishCovery - Homepage</title>
   <style>
     * {
@@ -33,10 +35,10 @@
 
     .tree {
       position: absolute;
-      top: -25vh;
+      top: -55vh;
       left: 0;
-      width: 30vw;
-      max-width: 400px;
+      width: 40vw;
+      max-width: 500px;
       z-index: 2;
     }
 
@@ -68,26 +70,26 @@
 
     .start-button {
       position: absolute;
-      font-size: 1.2rem;
-      font-family: 'Comic Sans MS', cursive, sans-serif;
-      padding: 10px 10px;
-      background-color: #fffce7dd;
-      border: 2px solid #4a3f2b;
+      font-size: clamp(1.2rem, 2.5vw, 2.2rem);
+      font-family: 'Patrick Hand', cursive;
+      padding: clamp(6px, 1.5vw, 14px) clamp(10px, 2vw, 22px);
       border-radius: 10px;
       cursor: pointer;
       z-index: 4;
       transition: all 0.2s ease;
       text-decoration: none;
-      color: #333;
-      top: 50%;
+      color: #fffefe;
+      top: 40%;
       left: 67%;
       transform: translate(-50%, -50%);
     }
 
+
     .start-button:hover {
-      background-color: #fff8c6;
+
       transform: translate(-50%, -50%) scale(1.05);
     }
+
 
     @media (max-width: 768px) {
       .tree {
@@ -107,15 +109,27 @@
       }
 
       .start-button {
-        font-size: 1rem;
+        font-size: 2rem;
         padding: 8px 18px;
+      }
+    }
+
+    @media (max-width: 579px) {
+      .start-button {
+        font-size: 2rem;
+        padding: 6px 14px;
+      }
+
+      .tree {
+        width: 50vw;
+        top: -40vh;
       }
     }
 
     @media (max-width: 480px) {
       .tree {
-        width: 50vw;
-        top: -10vh;
+        width:60vw;
+        top: -45vh;
       }
 
       .dishcovery-sign {
@@ -130,9 +144,11 @@
       }
       
       .start-button {
-        font-size: 0.95rem;
+        font-size: 1.6rem;
         padding: 6px 12px;
       }
+
+
     }
   </style>
 </head>
@@ -143,7 +159,7 @@
     <img src="images/tree.png" class="tree" alt="Tree" />
     <div class="menu-board-container">
       <img src="images/menu-board.png" class="menu-board" alt="Menu Board" />
-      <a href="categories.html" class="start-button">Start</a>
+      <a href="categories.html" class="start-button">START</a>
     </div>
   </div>
 
