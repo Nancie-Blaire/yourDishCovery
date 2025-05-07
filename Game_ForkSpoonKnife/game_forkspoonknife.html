@@ -6,33 +6,32 @@
   <title>Fork Spoon Knife</title>
   <script src="script.js" defer type="module"></script>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html,
-    body {
-      height: 100%;
-      width: 100%;
-      overflow: hidden;
-      font-family: Arial, sans-serif;
-    }
-
-    .background {
-      position: relative;
-      width: 100vw;
-      height: 100vh;
-    }
-
-    .bg-img {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: 0;
-    }
+ * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html, body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+  }
+  
+  .background {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+  }
+  
+  .bg-img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
 
     .image-spoon{
       border: none;
@@ -41,7 +40,7 @@
       cursor: pointer;
       position: absolute;
       top: 78vh;
-      left: 72vw;
+      left: 70vw;
       transform: translate(-50%, -50%);
       z-index: 1;
       display: flex;
@@ -71,7 +70,7 @@
       cursor: pointer;
       position: absolute;
       top: 78vh;
-      left: 66vw;
+      left: 64vw;
       transform: translate(-50%, -50%);
       z-index: 1;
       display: flex;
@@ -161,12 +160,157 @@
       margin: 10px auto;
     }
 
+    @media (max-width: 1080px) {
+  .image-spoon,
+  .image-fork,
+  .image-knife {
+    top: 92vh;
+  }
+  .image-spoon img:hover,
+    .image-fork img:hover,
+    .image-knife img:hover {
+      transform: scale(1.00);
+    }
+
+  .system-image-spoon,
+  .system-image-fork,
+  .system-image-knife {
+    top: 9vh;
+  }
+
+  .image-spoon img,
+  .image-fork img,
+  .image-knife img,
+  .system-image-spoon img,
+  .system-image-fork img,
+  .system-image-knife img {
+    width: 25vw;
+    max-width: 130px;
+  }
+
+  .image-spoon {
+    left: 70vw;
+  }
+
+  .image-fork {
+    left: 30vw;
+  }
+
+  .image-knife {
+    left: 50vw;
+  }
+
+  .system-image-spoon {
+    left: 30vw;
+  }
+
+  .system-image-fork {
+    left: 65vw;
+  }
+
+  .system-image-knife {
+    left: 48vw;
+  }
+}
+
+
+
+/* Tablets (768px and below) */
+@media (max-width: 768px) {
+  .image-spoon,
+  .image-fork,
+  .image-knife,
+  .system-image-spoon,
+  .system-image-fork,
+  .system-image-knife {
+    top: auto;
+    bottom: 10vh;
+  }
+
+  .image-spoon img,
+  .image-fork img,
+  .image-knife img,
+  .system-image-spoon img,
+  .system-image-fork img,
+  .system-image-knife img {
+    width: 25vw;
+    max-width: 60px;
+  }
+
+  .image-spoon {
+    left: 70vw;
+  }
+
+  .image-fork {
+    left: 30vw;
+  }
+
+  .image-knife {
+    left: 50vw;
+  }
+
+  .system-image-spoon {
+    top: 10vh;
+    left: 30vw;
+  }
+
+  .system-image-fork {
+    top: 10vh;
+    left: 65vw;
+  }
+
+  .system-image-knife {
+    top: 10vh;
+    left: 48vw;
+  }
+}
+
+/* Mobile phones (480px and below) */
+@media (max-width: 480px) {
+  .image-spoon img,
+  .image-fork img,
+  .image-knife img,
+  .system-image-spoon img,
+  .system-image-fork img,
+  .system-image-knife img {
+    width: 30vw;
+    max-width: 50px;
+  }
+
+  .image-spoon {
+    left: 70vw;
+  }
+
+  .image-fork {
+    left: 25vw;
+  }
+
+  .image-knife {
+    left: 50vw;
+  }
+
+  .system-image-spoon {
+    top: 12vh;
+    left: 25vw;
+  }
+
+  .system-image-fork {
+    top: 12vh;
+    left: 65vw;
+  }
+
+  .system-image-knife {
+    top: 12vh;
+    left: 45vw;
+  }
+}
+
 
 </style>
 </head>
 <body>
   <div class="background">
-    <img src="images/ForkSpoonKnifeBG.png" class="bg-img" alt="Wood Background" />
+    <img src="images/forkspoonknifeextrabg.png" class="bg-img" alt="Wood Background" />
   </div>
 
   <div class="image-spoon">
