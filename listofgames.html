@@ -106,7 +106,15 @@
     .image-dinodine-button img,
     .image-forkspoonknife-button img,
     .image-wheelnmeal-button img {
-      max-width: 250px;
+      max-width: 270px;
+    }
+  }
+
+  @media (max-width: 579px) {
+    .image-dinodine-button img,
+    .image-forkspoonknife-button img,
+    .image-wheelnmeal-button img {
+      max-width: 260px;
     }
   }
   
@@ -114,9 +122,11 @@
     .image-dinodine-button img,
     .image-forkspoonknife-button img,
     .image-wheelnmeal-button img {
-      max-width: 200px;
+      max-width: 170px;
     }
   }
+
+  
   
   </style>
 </head>
@@ -148,19 +158,19 @@
     // Dino Dine Button
     document.getElementById("btn-game-dinodine").addEventListener("click", function () {
       console.log("Dino Dine Button clicked!");
-      window.location.href = `/Game_DinoDine/game_DinoDine.html?category=${category}`;
+      window.location.href = /Game_DinoDine/game_DinoDine.html?category=${category};
     });
 
     // Fork Spoon Knife Button
     document.getElementById("btn-forkspoonknife").addEventListener("click", function () {
       console.log("Fork Spoon Knife Button clicked!");
-      window.location.href = `/Game_ForkSpoonKnife/game_ForkSpoonKnife.html?category=${category}`;
+      window.location.href = /Game_ForkSpoonKnife/game_ForkSpoonKnife.html?category=${category};
     });
 
     // Wheel N Meal Button
     document.getElementById("btn-wheelnmeal").addEventListener("click", function () {
       console.log("Wheel N Meal Button clicked!");
-      window.location.href = `/Game_SpinTheWheel/wheel.html?category=${category}`;
+      window.location.href = /Game_SpinTheWheel/wheel.html?category=${category};
     });
   </script>
 </body>
