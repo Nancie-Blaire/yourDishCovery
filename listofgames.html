@@ -5,119 +5,119 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DishCovery - List of Games</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html,
-    body {
-      height: 100%;
-      width: 100%;
-      overflow: hidden;
-      font-family: Arial, sans-serif;
-    }
-
-    .background {
-      position: relative;
-      width: 100vw;
-      height: 100vh;
-    }
-
-    .bg-img {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: 0;
-    }
-
-    /* LAPTOP/PC SIZING */
-    .image-dinodine-button{
-      border: none;
-      background: none;
-      padding: 0;
-      cursor: pointer;
-      position: absolute;
-      top: 35vh;
-      left: 49.5vw;
-      transform: translate(-50%, -50%);
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .image-forkspoonknife-button{
-      border: none;
-      background: none;
-      padding: 0;
-      cursor: pointer;
-      position: absolute;
-      top: 51vh;
-      left: 49.5vw;
-      transform: translate(-50%, -50%);
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .image-wheelnmeal-button{
-      border: none;
-      background: none;
-      padding: 0;
-      cursor: pointer;
-      position: absolute;
-      top: 68vh;
-      left: 49.5vw;
-      transform: translate(-50%, -50%);
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .image-dinodine-button img,
-    .image-forkspoonknife-button img,
-    .image-wheelnmeal-button img {
-      width: 60vw;
-      max-width: 300px;
-      height: auto;
-      border-radius: 10%;
-      transition: transform 0.2s ease;
-      display: block;
-      margin: 10px auto;
-    }
-
-    /* Hover effect */
-    .image-dinodine-button img:hover,
-    .image-forkspoonknife-button img:hover,
-    .image-wheelnmeal-button img:hover {
-      transform: scale(1.05);
-    }
-
-/* Responsive Portrait */
-@media (max-width: 1080px) {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html, body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+  }
+  
+  .background {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+  }
+  
+  .bg-img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+  
+  /* Default styles (desktop/laptop) */
+  .image-dinodine-button,
+  .image-forkspoonknife-button,
+  .image-wheelnmeal-button {
+    position: absolute;
+    left: 49.5vw;
+    transform: translateX(-50%);
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+  }
+  
+  .image-dinodine-button {
+    top: 28vh;
+  }
+  
+  .image-forkspoonknife-button {
+    top: 45vh;
+  }
+  
+  .image-wheelnmeal-button {
+    top: 63vh;
+  }
+  
   .image-dinodine-button img,
   .image-forkspoonknife-button img,
   .image-wheelnmeal-button img {
     width: 90vw;
-    max-width: 900px;
+    max-width: 360px;
+    height: auto;
+    border-radius: 10%;
+    transition: transform 0.2s ease;
+    display: block;
+    margin: 10px auto;
   }
+  
+  .image-dinodine-button img:hover,
+  .image-forkspoonknife-button img:hover,
+  .image-wheelnmeal-button img:hover {
+    transform: scale(1.10);
+  }
+  
+  /* Responsive sizing only (no position change) */
+  @media (max-width: 1080px) {
+    .image-dinodine-button img,
+    .image-forkspoonknife-button img,
+    .image-wheelnmeal-button img {
+      width: 60vw;
+      max-width: 280px;
+    }
 
-  .image-dinodine-button{
-    top: 39vh;
+    .image-dinodine-button{
+    top: 30vh;
     left: 50vw;
   }
   .image-forkspoonknife-button{
-    top: 52vh;
+    top: 45vh;
     left: 50vw;
   }
   .image-wheelnmeal-button {
-    top: 65vh;
+    top: 60vh;
     left: 50vw;
   }
-}
-
+  }
+  
+  @media (max-width: 768px) {
+    .image-dinodine-button img,
+    .image-forkspoonknife-button img,
+    .image-wheelnmeal-button img {
+      max-width: 250px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .image-dinodine-button img,
+    .image-forkspoonknife-button img,
+    .image-wheelnmeal-button img {
+      max-width: 200px;
+    }
+  }
+  
   </style>
 </head>
 <body>
@@ -126,17 +126,19 @@
   </div>
 
   <!-- HINIWALAY KO NG DIV KSI SA PHONE NAHAHIGHLIGHT LAHAT NG BUTTONS KPAG HINOLD -->
-  <div class="image-dinodine-button">
-    <img id="btn-game-dinodine" src="images/dinodinebutton.png" alt="Dino Dine" />
-  </div>
 
-  <div class="image-forkspoonknife-button">
-    <img id="btn-forkspoonknife" src="images/forkspoonknife.png" alt="Fork Spoon Knife" />
-  </div>
+    <div class="image-dinodine-button">
+      <img id="btn-game-dinodine" src="images/dinodinebutton.png" alt="Dino Dine" />
+    </div>
 
-  <div class="image-wheelnmeal-button">
-    <img id="btn-wheelnmeal" src="images/wheelnmeal.png" alt="Wheel N Meal" />
-  </div>
+    <div class="image-forkspoonknife-button">
+      <img id="btn-forkspoonknife" src="images/forkspoonknife.png" alt="Fork Spoon Knife" />
+    </div>
+
+    <div class="image-wheelnmeal-button">
+      <img id="btn-wheelnmeal" src="images/wheelnmeal.png" alt="Wheel N Meal" />
+    </div>
+
 
   <script>
     // Get the selected category from the URL
