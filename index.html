@@ -37,8 +37,8 @@
       position: absolute;
       top: -55vh;
       left: 0;
-      width: 35vw;
-      max-width: 600px;
+      width: 40vw;
+      max-width: 500px;
       z-index: 2;
     }
 
@@ -53,7 +53,7 @@
 
     .menu-board-container {
       position: absolute;
-      top: 90%;
+      top: 80%;
       right: -1%;
       width: 25vw;
       max-width: 400px;
@@ -70,7 +70,7 @@
 
     .start-button {
       position: absolute;
-      font-size: 1.5rem;
+      font-size: clamp(1.2rem, 2.5vw, 2.2rem);
       font-family: 'Mansalva', cursive;
       padding: clamp(6px, 1.5vw, 14px) clamp(10px, 2vw, 22px);
       border-radius: 10px;
@@ -109,28 +109,27 @@
       }
 
       .start-button {
-        font-size: 1.5rem;
+        font-size: 2rem;
         padding: 8px 18px;
       }
     }
 
     @media (max-width: 579px) {
       .start-button {
-        font-size: 1rem;
+        font-size: 2rem;
         padding: 6px 14px;
       }
 
       .tree {
         width: 50vw;
-        top: -20vh;
+        top: -40vh;
       }
     }
 
     @media (max-width: 480px) {
       .tree {
-        width:80vw;
-        top: -30vh;
-
+        width:60vw;
+        top: -25vh;
       }
 
       .dishcovery-sign {
@@ -139,13 +138,13 @@
       }
       
       .menu-board-container {
-        top: 90%;
-        width: 100vw;
+        top: 80%;
+        width: 50vw;
         right: -2%;
       }
       
       .start-button {
-        font-size: 2rem;
+        font-size: 1rem;
         padding: 6px 12px;
       }
 
@@ -183,7 +182,7 @@
         clearTimeout(timeout);
         tapCount = 0;
         // Redirect to login page
-        window.location.href = 'admin-login/login.html'; // 🛠️ update this if your login page has a different name
+        window.location.href = 'admin-login/login.html';
       }
     });
   </script>
