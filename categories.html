@@ -5,38 +5,89 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DishCovery Categories</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       padding: 0;
       background: url('images/brickwall.jpg') no-repeat center center fixed;
       background-size: cover;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       height: 100vh;
+      overflow-x: hidden;
+      font-family: sans-serif;
     }
 
     .container {
       display: flex;
-      align-items: flex-end;
-      gap: 250px;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 300px;
+      padding-top: 100px;
+      flex-wrap: wrap;
+      position: relative;
+      max-width: 100%;
     }
 
-    .category-img {
-      height: auto;
+    .recipe-board,
+    .resto-board {
+      cursor: pointer;
+    }
+
+    .recipe-board img,
+    .resto-board .board-img {
+      width: 350px;
       border-radius: 15px;
-      transition: box-shadow 0.3s ease;
     }
 
-    .category-img:hover {
-      box-shadow: 0 0 25px 10px rgb(255, 255, 255);
+    .resto-board {
+      position: relative;
+    }
+
+    .resto-board .food-img {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 120px;
+      object-fit: contain;
+      display: none;
+    }
+
+    .resto-board .food-img.active {
+      display: block;
+    }
+
+    .resto-board .arrow {
+      position: absolute;
+      bottom: 60px;
+      font-size: 2rem;
+      color: white;
+      background-color: rgba(0, 0, 0, 0.4);
+      border-radius: 20%;
+      padding: 4px 10px;
+      cursor: pointer;
+      user-select: none;
+      z-index: 10;
+    }
+
+    .resto-board .arrow.left {
+      left: 40px;
+    }
+
+    .resto-board .arrow.right {
+      right: 40px;
     }
 
     .img-random {
-      width: 200px;
-      transform: translateY(-550px);
+      width: 120px;
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
       z-index: 1;
-      margin: 0 -80px;
       animation: pulseGlow 2s infinite ease-in-out;
       cursor: pointer;
     }
@@ -53,112 +104,41 @@
       }
     }
 
-    .carousel-wrapper {
-      position: relative;
-      width: 500px;
-      cursor: default;
-    }
-
-    .board-img {
-      width: 100%;
-      border-radius: 15px;
-    }
-
-    .board-clickable {
-      cursor: pointer;
-    }
-
-    .food-img {
-      position: absolute;
-      bottom: 70px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 120px;
-      height: 120px;
-      object-fit: contain;
-      display: none;
-    }
-
-    .food-img.active {
-      display: block;
-    }
-
-    .arrow {
-      position: absolute;
-      bottom: 70px;
-      font-size: 3rem;
-      color: white;
-      background-color: rgba(0, 0, 0, 0.4);
-      border-radius: 50%;
-      padding: 5px 12px;
-      cursor: pointer;
-      user-select: none;
-      z-index: 10;
-    }
-
-    .arrow.left {
-      left: 10%;
-    }
-
-    .arrow.right {
-      right: 10%;
-    }
-
-    /* Responsive behavior on smaller screens */
     @media (max-width: 768px) {
-      body {
-        flex-direction: column;
-        justify-content: center;
-        height: auto;
-        padding: 20px 0;
-      }
-
       .container {
         flex-direction: column;
         align-items: center;
-        gap: 40px;
+        gap: 60px;
       }
-
+      
       .img-random {
-        transform: translateY(0);
-        margin: 0;
-        width: 180px;
-      }
-
-      .carousel-wrapper {
-        width: 90%;
-        max-width: 400px;
-      }
-
-      .arrow.left {
-        left: 5%;
-      }
-
-      .arrow.right {
-        right: 5%;
+        position: static;
+        transform: none;
+        margin: 20px auto;
+        display: block;
+        width: 100px;
       }
     }
   </style>
 </head>
 <body>
-  <!--IMPORTANT! DON'T CHANGE CODES BELOW-->
   <div class="container">
     <!-- Recipe board -->
-    <div class="carousel-wrapper" onclick="location.href='listofgames.html?category=home'">
-      <img src="images/recipeboard.png" class="board-img board-clickable" />
+    <div class="recipe-board" onclick="location.href='listofgames.html?category=home'">
+      <img src="images/recipeboard.png" alt="Recipe Board" />
     </div>
 
-    <!-- Random button -->
+    <!-- Randomizer -->
     <img
       src="images/randomboard.png"
       alt="Can't Decide?"
-      class="category-img img-random"
+      class="img-random"
       onclick="location.href='listofgames.html?category=random'"
     />
 
     <!-- Resto board -->
-    <div class="carousel-wrapper">
-      <img src="images/restoboard.png" class="board-img" />
+    <div class="resto-board">
+      <img src="images/restoboard.png" class="board-img" alt="Resto Board" />
       <img src="images/jabee.png" class="food-img active" onclick="location.href='listofgames.html?category=jollibee'" />
       <img src="images/mcdo.png" class="food-img" onclick="location.href='listofgames.html?category=mcdo'" />
       <img src="images/kfc.png" class="food-img" onclick="location.href='listofgames.html?category=kfc'" />
@@ -168,9 +148,8 @@
   </div>
 
   <script>
-    // RESTO
     let currentResto = 0;
-    const restoImages = document.querySelectorAll('.container .carousel-wrapper:last-child .food-img');
+    const restoImages = document.querySelectorAll('.resto-board .food-img');
 
     function updateResto() {
       restoImages.forEach((img, index) => {
