@@ -33,14 +33,48 @@
     z-index: 0;
   }
 
+.user-plate {
+      border: none;
+      background: none;
+      padding: 0;
+      position: absolute;
+      top: 75vh;
+      left: 52vw;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      align-items: center;
+}
+    .system-plate {
+      border: none;
+      background: none;
+      padding: 0;
+      position: absolute;
+      top: 27vh;
+      left: 52vw;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      align-items: center;
+    }
+
+    .user-plate img,
+    .system-plate img {
+      width: 50vw;
+      max-width: 230px;
+      height: auto;
+      border-radius: 10%;
+      transition: transform 0.2s ease;
+      display: block;
+      margin: 10px auto;
+    }
+
     .image-spoon{
       border: none;
       background: none;
       padding: 0;
       cursor: pointer;
       position: absolute;
-      top: 78vh;
-      left: 70vw;
+      top: 65vh;
+      left: -6vw;
       transform: translate(-50%, -50%);
       z-index: 1;
       display: flex;
@@ -54,8 +88,8 @@
       padding: 0;
       cursor: pointer;
       position: absolute;
-      top: 78vh;
-      left: 29vw;
+      top: 65vh;
+      left: 19vw;
       transform: translate(-50%, -50%);
       z-index: 1;
       display: flex;
@@ -69,8 +103,8 @@
       padding: 0;
       cursor: pointer;
       position: absolute;
-      top: 78vh;
-      left: 64vw;
+      top: 65vh;
+      left: -2vw;
       transform: translate(-50%, -50%);
       z-index: 1;
       display: flex;
@@ -81,8 +115,8 @@
     .image-spoon img,
     .image-fork img,
     .image-knife img {
-      width: 35vw;
-      max-width: 75px;
+      width: 25vw;
+      max-width: 70px;
       height: auto;
       border-radius: 10%;
       transition: transform 0.2s ease;
@@ -102,16 +136,13 @@
     .image-knife img.clicked {
       transform: scale(1.50);
     }
-
-
-
     .system-image-spoon{
       border: none;
       background: none;
       padding: 0;
       position: absolute;
       top: 18vh;
-      left: 29vw;
+      left: -6vw;
       transform: translate(-50%, -50%);
       z-index: 1;
       display: flex;
@@ -125,7 +156,7 @@
       padding: 0;
       position: absolute;
       top: 18vh;
-      left: 65vw;
+      left: 19vw;
       transform: translate(-50%, -50%);
       z-index: 1;
       display: flex;
@@ -139,7 +170,7 @@
       padding: 0;
       position: absolute;
       top: 18vh;
-      left: 35vw;
+      left: -2vw;
       transform: translate(-50%, -50%);
       z-index: 1;
       display: flex;
@@ -151,8 +182,8 @@
     .system-image-spoon img,
     .system-image-fork img,
     .system-image-knife img {
-      width: 35vw;
-      max-width: 75px;
+      width: 25vw;
+      max-width: 70px;
       height: auto;
       border-radius: 10%;
       transition: transform 0.2s ease;
@@ -161,72 +192,36 @@
     }
 
     @media (max-width: 1080px) {
+    .user-plate img,
+    .system-plate img {
+      width: 50vw;
+      max-width: 170px;
+    }
+      .user-plate {
+      top: 70vh;
+      left: 53vw;}
+
+    .system-plate {
+      top: 33vh;
+      left: 53vw;
+    }
+
+
   .image-spoon,
   .image-fork,
   .image-knife {
-    top: 92vh;
+    top: 50vh;
   }
   .image-spoon img:hover,
     .image-fork img:hover,
     .image-knife img:hover {
-      transform: scale(1.00);
+      transform: scale(1.40);
     }
-
   .system-image-spoon,
   .system-image-fork,
   .system-image-knife {
-    top: 9vh;
+    top: 15vh;
   }
-
-  .image-spoon img,
-  .image-fork img,
-  .image-knife img,
-  .system-image-spoon img,
-  .system-image-fork img,
-  .system-image-knife img {
-    width: 25vw;
-    max-width: 130px;
-  }
-
-  .image-spoon {
-    left: 70vw;
-  }
-
-  .image-fork {
-    left: 30vw;
-  }
-
-  .image-knife {
-    left: 50vw;
-  }
-
-  .system-image-spoon {
-    left: 30vw;
-  }
-
-  .system-image-fork {
-    left: 65vw;
-  }
-
-  .system-image-knife {
-    left: 48vw;
-  }
-}
-
-
-
-/* Tablets (768px and below) */
-@media (max-width: 768px) {
-  .image-spoon,
-  .image-fork,
-  .image-knife,
-  .system-image-spoon,
-  .system-image-fork,
-  .system-image-knife {
-    top: auto;
-    bottom: 10vh;
-  }
-
   .image-spoon img,
   .image-fork img,
   .image-knife img,
@@ -236,82 +231,151 @@
     width: 25vw;
     max-width: 60px;
   }
-
   .image-spoon {
-    left: 70vw;
+    left: -8vw;
   }
-
   .image-fork {
-    left: 30vw;
+    left: 22vw;
   }
-
   .image-knife {
-    left: 50vw;
+    left: -3vw;
   }
-
   .system-image-spoon {
-    top: 10vh;
-    left: 30vw;
+    left: -8vw;
   }
-
   .system-image-fork {
-    top: 10vh;
-    left: 65vw;
+    left: 22vw;
   }
-
   .system-image-knife {
-    top: 10vh;
-    left: 48vw;
+    left: -3vw;
   }
 }
 
-/* Mobile phones (480px and below) */
-@media (max-width: 480px) {
+
+
+/* Tablets (768px and below) */
+@media (max-width: 768px) {
+    .user-plate img,
+    .system-plate img {
+      width: 50vw;
+      max-width: 150px;
+    }
+      .user-plate {
+      top: 67vh;
+      left: 55vw;}
+
+    .system-plate {
+      top: 35vh;
+      left: 55vw;
+    }
+
+
+  .image-spoon,
+  .image-fork,
+  .image-knife {
+    top: 48vh;
+  }
+  .image-spoon img:hover,
+    .image-fork img:hover,
+    .image-knife img:hover {
+      transform: scale(1.40);
+    }
+  .system-image-spoon,
+  .system-image-fork,
+  .system-image-knife {
+    top: 15vh;
+  }
   .image-spoon img,
   .image-fork img,
   .image-knife img,
   .system-image-spoon img,
   .system-image-fork img,
   .system-image-knife img {
-    width: 30vw;
-    max-width: 50px;
+    width: 25vw;
+    max-width: 55px;
   }
-
   .image-spoon {
-    left: 70vw;
+    left: -15vw;
   }
-
   .image-fork {
-    left: 25vw;
+    left: 37vw;
   }
-
   .image-knife {
-    left: 50vw;
+    left: -4vw;
   }
-
   .system-image-spoon {
-    top: 12vh;
-    left: 25vw;
+    left: -15vw;
   }
-
   .system-image-fork {
-    top: 12vh;
-    left: 65vw;
+    left: 37vw;
   }
-
   .system-image-knife {
-    top: 12vh;
-    left: 45vw;
+    left: -4vw;
   }
 }
 
+/* Mobile phones (480px and below) */
+/* Add this between your 1080px and 768px media queries */
+@media (max-width: 1000px) and (min-width: 769px) {
+  .user-plate {
+    top: 70vh;
+    left: 53%;
+  }
+  .system-plate {
+    top: 33vh;
+    left: 53%;
+  }
+  /* Adjust utensil positions */
+  .image-spoon {
+    left: -35%;
+    top: 50vh;
+  }
+  .image-fork {
+    left: 120%;
+    top: 50vh;
+  }
+  .image-knife {
+    left: -10%;
+    top: 50vh;
+  }
+  .system-image-spoon {
+    left: -35%;
+    top: 15vh;
+  }
+  .system-image-fork {
+    left: 120%;
+    top: 15vh;
+  }
+  .system-image-knife {
+    left: -10%;
+    top: 15vh;
+  }
+  /* Adjust image sizes if needed */
+  .image-spoon img,
+  .image-fork img,
+  .image-knife img,
+  .system-image-spoon img,
+  .system-image-fork img,
+  .system-image-knife img {
+    max-width: 60px;
+  }
+
+
+}
 
 </style>
 </head>
 <body>
   <div class="background">
-    <img src="images/forkspoonknifeextrabg.png" class="bg-img" alt="Wood Background" />
+    <img src="images/forkspoonknifeBG.png" class="bg-img" alt="Wood Background" />
   </div>
+
+  <div class="user-plate">
+    <img src="images/UserPlate.png" alt="User Plate" />
+  </div>
+
+  <div class="system-plate">
+    <img src="images/SystemPlate.png" alt="System Plate" />
 
   <div class="image-spoon">
     <img id="btn-game-Spoon" src="images/Spoon.png" alt="Spoon" />
