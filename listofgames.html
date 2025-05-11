@@ -113,11 +113,64 @@
     }
   }
 
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
 
+  .modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+  }
 
+  .modal-content h1 {
+    margin-bottom: 20px;
+  }
 
+  .modal-content label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
 
+  .modal-content input,
+  .modal-content select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
 
+  .modal-content button {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .modal-content button#applyButton {
+    background-color: #4caf50;
+    color: white;
+  }
+
+  .modal-content button#closeModalButton {
+    background-color: #f44336;
+    color: white;
+  }
   </style>
 </head>
 <body>
@@ -143,36 +196,140 @@
       <img id="btn-wheelnmeal" src="images/wheelnmeal.png" alt="Wheel N Meal" />
     </div>
 
+  <div id="preference-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <h1>Set Your Budget</h1>
+      <label for="budgetRange">Enter your budget range (e.g., 0-300):</label>
+      <input type="text" id="budgetRange" placeholder="Enter range (e.g., 0-300)" />
+      <label for="allergenSelect">Select allergens to exclude:</label>
+      <select id="allergenSelect" multiple></select>
+      <button id="applyButton">Apply</button>
+      <button id="closeModalButton">Close</button>
+    </div>
+  </div>
 
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
 
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCA2KS4aKwM5P4_et3wifB4sRg23tvaK04",
+      authDomain: "dish-4be2b.firebaseapp.com",
+      projectId: "dish-4be2b",
+      storageBucket: "dish-4be2b.appspot.com",
+      messagingSenderId: "479066048512",
+      appId: "1:479066048512:web:7489944044adddc4c570e5",
+      measurementId: "G-8D2QSMQWT2",
+      databaseURL: "https://dish-4be2b-default-rtdb.firebaseio.com",
+    };
 
-  <script>
-    // Get the selected category from the URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const category = urlParams.get("category");
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
 
+    document.addEventListener("DOMContentLoaded", () => {
+      const modal = document.getElementById("preference-modal");
+      const budgetRangeInput = document.getElementById("budgetRange");
+      const allergenSelect = document.getElementById("allergenSelect");
+      const applyButton = document.getElementById("applyButton");
+      const closeModalButton = document.getElementById("closeModalButton");
 
-    // Dino Dine Button
-    document.getElementById("btn-game-dinodine").addEventListener("click", function () {
-      console.log("Dino Dine Button clicked!");
-      window.location.href = `/Game_DinoDine/game_DinoDine.html?category=${category}`;
+      // Get the selected category from the URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const category = urlParams.get("category");
+      console.log(`Category selected: ${category}`);
+
+      // Show modal when a game is selected
+      document.querySelectorAll(".image-dinodine-button, .image-forkspoonknife-button, .image-wheelnmeal-button").forEach(button => {
+        button.addEventListener("click", async (event) => {
+          event.preventDefault();
+          const selectedGame = event.currentTarget.querySelector("img").id.replace("btn-game-", "").replace("btn-", "");
+          modal.dataset.selectedGame = selectedGame; // Store the selected game in the modal
+          console.log(`Game clicked: ${selectedGame}`);
+          await populateAllergenDropdown();
+          modal.style.display = "block";
+        });
+      });
+
+      // Close modal
+      closeModalButton.addEventListener("click", () => {
+        console.log("Modal closed.");
+        modal.style.display = "none";
+      });
+
+      // Fetch allergens dynamically based on the selected category
+      async function populateAllergenDropdown() {
+        console.log("Fetching allergens for category:", category);
+        const allergenSet = new Set();
+        const snapshot = await get(ref(db, `recipes/${category}`));
+
+        if (snapshot.exists()) {
+          const recipes = snapshot.val();
+          for (const key in recipes) {
+            const recipe = recipes[key];
+            if (recipe.allergens) {
+              recipe.allergens.split(",").forEach((allergen) => allergenSet.add(allergen.trim()));
+            }
+          }
+        } else {
+          console.warn(`No recipes found in category: ${category}`);
+        }
+
+        allergenSelect.innerHTML = "";
+        Array.from(allergenSet).forEach((allergen) => {
+          const option = document.createElement("option");
+          option.value = allergen;
+          option.textContent = allergen;
+          allergenSelect.appendChild(option);
+        });
+
+        console.log("Allergens fetched:", Array.from(allergenSet));
+      }
+
+      // Apply preferences and redirect to the selected game
+      applyButton.addEventListener("click", () => {
+        const budgetRange = budgetRangeInput.value.trim();
+        const selectedAllergens = Array.from(allergenSelect.selectedOptions).map(option => option.value);
+
+        console.log(`Budget range entered: ${budgetRange}`);
+        console.log(`Selected allergens: ${selectedAllergens}`);
+
+        if (!/^\d+-\d+$/.test(budgetRange)) {
+          alert("Please enter a valid budget range (e.g., 0-300).");
+          return;
+        }
+
+        const [minBudget, maxBudget] = budgetRange.split("-").map(Number);
+        if (minBudget > maxBudget) {
+          alert("Minimum budget cannot be greater than maximum budget.");
+          return;
+        }
+
+        const gamePath = modal.dataset.selectedGame;
+
+        if (!gamePath) {
+          alert("No game selected. Please try again.");
+          return;
+        }
+
+        let gameUrl;
+        if (gamePath === "dinodine") {
+          gameUrl = "/Game_DinoDine/game_DinoDine.html";
+        } else if (gamePath === "forkspoonknife") {
+          gameUrl = "/Game_ForkSpoonKnife/game_forkspoonknife.html";
+        } else if (gamePath === "wheelnmeal") {
+          gameUrl = "/Game_SpinTheWheel/wheel.html";
+        } else {
+          alert("Invalid game selected.");
+          console.error(`Invalid gamePath: ${gamePath}`);
+          return;
+        }
+
+        console.log(`Redirecting to game: ${gamePath}, URL: ${gameUrl}`);
+        window.location.href = `${gameUrl}?category=${category}&budgetRange=${budgetRange}&allergens=${encodeURIComponent(selectedAllergens.join(","))}`;
+      });
     });
-
-
-    // Fork Spoon Knife Button
-    document.getElementById("btn-forkspoonknife").addEventListener("click", function () {
-      console.log("Fork Spoon Knife Button clicked!");
-      window.location.href = `/Game_ForkSpoonKnife/game_forkspoonknife.html?category=${category}`;
-    });
-
-
-    // Wheel N Meal Button
-    document.getElementById("btn-wheelnmeal").addEventListener("click", function () {
-      console.log("Wheel N Meal Button clicked!");
-      window.location.href = `/Game_SpinTheWheel/wheel.html?category=${category}`;
-    });
-
-
   </script>
 </body>
 </html>

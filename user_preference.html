@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Preference</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Set Your Budget</h1>
+        <label for="budgetRange">Enter your budget range (e.g., 0-300):</label>
+        <input type="text" id="budgetRange" placeholder="Enter range (e.g., 0-300)" />
+        <label for="allergenSelect">Select allergens to exclude:</label>
+        <select id="allergenSelect" multiple>
+            <!-- Options will be dynamically populated -->
+        </select>
+        <button id="applyButton">Apply</button>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+        import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCA2KS4aKwM5P4_et3wifB4sRg23tvaK04",
+            authDomain: "dish-4be2b.firebaseapp.com",
+            projectId: "dish-4be2b",
+            storageBucket: "dish-4be2b.appspot.com",
+            messagingSenderId: "479066048512",
+            appId: "1:479066048512:web:7489944044adddc4c570e5",
+            measurementId: "G-8D2QSMQWT2",
+            databaseURL: "https://dish-4be2b-default-rtdb.firebaseio.com",
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // Get the selected category from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const category = urlParams.get("category");
+        console.log(`User navigated to User Preference page with category: ${category}`);
+
+        // Fetch allergens from Firebase for the selected category
+        async function fetchAllergens(category) {
+            const allergenSet = new Set();
+            const snapshot = await get(ref(db, `recipes/${category}`));
+
+            if (snapshot.exists()) {
+                const recipes = snapshot.val();
+                for (const key in recipes) {
+                    const recipe = recipes[key];
+                    if (recipe.allergens) {
+                        recipe.allergens.split(",").forEach((allergen) => allergenSet.add(allergen.trim()));
+                    }
+                }
+            } else {
+                console.warn(`No recipes found in category: ${category}`);
+            }
+
+            return Array.from(allergenSet);
+        }
+
+        // Populate the allergen dropdown
+        async function populateAllergenDropdown() {
+            const allergenSelect = document.getElementById("allergenSelect");
+            allergenSelect.innerHTML = ""; // Clear existing options
+
+            const allergens = await fetchAllergens(category);
+            if (allergens.length === 0) {
+                const option = document.createElement("option");
+                option.textContent = "No allergens available";
+                option.disabled = true;
+                allergenSelect.appendChild(option);
+            } else {
+                allergens.forEach((allergen) => {
+                    const option = document.createElement("option");
+                    option.value = allergen;
+                    option.textContent = allergen;
+                    allergenSelect.appendChild(option);
+                });
+            }
+        }
+
+        // Redirect to listofgames.html with category, budget range, and selected allergens
+        document.getElementById("applyButton").addEventListener("click", () => {
+            const budgetRange = document.getElementById("budgetRange").value.trim();
+            const rangeRegex = /^\d+-\d+$/; // Regex to validate range format (e.g., 0-300)
+
+            if (!rangeRegex.test(budgetRange)) {
+                alert("Please enter a valid budget range (e.g., 0-300).");
+                return;
+            }
+
+            const [minBudget, maxBudget] = budgetRange.split("-").map(Number);
+            if (minBudget > maxBudget) {
+                alert("Minimum budget cannot be greater than maximum budget.");
+                return;
+            }
+
+            const selectedAllergens = Array.from(document.getElementById("allergenSelect").selectedOptions).map(
+                (option) => option.value
+            );
+
+            console.log(`User entered budget range: ${budgetRange}`);
+            console.log(`User selected allergens to exclude: ${selectedAllergens}`);
+            console.log(
+                `Redirecting to listofgames.html with category: ${category}, budget range: ${budgetRange}, and allergens: ${selectedAllergens}`
+            );
+
+            window.location.href = `listofgames.html?category=${category}&budgetRange=${budgetRange}&allergens=${encodeURIComponent(
+                selectedAllergens.join(",")
+            )}`;
+        });
+
+        // Populate allergens on page load
+        populateAllergenDropdown();
+    </script>
+</body>
+</html>

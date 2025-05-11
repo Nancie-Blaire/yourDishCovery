@@ -148,7 +148,7 @@ button:hover {
   font-size: 1.2rem;
 }
 
-.recipe-info p {
+recipe-info p {
   margin: 0;
   font-size: 0.9rem;
 }
@@ -171,6 +171,14 @@ button:hover {
 
 .hidden {
   display: none;
+}
+
+#budgetField {
+  margin-bottom: 15px;
+}
+
+#allergenField {
+  margin-bottom: 15px;
 }
 
 /* Responsive styles */

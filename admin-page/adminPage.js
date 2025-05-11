@@ -41,6 +41,8 @@ const nameField = document.getElementById("nameField");
 const descField = document.getElementById("descField");
 const ingredientsField = document.getElementById("ingredientsField");
 const imageField = document.getElementById("imageField");
+const budgetField = document.getElementById("budgetField");
+const allergenField = document.getElementById("allergenField");
 const recipeForm = document.getElementById("recipeForm");
 const editRecipeId = document.getElementById("editRecipeId");
 const submitButton = document.getElementById("submitButton");
@@ -63,6 +65,8 @@ window.app = {
             recipe.description || "";
           document.getElementById("ingredients").value =
             recipe.ingredients || "";
+          document.getElementById("budget").value = recipe.budget || "";
+          document.getElementById("allergens").value = recipe.allergens || "";
           editRecipeId.value = id;
 
           // Change button text
@@ -114,16 +118,22 @@ categorySelect.addEventListener("change", () => {
   descField.classList.add("hidden");
   ingredientsField.classList.add("hidden");
   imageField.classList.add("hidden");
+  budgetField.classList.add("hidden");
+  allergenField.classList.add("hidden");
 
   // Show relevant fields based on category
-  if (["jollibee", "mcdo", "kfc", "random"].includes(value)) {
+  if (["jollibee", "mcdo", "kfc", "random", "home"].includes(value)) {
     nameField.classList.remove("hidden");
     imageField.classList.remove("hidden");
+    budgetField.classList.remove("hidden");
+    allergenField.classList.remove("hidden");
   } else if (value === "home") {
     nameField.classList.remove("hidden");
     descField.classList.remove("hidden");
     ingredientsField.classList.remove("hidden");
     imageField.classList.remove("hidden");
+    budgetField.classList.remove("hidden");
+    allergenField.classList.remove("hidden");
   }
 });
 
@@ -260,6 +270,8 @@ function updateRandomCategory(allRecipes) {
       description: recipe.description || "",
       ingredients: recipe.ingredients || "",
       image: recipe.image || "",
+      budget: recipe.budget || 0,
+      allergens: recipe.allergens || "",
     };
   });
 
@@ -283,6 +295,8 @@ function resetForm() {
   descField.classList.add("hidden");
   ingredientsField.classList.add("hidden");
   imageField.classList.add("hidden");
+  budgetField.classList.add("hidden");
+  allergenField.classList.add("hidden");
 }
 
 // Handle form submission (both add and edit)
@@ -302,6 +316,8 @@ recipeForm.addEventListener("submit", async function (e) {
     name: document.getElementById("name").value,
     description: document.getElementById("description").value || "",
     ingredients: document.getElementById("ingredients").value || "",
+    budget: parseInt(document.getElementById("budget").value) || 0,
+    allergens: document.getElementById("allergens").value || "",
   };
 
   const imageFile = document.getElementById("imageUpload").files[0];

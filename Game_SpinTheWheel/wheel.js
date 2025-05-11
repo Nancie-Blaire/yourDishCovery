@@ -70,6 +70,98 @@ async function fetchFoodsWithImages(category) {
   return foods;
 }
 
+// Function to fetch foods and their images from the database, filtered by budget
+async function fetchFoodsWithImagesAndBudget(category, budget) {
+  const foods = [];
+  const snapshot = await get(ref(db, `recipes/${category}`));
+
+  if (snapshot.exists()) {
+    const recipes = snapshot.val();
+    for (const key in recipes) {
+      const recipe = recipes[key];
+      if (recipe.name && recipe.image && recipe.budget <= budget) {
+        foods.push({ name: recipe.name, image: recipe.image }); // Collect food names and Base64 images
+      } else if (recipe.budget > budget) {
+        console.log(`Skipped recipe "${recipe.name}" due to budget limit: ${recipe.budget} > ${budget}`);
+      }
+    }
+  } else {
+    console.warn(`No recipes found in category: ${category}`);
+  }
+
+  console.log("Fetched Foods with Images and Budget Filter:", foods);
+  return foods;
+}
+
+// Function to fetch foods and their images from the database, filtered by budget range
+async function fetchFoodsWithImagesAndBudgetRange(category, minBudget, maxBudget) {
+  const foods = [];
+  const snapshot = await get(ref(db, `recipes/${category}`));
+
+  if (snapshot.exists()) {
+    const recipes = snapshot.val();
+    for (const key in recipes) {
+      const recipe = recipes[key];
+      if (
+        recipe.name &&
+        recipe.image &&
+        recipe.budget >= minBudget &&
+        recipe.budget <= maxBudget
+      ) {
+        foods.push({ name: recipe.name, image: recipe.image }); // Collect food names and Base64 images
+      } else if (recipe.budget < minBudget || recipe.budget > maxBudget) {
+        console.log(
+          `Skipped recipe "${recipe.name}" due to budget range: ${recipe.budget} not in range ${minBudget}-${maxBudget}`
+        );
+      }
+    }
+  } else {
+    console.warn(`No recipes found in category: ${category}`);
+  }
+
+  console.log("Fetched Foods with Images and Budget Range Filter:", foods);
+  return foods;
+}
+
+// Function to fetch foods and their images from the database, filtered by budget range and allergens
+async function fetchFoodsWithFilters(category, minBudget, maxBudget, excludedAllergens) {
+  const foods = [];
+  const snapshot = await get(ref(db, `recipes/${category}`));
+
+  if (snapshot.exists()) {
+    const recipes = snapshot.val();
+    for (const key in recipes) {
+      const recipe = recipes[key];
+      const recipeAllergens = recipe.allergens ? recipe.allergens.split(",").map(a => a.trim().toLowerCase()) : [];
+
+      // Check if the recipe meets the budget range and does not contain excluded allergens
+      const hasExcludedAllergens = excludedAllergens.some(allergen => recipeAllergens.includes(allergen.toLowerCase()));
+      if (
+        recipe.name &&
+        recipe.image &&
+        recipe.budget >= minBudget &&
+        recipe.budget <= maxBudget &&
+        !hasExcludedAllergens
+      ) {
+        foods.push({ name: recipe.name, image: recipe.image }); // Collect food names and Base64 images
+      } else if (hasExcludedAllergens) {
+        console.log(
+          `Skipped recipe "${recipe.name}" due to excluded allergens: ${excludedAllergens.join(", ")}`
+        );
+      } else if (recipe.budget < minBudget || recipe.budget > maxBudget) {
+        console.log(
+          `Skipped recipe "${recipe.name}" due to budget range: ${recipe.budget} not in range ${minBudget}-${maxBudget}`
+        );
+      }
+    }
+  } else {
+    console.warn(`No recipes found in category: ${category}`);
+  }
+
+  console.log("Fetched Foods with Filters (Budget and Allergens):", foods);
+  return foods;
+}
+
 // Function to determine selected value based on final angle
 const valueGenerator = (angleValue) => {
   // Convert the chart rotation to the actual angle on the wheel
@@ -173,11 +265,23 @@ const imageBackgroundPlugin = {
 async function initializeWheel() {
   const urlParams = new URLSearchParams(window.location.search);
   const category = urlParams.get("category") || "random"; // Default to "random" if no category is specified
+  const budgetRange = urlParams.get("budgetRange") || "0-Infinity"; // Default to no budget limit if not specified
+  const allergens = urlParams.get("allergens") ? urlParams.get("allergens").split(",") : []; // Parse allergens
 
-  const foodData = await fetchFoodsWithImages(category); // Fetch foods and their images for the selected category
+  const [minBudget, maxBudget] = budgetRange.split("-").map(Number);
+  console.log(`Initializing wheel with category: ${category}, budget range: ${minBudget}-${maxBudget}, and excluded allergens: ${allergens.join(", ") || "None"}`);
+
+  if (isNaN(minBudget) || isNaN(maxBudget)) {
+    console.error("Invalid budget range provided. Defaulting to show all foods.");
+    finalValue.innerHTML = `<p>Invalid budget range. Showing all foods.</p>`;
+    spinBtn.disabled = true;
+    return;
+  }
+
+  const foodData = await fetchFoodsWithFilters(category, minBudget, maxBudget, allergens); // Fetch foods with filters
 
   if (foodData.length === 0) {
-    finalValue.innerHTML = `<p>No foods available for this category.</p>`;
+    finalValue.innerHTML = `<p>No foods available for this category, budget range, and allergen filters.</p>`;
     spinBtn.disabled = true;
     return;
   }
@@ -190,59 +294,8 @@ async function initializeWheel() {
       return new Promise((resolve) => {
         const img = new Image();
         img.src = food.image; // Base64 image string
-        img.onload = () => {
-          console.log(`Image loaded successfully for ${food.name}`); // Debugging
-
-          // Preprocess the image using an offscreen canvas
-          const offscreenCanvas = document.createElement("canvas");
-          const size = 200; // Resize to 200x200 pixels
-          offscreenCanvas.width = size;
-          offscreenCanvas.height = size;
-          const offscreenCtx = offscreenCanvas.getContext("2d");
-
-          // Draw the image onto the offscreen canvas, cropping or resizing as needed
-          const aspectRatio = img.width / img.height;
-          console.log(`Original Image Dimensions for ${food.name}:`, img.width, img.height); // Debugging
-          if (aspectRatio > 1) {
-            // Landscape image: crop width
-            const cropWidth = img.height * aspectRatio;
-            offscreenCtx.drawImage(
-              img,
-              (img.width - cropWidth) / 2, // Crop horizontally
-              0,
-              cropWidth,
-              img.height,
-              0,
-              0,
-              size,
-              size
-            );
-          } else {
-            // Portrait or square image: crop height
-            const cropHeight = img.width / aspectRatio;
-            offscreenCtx.drawImage(
-              img,
-              0,
-              (img.height - cropHeight) / 2, // Crop vertically
-              img.width,
-              cropHeight,
-              0,
-              0,
-              size,
-              size
-            );
-          }
-
-          // Create a new Image object from the processed canvas
-          const processedImg = new Image();
-          processedImg.src = offscreenCanvas.toDataURL();
-          console.log(`Processed Image Dimensions for ${food.name}:`, size, size); // Debugging
-          resolve(processedImg);
-        };
-        img.onerror = (err) => {
-          console.error(`Failed to load image for ${food.name}:`, err);
-          resolve(null); // Fallback if the image fails to load
-        };
+        img.onload = () => resolve(img);
+        img.onerror = () => resolve(null); // Fallback if the image fails to load
       });
     })
   );
@@ -263,7 +316,6 @@ async function initializeWheel() {
   // Ensure the last segment covers exactly 360 degrees
   rotationValues[rotationValues.length - 1].maxDegree = 360;
 
-  // Log segment info for debugging
   console.log("Segments:", rotationValues);
 
   // Destroy the previous chart instance if it exists

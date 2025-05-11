@@ -41,6 +41,14 @@
           <label>Upload Image: <input type="file" id="imageUpload" accept="image/*" /></label>
         </div>
 
+        <div id="budgetField" class="hidden">
+          <label>Budget: <input type="number" id="budget" min="0" /></label>
+        </div>
+
+        <div id="allergenField" class="hidden">
+          <label>Allergens: <input type="text" id="allergens" placeholder="Enter allergens (comma-separated)" /></label>
+        </div>
+
         <input type="hidden" id="editRecipeId" value="" />
         <button type="submit" id="submitButton">Add Recipe</button>
       </form>
