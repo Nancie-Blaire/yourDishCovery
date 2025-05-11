@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food Info</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f9;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .header img {
+      width: 150px;
+      height: 150px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .header .info {
+      flex: 1;
+    }
+
+    .header .info h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      color: #333;
+    }
+
+    .header .info p {
+      margin: 5px 0;
+      font-size: 1rem;
+      color: #555;
+    }
+
+    .content {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .content .section {
+      width: 48%;
+    }
+
+    .content .section h2 {
+      font-size: 1.2rem;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .content .section ul {
+      list-style-type: none;
+      padding-left: 0;
+      color: #555;
+    }
+
+    .content .section ul li {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+      padding: 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .content .section ul li.checked {
+      background-color: #d4edda; /* Green background for checked items */
+      color: #155724;
+    }
+
+    .content .section ul li input[type="checkbox"] {
+      margin-right: 10px;
+      transform: scale(1.2);
+      cursor: pointer;
+      accent-color: #28a745; /* Green checkbox */
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .buttons button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .buttons .back-button {
+      background-color: #fdd835;
+      color: #333;
+    }
+
+    .buttons .back-button:hover {
+      background-color: #fbc02d;
+    }
+
+    .buttons .okay-button {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    .buttons .okay-button:hover {
+      background-color: #45a049;
+    }
+
+    .speech-icon {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .speech-icon.enabled {
+      transform: scale(1.2);
+    }
+
+    .speech-indicator {
+      position: absolute;
+      top: 80px;
+      right: 20px;
+      font-size: 0.9rem;
+      color: #555;
+      text-align: center;
+      width: 70px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="speech.png" alt="Speech Icon" class="speech-icon" id="speechIcon" />
+    <div class="speech-indicator" id="speechIndicator">Disabled</div>
+    <div class="header">
+      <img id="food-image" src="" alt="Food Image">
+      <div class="info">
+        <h1 id="food-name">Loading...</h1>
+        <p id="food-budget">Estimated budget: Loading...</p>
+        <p id="food-allergens">Allergens included: Loading...</p>
+      </div>
+    </div>
+    <div class="content">
+      <div class="section">
+        <h2>Ingredients:</h2>
+        <ul id="food-ingredients">
+          <!-- Ingredients will be dynamically populated -->
+        </ul>
+      </div>
+      <div class="section">
+        <h2>Instructions:</h2>
+        <ul id="food-instructions">
+          <!-- Instructions will be dynamically populated -->
+        </ul>
+      </div>
+    </div>
+    <div class="buttons">
+      <button class="back-button" onclick="history.back()">Back</button>
+      <button class="okay-button" onclick="alert('Enjoy your meal!')">Okay</button>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCA2KS4aKwM5P4_et3wifB4sRg23tvaK04",
+      authDomain: "dish-4be2b.firebaseapp.com",
+      projectId: "dish-4be2b",
+      storageBucket: "dish-4be2b.appspot.com",
+      messagingSenderId: "479066048512",
+      appId: "1:479066048512:web:7489944044adddc4c570e5",
+      measurementId: "G-8D2QSMQWT2",
+      databaseURL: "https://dish-4be2b-default-rtdb.firebaseio.com",
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // Get the food name from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const foodName = urlParams.get("food");
+    console.log(`Fetching details for food: ${foodName}`);
+
+    // Fetch food details from Firebase
+    async function fetchFoodDetails(foodName) {
+      const snapshot = await get(ref(db, `recipes`));
+      if (snapshot.exists()) {
+        const recipes = snapshot.val();
+        for (const category in recipes) {
+          for (const key in recipes[category]) {
+            const recipe = recipes[category][key];
+            if (recipe.name.toLowerCase() === foodName.toLowerCase()) {
+              return recipe;
+            }
+          }
+        }
+      }
+      return null;
+    }
+
+    // Display food details
+    async function displayFoodDetails() {
+      const foodDetails = await fetchFoodDetails(foodName);
+      if (foodDetails) {
+        document.getElementById("food-name").textContent = foodDetails.name;
+        document.getElementById("food-budget").textContent = `Estimated budget: ₱${foodDetails.budget || "N/A"}`;
+        document.getElementById("food-allergens").textContent = `Allergens included: ${foodDetails.allergens || "none"}`;
+        if (foodDetails.image) {
+          document.getElementById("food-image").src = foodDetails.image;
+        }
+
+        const ingredientsList = document.getElementById("food-ingredients");
+        ingredientsList.innerHTML = "";
+        (foodDetails.ingredients || []).forEach(ingredient => {
+          const li = document.createElement("li");
+
+          // Create checkbox
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+
+          // Add click event to toggle checked state
+          checkbox.addEventListener("change", () => {
+            li.classList.toggle("checked", checkbox.checked);
+          });
+
+          li.appendChild(checkbox);
+          li.appendChild(document.createTextNode(ingredient));
+          ingredientsList.appendChild(li);
+        });
+
+        const instructionsList = document.getElementById("food-instructions");
+        instructionsList.innerHTML = "";
+        (foodDetails.instructions || []).forEach(instruction => {
+          const li = document.createElement("li");
+
+          // Create checkbox
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+
+          // Add click event to toggle checked state
+          checkbox.addEventListener("change", () => {
+            li.classList.toggle("checked", checkbox.checked);
+          });
+
+          li.appendChild(checkbox);
+          li.appendChild(document.createTextNode(instruction));
+          instructionsList.appendChild(li);
+        });
+      } else {
+        document.getElementById("food-name").textContent = "Food not found";
+        document.getElementById("food-budget").textContent = "";
+        document.getElementById("food-allergens").textContent = "";
+        document.getElementById("food-ingredients").innerHTML = "<li>No ingredients available</li>";
+        document.getElementById("food-instructions").innerHTML = "<li>No instructions available</li>";
+      }
+    }
+
+    displayFoodDetails();
+
+    // Speech API functionality
+    const speechIcon = document.getElementById("speechIcon");
+    const speechIndicator = document.getElementById("speechIndicator");
+    let speechEnabled = false;
+    let recognition;
+
+    // Initialize Speech Recognition
+    if ("webkitSpeechRecognition" in window) {
+      recognition = new webkitSpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = "en-US";
+
+      recognition.onstart = () => {
+        console.log("Speech recognition started.");
+        speechIndicator.textContent = "Listening...";
+      };
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript.trim().toLowerCase();
+        console.log("Heard:", transcript);
+
+        if (transcript === "tell me the instructions.") {
+          const instructions = Array.from(document.querySelectorAll("#food-instructions li"))
+            .map(li => li.textContent.trim())
+            .join(", ");
+          if (instructions) {
+            const utterance = new SpeechSynthesisUtterance(`The instructions are: ${instructions}`);
+            speechIndicator.textContent = "Speaking...";
+            speechSynthesis.speak(utterance);
+            utterance.onend = () => {
+              speechIndicator.textContent = "Enabled";
+            };
+          } else {
+            const utterance = new SpeechSynthesisUtterance("No instructions available.");
+            speechIndicator.textContent = "Speaking...";
+            speechSynthesis.speak(utterance);
+            utterance.onend = () => {
+              speechIndicator.textContent = "Enabled";
+            };
+          }
+        } else {
+          console.log("Unrecognized command:", transcript);
+          speechIndicator.textContent = "Enabled";
+        }
+      };
+
+      recognition.onerror = (event) => {
+        console.error("Speech recognition error:", event.error);
+        speechIndicator.textContent = "Error";
+      };
+
+      recognition.onend = () => {
+        console.log("Speech recognition ended.");
+        if (speechEnabled) {
+          speechIndicator.textContent = "Enabled";
+        }
+      };
+    } else {
+      console.error("Web Speech API is not supported in this browser.");
+      speechIndicator.textContent = "Not Supported";
+    }
+
+    // Toggle speech recognition
+    speechIcon.addEventListener("click", () => {
+      speechEnabled = !speechEnabled;
+      if (speechEnabled) {
+        speechIcon.classList.add("enabled");
+        console.log("speech enabled");
+        speechIndicator.textContent = "Enabled";
+
+        if (recognition) {
+          recognition.start();
+        } else {
+          alert("Speech recognition is not supported in this browser.");
+        }
+      } else {
+        speechIcon.classList.remove("enabled");
+        console.log("speech disabled");
+        speechIndicator.textContent = "Disabled";
+
+        if (recognition) {
+          recognition.stop();
+        }
+      }
+    });
+  </script>
+</body>
+</html>

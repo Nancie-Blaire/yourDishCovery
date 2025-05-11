@@ -162,20 +162,103 @@ async function fetchFoodsWithFilters(category, minBudget, maxBudget, excludedAll
   return foods;
 }
 
+// Create modal dynamically
+const modal = document.createElement("div");
+modal.id = "food-info-modal";
+modal.style.display = "none";
+modal.style.position = "fixed";
+modal.style.top = "0";
+modal.style.left = "0";
+modal.style.width = "100%";
+modal.style.height = "100%";
+modal.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
+modal.style.justifyContent = "center";
+modal.style.alignItems = "center";
+modal.style.zIndex = "1000";
+
+modal.innerHTML = `
+  <div style="background: white; padding: 20px; border-radius: 12px; text-align: center; width: 90%; max-width: 400px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+    <h2 style="color: #d88a40; margin-bottom: 15px; font-size: 24px;">You got:</h2>
+    <div id="modal-food-image" style="width: 200px; height: 200px; border-radius: 8px; margin: 0 auto 15px; background-size: cover; background-position: center; border: 3px solid #fdcf3b;"></div>
+    <h3 id="modal-food-name" style="margin-bottom: 20px; font-size: 22px; color: #333;"></h3>
+    <p style="margin-bottom: 20px; color: #666;">Would you like to see more information about this dish?</p>
+    <div style="display: flex; justify-content: center; gap: 15px;">
+      <button id="yes-button" style="padding: 12px 24px; background-color: #fdcf3b; color: #333; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: all 0.3s;">YES, TELL ME MORE</button>
+      <button id="no-button" style="padding: 12px 24px; background-color: #f1f1f1; color: #333; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: all 0.3s;">NO THANKS</button>
+    </div>
+  </div>
+`;
+
+document.body.appendChild(modal);
+
+const yesButton = document.getElementById("yes-button");
+const noButton = document.getElementById("no-button");
+
+// Function to show the modal
+function showFoodInfoModal(foodName) {
+  console.log("Modal is about to pop up for food:", foodName);
+
+  // Fetch food details from Firebase to get the image
+  get(ref(db, `recipes`)).then((snapshot) => {
+    if (snapshot.exists()) {
+      const recipes = snapshot.val();
+      let foodDetails = null;
+
+      // Search for the food in all categories
+      for (const category in recipes) {
+        for (const key in recipes[category]) {
+          const recipe = recipes[category][key];
+          if (recipe.name.toLowerCase() === foodName.toLowerCase()) {
+            foodDetails = recipe;
+            break;
+          }
+        }
+        if (foodDetails) break;
+      }
+
+      if (foodDetails) {
+        // Update modal content with food details
+        const modalFoodImage = document.getElementById("modal-food-image");
+        const modalFoodName = document.getElementById("modal-food-name");
+
+        modalFoodImage.style.backgroundImage = `url(${foodDetails.image})`;
+        modalFoodName.textContent = foodDetails.name;
+
+        modal.style.display = "flex";
+
+        yesButton.onclick = () => {
+          console.log(`Redirecting to food_info.html for food: ${foodName}`);
+          window.location.href = `/food_info.html?food=${encodeURIComponent(foodName)}`;
+        };
+
+        noButton.onclick = () => {
+          console.log("User chose not to see food info.");
+          modal.style.display = "none";
+        };
+      } else {
+        console.error("Food details not found in Firebase for:", foodName);
+      }
+    } else {
+      console.error("No recipes found in Firebase.");
+    }
+  }).catch((error) => {
+    console.error("Error fetching food details from Firebase:", error);
+  });
+}
+
 // Function to determine selected value based on final angle
 const valueGenerator = (angleValue) => {
-  // Convert the chart rotation to the actual angle on the wheel
-  // Add 90 degrees to adjust for the chart's initial -90 rotation
-  // Then normalize to 0-360 range
   const normalizedAngle = (angleValue + 90) % 360;
   console.log("Final Angle:", angleValue, "Normalized Angle:", normalizedAngle);
 
   for (let i of rotationValues) {
-    // Check if the angle falls within this segment
     if (normalizedAngle >= i.minDegree && normalizedAngle <= i.maxDegree) {
       console.log("Match found:", i.value, "Range:", i.minDegree, "-", i.maxDegree);
       finalValue.innerHTML = `<p>Selected: ${i.value}</p>`;
       spinBtn.disabled = false;
+
+      // Show modal to ask if the user wants to see food info
+      showFoodInfoModal(i.value);
       return;
     }
   }
@@ -200,7 +283,6 @@ const imageBackgroundPlugin = {
 
     if (!dataset || !dataset.backgroundImages) return;
 
-    // Ensure chart dimensions are valid
     const centerX = chart.width / 2 || 0;
     const centerY = chart.height / 2 || 0;
     const radius = chart.outerRadius || Math.min(chart.width, chart.height) / 2;
@@ -222,37 +304,31 @@ const imageBackgroundPlugin = {
 
       ctx.save();
       ctx.beginPath();
-      ctx.moveTo(centerX, centerY); // Center of the wheel
+      ctx.moveTo(centerX, centerY);
       ctx.arc(centerX, centerY, radius, startAngle, endAngle);
       ctx.closePath();
       ctx.clip();
 
       if (image) {
-        // Rotate the canvas to align the image with the segment
         ctx.translate(centerX, centerY);
-        ctx.rotate(startAngle + segmentAngle / 2); // Rotate to the center of the segment
+        ctx.rotate(startAngle + segmentAngle / 2);
+        ctx.rotate(Math.PI / 2);
 
-        // Adjust the image orientation to align properly
-        ctx.rotate(Math.PI / 2); // Rotate 90 degrees to align the top of the image with the segment
-
-        // Draw the image centered on the segment
         const imgWidth = radius * 2;
         const imgHeight = radius * 2;
         ctx.drawImage(
           image,
-          -radius, // Top-left x-coordinate relative to the center
-          -radius, // Top-left y-coordinate relative to the center
+          -radius,
+          -radius,
           imgWidth,
           imgHeight
         );
 
-        // Restore the canvas state
-        ctx.rotate(-Math.PI / 2); // Undo the additional rotation
-        ctx.rotate(-(startAngle + segmentAngle / 2)); // Undo the segment rotation
-        ctx.translate(-centerX, -centerY); // Undo translation
+        ctx.rotate(-Math.PI / 2);
+        ctx.rotate(-(startAngle + segmentAngle / 2));
+        ctx.translate(-centerX, -centerY);
       } else {
-        // Fill with fallback color if image is not available
-        ctx.fillStyle = fallbackColor || "#FFFFFF"; // Default to white if no fallback color
+        ctx.fillStyle = fallbackColor || "#FFFFFF";
         ctx.fill();
       }
 
@@ -264,9 +340,9 @@ const imageBackgroundPlugin = {
 // Function to initialize the wheel
 async function initializeWheel() {
   const urlParams = new URLSearchParams(window.location.search);
-  const category = urlParams.get("category") || "random"; // Default to "random" if no category is specified
-  const budgetRange = urlParams.get("budgetRange") || "0-Infinity"; // Default to no budget limit if not specified
-  const allergens = urlParams.get("allergens") ? urlParams.get("allergens").split(",") : []; // Parse allergens
+  const category = urlParams.get("category") || "random";
+  const budgetRange = urlParams.get("budgetRange") || "0-Infinity";
+  const allergens = urlParams.get("allergens") ? urlParams.get("allergens").split(",") : [];
 
   const [minBudget, maxBudget] = budgetRange.split("-").map(Number);
   console.log(`Initializing wheel with category: ${category}, budget range: ${minBudget}-${maxBudget}, and excluded allergens: ${allergens.join(", ") || "None"}`);
@@ -278,7 +354,7 @@ async function initializeWheel() {
     return;
   }
 
-  const foodData = await fetchFoodsWithFilters(category, minBudget, maxBudget, allergens); // Fetch foods with filters
+  const foodData = await fetchFoodsWithFilters(category, minBudget, maxBudget, allergens);
 
   if (foodData.length === 0) {
     finalValue.innerHTML = `<p>No foods available for this category, budget range, and allergen filters.</p>`;
@@ -287,15 +363,15 @@ async function initializeWheel() {
   }
 
   const foodNames = foodData.map((food) => food.name);
-  const fallbackColors = ["#FF5733", "#33FF57", "#3357FF", "#F3FF33", "#FF33A8"]; // Example fallback colors
+  const fallbackColors = ["#FF5733", "#33FF57", "#3357FF", "#F3FF33", "#FF33A8"];
 
   const foodImages = await Promise.all(
     foodData.map((food) => {
       return new Promise((resolve) => {
         const img = new Image();
-        img.src = food.image; // Base64 image string
+        img.src = food.image;
         img.onload = () => resolve(img);
-        img.onerror = () => resolve(null); // Fallback if the image fails to load
+        img.onerror = () => resolve(null);
       });
     })
   );
@@ -304,26 +380,23 @@ async function initializeWheel() {
     img ? "transparent" : fallbackColors[index % fallbackColors.length]
   );
 
-  const data = Array(foodNames.length).fill(1); // Equal distribution for all foods
+  const data = Array(foodNames.length).fill(1);
 
-  const segmentSize = 360 / foodNames.length; // Size of each segment
+  const segmentSize = 360 / foodNames.length;
   rotationValues = foodNames.map((name, index) => ({
     minDegree: segmentSize * index,
-    maxDegree: segmentSize * (index + 1) - 0.001, // Avoid overlap
+    maxDegree: segmentSize * (index + 1) - 0.001,
     value: name,
   }));
 
-  // Ensure the last segment covers exactly 360 degrees
   rotationValues[rotationValues.length - 1].maxDegree = 360;
 
   console.log("Segments:", rotationValues);
 
-  // Destroy the previous chart instance if it exists
   if (myChart) {
     myChart.destroy();
   }
 
-  // Initialize the Chart.js instance
   myChart = new Chart(wheel, {
     plugins: [ChartDataLabels, imageBackgroundPlugin],
     type: "pie",
@@ -331,8 +404,8 @@ async function initializeWheel() {
       labels: foodNames,
       datasets: [
         {
-          backgroundColor: backgroundColors, // Use fallback color if image fails
-          backgroundImages: foodImages, // Attach images to the dataset
+          backgroundColor: backgroundColors,
+          backgroundImages: foodImages,
           data: data,
           borderColor: "#000",
         },
@@ -341,7 +414,7 @@ async function initializeWheel() {
     options: {
       responsive: true,
       animation: { duration: 0 },
-      rotation: -90, // Start with segments aligned to the top
+      rotation: -90,
       plugins: {
         tooltip: false,
         legend: { display: false },
@@ -363,47 +436,40 @@ async function initializeWheel() {
 
 // Function to handle spinning
 function spinWheel() {
+  console.log("Spin button clicked.");
   spinBtn.disabled = true;
   finalValue.innerHTML = `<p>Spinning...</p>`;
 
-  // Generate a random final position - full rotations plus a random angle
   let randomDegree = Math.floor(Math.random() * 360);
-  let totalRotation = 5 * 360 + randomDegree; // Multiple full spins plus random offset
+  let totalRotation = 5 * 360 + randomDegree;
 
-  // Animation variables
   let currentRotation = 0;
   let startTime = null;
-  let spinDuration = 5000; // 5 seconds spin
+  let spinDuration = 5000;
 
-  // Create smooth easing animation
   function animateSpin(timestamp) {
     if (!startTime) startTime = timestamp;
     const progress = (timestamp - startTime) / spinDuration;
 
     if (progress < 1) {
-      // Easing function for natural deceleration
       const easedProgress = 1 - Math.pow(1 - progress, 3);
       currentRotation = easedProgress * totalRotation;
 
-      // Update chart rotation
       myChart.options.rotation = -(currentRotation % 360);
       myChart.update();
 
       requestAnimationFrame(animateSpin);
     } else {
-      // Finalize the spin
       myChart.options.rotation = -(totalRotation % 360);
       myChart.update();
 
-      // Get the final position and determine the result
       const finalAngle = (360 - (myChart.options.rotation % 360)) % 360;
-      valueGenerator(finalAngle);
+      console.log("Spin completed. Final angle:", finalAngle);
 
-      spinBtn.disabled = false;
+      valueGenerator(finalAngle);
     }
   }
 
-  // Start the animation
   requestAnimationFrame(animateSpin);
 }
 

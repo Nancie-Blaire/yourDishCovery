@@ -35,367 +35,403 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getDatabase(app);
 
-// Ensure all DOM elements are correctly selected
-const categorySelect = document.getElementById("category");
-const nameField = document.getElementById("nameField");
-const descField = document.getElementById("descField");
-const ingredientsField = document.getElementById("ingredientsField");
-const imageField = document.getElementById("imageField");
-const budgetField = document.getElementById("budgetField");
-const allergenField = document.getElementById("allergenField");
-const recipeForm = document.getElementById("recipeForm");
-const editRecipeId = document.getElementById("editRecipeId");
-const submitButton = document.getElementById("submitButton");
-const categoryTabs = document.querySelectorAll(".category-tab");
+document.addEventListener("DOMContentLoaded", () => {
+  // Ensure all DOM elements are correctly selected
+  const categorySelect = document.getElementById("category");
+  const nameField = document.getElementById("nameField");
+  const descField = document.getElementById("descField");
+  const ingredientsField = document.getElementById("ingredientsField");
+  const instructionsField = document.getElementById("instructionsField");
+  const imageField = document.getElementById("imageField");
+  const budgetField = document.getElementById("budgetField");
+  const allergenField = document.getElementById("allergenField");
+  const recipeForm = document.getElementById("recipeForm");
+  const editRecipeId = document.getElementById("editRecipeId");
+  const submitButton = document.getElementById("submitButton");
+  const categoryTabs = document.querySelectorAll(".category-tab");
 
-window.app = {
-  editRecipe: function (id, category) {
-    const recipeRef = ref(db, `recipes/${category}/${id}`);
-    get(recipeRef)
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          const recipe = snapshot.val();
-
-          // Set form fields
-          categorySelect.value = category;
-          categorySelect.dispatchEvent(new Event("change")); // Trigger the change event
-
-          document.getElementById("name").value = recipe.name || "";
-          document.getElementById("description").value =
-            recipe.description || "";
-          document.getElementById("ingredients").value =
-            recipe.ingredients || "";
-          document.getElementById("budget").value = recipe.budget || "";
-          document.getElementById("allergens").value = recipe.allergens || "";
-          editRecipeId.value = id;
-
-          // Change button text
-          submitButton.textContent = "Update Recipe";
-
-          // Scroll to the form
-          recipeForm.scrollIntoView({ behavior: "smooth" });
-        } else {
-          alert("Recipe not found.");
-        }
-      })
-      .catch((error) => {
-        console.error("Error getting recipe:", error);
-        alert("Error getting recipe: " + error.message);
-      });
-  },
-
-  deleteRecipe: function (id, category) {
-    if (confirm("Are you sure you want to delete this recipe?")) {
+  window.app = {
+    editRecipe: function (id, category) {
       const recipeRef = ref(db, `recipes/${category}/${id}`);
-      remove(recipeRef)
-        .then(() => {
-          alert("Recipe deleted successfully!");
+      get(recipeRef)
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            const recipe = snapshot.val();
 
-          // Find active tab and reload its recipes
-          const activeTab = document.querySelector(".category-tab.active");
-          if (activeTab) {
-            const activeCategory = activeTab.getAttribute("data-category");
-            loadRecipes(activeCategory);
+            // Set form fields
+            categorySelect.value = category;
+            categorySelect.dispatchEvent(new Event("change")); // Trigger the change event
+
+            document.getElementById("name").value = recipe.name || "";
+            document.getElementById("description").value =
+              recipe.description || "";
+            document.getElementById("budget").value = recipe.budget || "";
+            document.getElementById("allergens").value = recipe.allergens || "";
+            editRecipeId.value = id;
+
+            // Populate ingredients and instructions fields only for "home" category
+            if (category === "home") {
+              const ingredientsTextarea = document.getElementById("ingredients");
+              const instructionsTextarea = document.getElementById("instructions");
+              
+              // Join ingredients and instructions arrays into multi-line text
+              if (recipe.ingredients && Array.isArray(recipe.ingredients)) {
+                ingredientsTextarea.value = recipe.ingredients.join("\n");
+              }
+              
+              if (recipe.instructions && Array.isArray(recipe.instructions)) {
+                instructionsTextarea.value = recipe.instructions.join("\n");
+              }
+            }
+
+            // Change button text
+            submitButton.textContent = "Update Recipe";
+
+            // Scroll to the form
+            recipeForm.scrollIntoView({ behavior: "smooth" });
+          } else {
+            alert("Recipe not found.");
           }
         })
         .catch((error) => {
-          console.error("Error deleting recipe:", error);
-          alert("Error deleting recipe: " + error.message);
+          console.error("Error getting recipe:", error);
+          alert("Error getting recipe: " + error.message);
         });
+    },
+
+    deleteRecipe: function (id, category) {
+      if (confirm("Are you sure you want to delete this recipe?")) {
+        const recipeRef = ref(db, `recipes/${category}/${id}`);
+        remove(recipeRef)
+          .then(() => {
+            alert("Recipe deleted successfully!");
+
+            // Find active tab and reload its recipes
+            const activeTab = document.querySelector(".category-tab.active");
+            if (activeTab) {
+              const activeCategory = activeTab.getAttribute("data-category");
+              loadRecipes(activeCategory);
+            }
+          })
+          .catch((error) => {
+            console.error("Error deleting recipe:", error);
+            alert("Error deleting recipe: " + error.message);
+          });
+      }
+    },
+  };
+
+  // Show/hide inputs based on selected category
+  categorySelect.addEventListener("change", () => {
+    const value = categorySelect.value; // Get the selected category
+
+    // Debugging log to verify the selected category
+    console.log("Category changed:", value);
+
+    // Hide all fields first
+    if (nameField) nameField.classList.add("hidden");
+    if (descField) descField.classList.add("hidden");
+    if (ingredientsField) ingredientsField.classList.add("hidden");
+    if (instructionsField) instructionsField.classList.add("hidden");
+    if (imageField) imageField.classList.add("hidden");
+    if (budgetField) budgetField.classList.add("hidden");
+    if (allergenField) allergenField.classList.add("hidden");
+
+    // Show relevant fields based on category
+    if (["jollibee", "mcdo", "kfc", "random"].includes(value)) {
+      if (nameField) nameField.classList.remove("hidden");
+      if (imageField) imageField.classList.remove("hidden");
+      if (budgetField) budgetField.classList.remove("hidden");
+      if (allergenField) allergenField.classList.remove("hidden");
+    } else if (value === "home") {
+      if (nameField) nameField.classList.remove("hidden");
+      if (descField) descField.classList.remove("hidden");
+      if (ingredientsField) ingredientsField.classList.remove("hidden");
+      if (instructionsField) instructionsField.classList.remove("hidden");
+      if (imageField) imageField.classList.remove("hidden");
+      if (budgetField) budgetField.classList.remove("hidden");
+      if (allergenField) allergenField.classList.remove("hidden");
     }
-  },
-};
-
-// Show/hide inputs based on selected category
-categorySelect.addEventListener("change", () => {
-  const value = categorySelect.value; // Get the selected category
-
-  // Debugging log to verify the selected category
-  console.log("Category changed:", value);
-
-  // Hide all fields first
-  nameField.classList.add("hidden");
-  descField.classList.add("hidden");
-  ingredientsField.classList.add("hidden");
-  imageField.classList.add("hidden");
-  budgetField.classList.add("hidden");
-  allergenField.classList.add("hidden");
-
-  // Show relevant fields based on category
-  if (["jollibee", "mcdo", "kfc", "random", "home"].includes(value)) {
-    nameField.classList.remove("hidden");
-    imageField.classList.remove("hidden");
-    budgetField.classList.remove("hidden");
-    allergenField.classList.remove("hidden");
-  } else if (value === "home") {
-    nameField.classList.remove("hidden");
-    descField.classList.remove("hidden");
-    ingredientsField.classList.remove("hidden");
-    imageField.classList.remove("hidden");
-    budgetField.classList.remove("hidden");
-    allergenField.classList.remove("hidden");
-  }
-});
-
-// Tab switching functionality
-categoryTabs.forEach((tab) => {
-  tab.addEventListener("click", function () {
-    // Update active tab
-    categoryTabs.forEach((t) => t.classList.remove("active"));
-    this.classList.add("active");
-
-    // Get category
-    const category = this.getAttribute("data-category");
-
-    // Hide all sections
-    document.querySelectorAll(".category-section").forEach((section) => {
-      section.classList.add("hidden");
-    });
-
-    // Show selected section
-    document
-      .getElementById(`${category}Section`)
-      .classList.remove("hidden");
-
-    // Load recipes for selected category
-    loadRecipes(category);
   });
-});
 
-// Load recipes for a specific category
-function loadRecipes(category) {
-  const listElement = document.getElementById(`${category}List`);
-  listElement.innerHTML = "";
+  // Tab switching functionality
+  categoryTabs.forEach((tab) => {
+    tab.addEventListener("click", function () {
+      // Update active tab
+      categoryTabs.forEach((t) => t.classList.remove("active"));
+      this.classList.add("active");
 
-  if (category === "random") {
-    // Fetch all foods from all categories
-    const categories = ["jollibee", "mcdo", "kfc", "home"];
-    const allRecipes = [];
+      // Get category
+      const category = this.getAttribute("data-category");
 
-    Promise.all(
-      categories.map((cat) =>
-        get(ref(db, `recipes/${cat}`)).then((snapshot) => {
+      // Hide all sections
+      document.querySelectorAll(".category-section").forEach((section) => {
+        section.classList.add("hidden");
+      });
+
+      // Show selected section
+      document.getElementById(`${category}Section`).classList.remove("hidden");
+
+      // Load recipes for selected category
+      loadRecipes(category);
+    });
+  });
+
+  // Load recipes for a specific category
+  function loadRecipes(category) {
+    const listElement = document.getElementById(`${category}List`);
+    listElement.innerHTML = "";
+
+    if (category === "random") {
+      // Fetch all foods from all categories
+      const categories = ["jollibee", "mcdo", "kfc", "home"];
+      const allRecipes = [];
+
+      Promise.all(
+        categories.map((cat) =>
+          get(ref(db, `recipes/${cat}`)).then((snapshot) => {
+            if (snapshot.exists()) {
+              const recipes = snapshot.val();
+              for (let id in recipes) {
+                allRecipes.push({ id, ...recipes[id], category: cat });
+              }
+            }
+          })
+        )
+      )
+        .then(() => {
+          if (allRecipes.length === 0) {
+            listElement.innerHTML = "<p>No recipes found in any category.</p>";
+          } else {
+            allRecipes.forEach((recipe) => {
+              const recipeCard = document.createElement("div");
+              recipeCard.classList.add("recipe-card");
+
+              recipeCard.innerHTML = `
+                <div class="recipe-card-header">
+                  <img src="${recipe.image}" alt="${recipe.name}" onerror="this.src='https://via.placeholder.com/80'">
+                  <div class="recipe-info">
+                    <h3>${recipe.name}</h3>
+                    ${
+                      recipe.description
+                        ? `<p>${recipe.description}</p>`
+                        : ""
+                    }
+                    <p><strong>Category:</strong> ${recipe.category}</p>
+                  </div>
+                </div>
+                <div class="button-group">
+                  <button onclick="window.app.editRecipe('${recipe.id}', '${recipe.category}')">Edit</button>
+                  <button onclick="window.app.deleteRecipe('${recipe.id}', '${recipe.category}')">Delete</button>
+                </div>
+              `;
+
+              listElement.appendChild(recipeCard);
+            });
+          }
+
+          // Update the "random" category in Firebase
+          updateRandomCategory(allRecipes);
+        })
+        .catch((error) => {
+          console.error("Error loading recipes for random category:", error);
+          alert("Error loading recipes: " + error.message);
+        });
+    } else {
+      // Fetch recipes for the selected category
+      const categoryRef = ref(db, `recipes/${category}`);
+      get(categoryRef)
+        .then((snapshot) => {
           if (snapshot.exists()) {
             const recipes = snapshot.val();
             for (let id in recipes) {
-              allRecipes.push({ id, ...recipes[id], category: cat });
+              const recipe = recipes[id];
+
+              const recipeCard = document.createElement("div");
+              recipeCard.classList.add("recipe-card");
+
+              recipeCard.innerHTML = `
+                <div class="recipe-card-header">
+                  <img src="${recipe.image}" alt="${recipe.name}" onerror="this.src='https://via.placeholder.com/80'">
+                  <div class="recipe-info">
+                    <h3>${recipe.name}</h3>
+                    ${
+                      recipe.description
+                        ? `<p>${recipe.description}</p>`
+                        : ""
+                    }
+                  </div>
+                </div>
+                <div class="button-group">
+                  <button onclick="window.app.editRecipe('${id}', '${category}')">Edit</button>
+                  <button onclick="window.app.deleteRecipe('${id}', '${category}')">Delete</button>
+                </div>
+              `;
+
+              listElement.appendChild(recipeCard);
             }
+          } else {
+            listElement.innerHTML = "<p>No recipes found in this category.</p>";
           }
         })
-      )
-    )
-      .then(() => {
-        if (allRecipes.length === 0) {
-          listElement.innerHTML = "<p>No recipes found in any category.</p>";
-        } else {
-          allRecipes.forEach((recipe) => {
-            const recipeCard = document.createElement("div");
-            recipeCard.classList.add("recipe-card");
-
-            recipeCard.innerHTML = `
-              <div class="recipe-card-header">
-                <img src="${recipe.image}" alt="${recipe.name}" onerror="this.src='https://via.placeholder.com/80'">
-                <div class="recipe-info">
-                  <h3>${recipe.name}</h3>
-                  ${recipe.description ? `<p>${recipe.description}</p>` : ""}
-                  <p><strong>Category:</strong> ${recipe.category}</p>
-                </div>
-              </div>
-              <div class="button-group">
-                <button onclick="window.app.editRecipe('${recipe.id}', '${recipe.category}')">Edit</button>
-                <button onclick="window.app.deleteRecipe('${recipe.id}', '${recipe.category}')">Delete</button>
-              </div>
-            `;
-
-            listElement.appendChild(recipeCard);
-          });
-        }
-
-        // Update the "random" category in Firebase
-        updateRandomCategory(allRecipes);
-      })
-      .catch((error) => {
-        console.error("Error loading recipes for random category:", error);
-        alert("Error loading recipes: " + error.message);
-      });
-  } else {
-    // Fetch recipes for the selected category
-    const categoryRef = ref(db, `recipes/${category}`);
-    get(categoryRef)
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          const recipes = snapshot.val();
-          for (let id in recipes) {
-            const recipe = recipes[id];
-
-            const recipeCard = document.createElement("div");
-            recipeCard.classList.add("recipe-card");
-
-            recipeCard.innerHTML = `
-              <div class="recipe-card-header">
-                <img src="${recipe.image}" alt="${recipe.name}" onerror="this.src='https://via.placeholder.com/80'">
-                <div class="recipe-info">
-                  <h3>${recipe.name}</h3>
-                  ${recipe.description ? `<p>${recipe.description}</p>` : ""}
-                </div>
-              </div>
-              <div class="button-group">
-                <button onclick="window.app.editRecipe('${id}', '${category}')">Edit</button>
-                <button onclick="window.app.deleteRecipe('${id}', '${category}')">Delete</button>
-              </div>
-            `;
-
-            listElement.appendChild(recipeCard);
-          }
-        } else {
-          listElement.innerHTML = "<p>No recipes found in this category.</p>";
-        }
-      })
-      .catch((error) => {
-        console.error("Error loading recipes:", error);
-        alert("Error loading recipes: " + error.message);
-      });
+        .catch((error) => {
+          console.error("Error loading recipes:", error);
+          alert("Error loading recipes: " + error.message);
+        });
+    }
   }
-}
 
-// Function to update the "random" category in Firebase
-function updateRandomCategory(allRecipes) {
-  const randomRef = ref(db, "recipes/random");
-  const randomData = {};
+  // Function to update the "random" category in Firebase
+  function updateRandomCategory(allRecipes) {
+    const randomRef = ref(db, "recipes/random");
+    const randomData = {};
 
-  allRecipes.forEach((recipe) => {
-    const randomId = `${recipe.category}_${recipe.id}`; // Unique ID for random category
-    randomData[randomId] = {
-      name: recipe.name,
-      description: recipe.description || "",
-      ingredients: recipe.ingredients || "",
-      image: recipe.image || "",
-      budget: recipe.budget || 0,
-      allergens: recipe.allergens || "",
-    };
-  });
-
-  set(randomRef, randomData)
-    .then(() => {
-      console.log("Random category updated successfully in Firebase.");
-    })
-    .catch((error) => {
-      console.error("Error updating random category in Firebase:", error);
+    allRecipes.forEach((recipe) => {
+      const randomId = `${recipe.category}_${recipe.id}`; // Unique ID for random category
+      randomData[randomId] = {
+        name: recipe.name,
+        description: recipe.description || "",
+        ingredients: recipe.ingredients || "",
+        instructions: recipe.instructions || "",
+        image: recipe.image || "",
+        budget: recipe.budget || 0,
+        allergens: recipe.allergens || "",
+      };
     });
-}
 
-// Reset form
-function resetForm() {
-  recipeForm.reset();
-  editRecipeId.value = "";
-  submitButton.textContent = "Add Recipe";
-
-  // Hide all fields
-  nameField.classList.add("hidden");
-  descField.classList.add("hidden");
-  ingredientsField.classList.add("hidden");
-  imageField.classList.add("hidden");
-  budgetField.classList.add("hidden");
-  allergenField.classList.add("hidden");
-}
-
-// Handle form submission (both add and edit)
-recipeForm.addEventListener("submit", async function (e) {
-  e.preventDefault();
-
-  const id = editRecipeId.value;
-  const isEditing = id !== "";
-  const category = categorySelect.value;
-
-  if (!category) {
-    alert("Please select a category");
-    return;
+    set(randomRef, randomData)
+      .then(() => {
+        console.log("Random category updated successfully in Firebase.");
+      })
+      .catch((error) => {
+        console.error("Error updating random category in Firebase:", error);
+      });
   }
 
-  const recipeData = {
-    name: document.getElementById("name").value,
-    description: document.getElementById("description").value || "",
-    ingredients: document.getElementById("ingredients").value || "",
-    budget: parseInt(document.getElementById("budget").value) || 0,
-    allergens: document.getElementById("allergens").value || "",
-  };
+  // Reset form 
+  function resetForm() {
+    recipeForm.reset();
+    editRecipeId.value = "";
+    submitButton.textContent = "Add Recipe";
 
-  const imageFile = document.getElementById("imageUpload").files[0];
-
-  if (!recipeData.name || (!imageFile && !isEditing)) {
-    alert("Name and Image are required");
-    return;
+    // Hide all fields
+    if (nameField) nameField.classList.add("hidden");
+    if (descField) descField.classList.add("hidden");
+    if (ingredientsField) ingredientsField.classList.add("hidden");
+    if (instructionsField) instructionsField.classList.add("hidden");
+    if (imageField) imageField.classList.add("hidden");
+    if (budgetField) budgetField.classList.add("hidden");
+    if (allergenField) allergenField.classList.add("hidden");
   }
 
-  if (imageFile) {
-    try {
-      // Convert the image file to Base64
-      const reader = new FileReader();
-      reader.onload = function () {
-        recipeData.image = reader.result; // Store Base64 string in recipeData
-        saveRecipeData(recipeData, id, isEditing, category);
-      };
-      reader.onerror = function (error) {
-        console.error("Error reading image file:", error);
-        alert("Error reading image file: " + error.message);
-      };
-      reader.readAsDataURL(imageFile); // Read the file as a Base64 string
-    } catch (error) {
-      console.error("Error processing image:", error);
-      alert("Error processing image: " + error.message);
+  // Handle form submission (both add and edit)
+  recipeForm.addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const id = editRecipeId.value;
+    const isEditing = id !== "";
+    const category = categorySelect.value;
+
+    if (!category) {
+      alert("Please select a category");
       return;
     }
-  } else if (isEditing) {
-    // Keep the existing image if no new image is uploaded
-    const existingImage = document.querySelector(
-      `.recipe-card img[src*="${id}"]`
-    );
-    recipeData.image = existingImage ? existingImage.src : "";
-    saveRecipeData(recipeData, id, isEditing, category);
-  }
-});
 
-// Function to save recipe data to Firebase
-function saveRecipeData(recipeData, id, isEditing, category) {
-  let savePromise;
+    const recipeData = {
+      name: document.getElementById("name").value,
+      description: document.getElementById("description").value || "",
+      budget: parseInt(document.getElementById("budget").value) || 0,
+      allergens: document.getElementById("allergens").value || "",
+    };
 
-  if (isEditing) {
-    // Update existing recipe under the correct category
-    const recipeRef = ref(db, `recipes/${category}/${id}`);
-    savePromise = update(recipeRef, recipeData);
-  } else {
-    // Add new recipe under the selected category
-    const categoryRef = ref(db, `recipes/${category}`);
-    savePromise = push(categoryRef, recipeData);
-  }
+    // Process ingredients and instructions for "home" category directly from textareas
+    if (category === "home") {
+      const ingredientsText = document.getElementById("ingredients").value.trim();
+      const instructionsText = document.getElementById("instructions").value.trim();
+      
+      // Convert multi-line text to arrays
+      recipeData.ingredients = ingredientsText ? 
+        ingredientsText.split('\n').map(item => item.trim()).filter(item => item) : 
+        [];
+      
+      recipeData.instructions = instructionsText ? 
+        instructionsText.split('\n').map(item => item.trim()).filter(item => item) : 
+        [];
+    }
 
-  savePromise
-    .then(() => {
-      alert(
-        isEditing ? "Recipe updated successfully!" : "New recipe added!"
-      );
-      resetForm();
+    const imageFile = document.getElementById("imageUpload").files[0];
 
-      // Find active tab and reload its recipes
-      const activeTab = document.querySelector(".category-tab.active");
-      if (activeTab) {
-        const activeCategory = activeTab.getAttribute("data-category");
-        loadRecipes(activeCategory);
+    if (!recipeData.name || (!imageFile && !isEditing)) {
+      alert("Name and Image are required");
+      return;
+    }
+
+    if (imageFile) {
+      try {
+        // Convert the image file to Base64
+        const reader = new FileReader();
+        reader.onload = function () {
+          recipeData.image = reader.result; // Store Base64 string in recipeData
+          saveRecipeData(recipeData, id, isEditing, category);
+        };
+        reader.onerror = function (error) {
+          console.error("Error reading image file:", error);
+          alert("Error reading image file: " + error.message);
+        };
+        reader.readAsDataURL(imageFile); // Read the file as a Base64 string
+      } catch (error) {
+        console.error("Error processing image:", error);
+        alert("Error processing image: " + error.message);
+        return;
       }
-    })
-    .catch((error) => {
-      console.error("Error saving recipe:", error);
-      alert("Error: " + error.message);
-    });
-}
+    } else if (isEditing) {
+      // Keep the existing image if no new image is uploaded
+      saveRecipeData(recipeData, id, isEditing, category);
+    }
+  });
 
-// Ensure recipes are loaded on page load
-document.addEventListener("DOMContentLoaded", function () {
-  // Show the first category's fields if a category is selected
-  if (categorySelect.value) {
-    categorySelect.dispatchEvent(new Event("change"));
+  // Function to save recipe data to Firebase
+  function saveRecipeData(recipeData, id, isEditing, category) {
+    let savePromise;
+
+    if (isEditing) {
+      // Update existing recipe under the correct category
+      const recipeRef = ref(db, `recipes/${category}/${id}`);
+      savePromise = update(recipeRef, recipeData);
+    } else {
+      // Add new recipe under the selected category
+      const categoryRef = ref(db, `recipes/${category}`);
+      savePromise = push(categoryRef, recipeData);
+    }
+
+    savePromise
+      .then(() => {
+        alert(
+          isEditing ? "Recipe updated successfully!" : "New recipe added!"
+        );
+        resetForm();
+
+        // Find active tab and reload its recipes
+        const activeTab = document.querySelector(".category-tab.active");
+        if (activeTab) {
+          const activeCategory = activeTab.getAttribute("data-category");
+          loadRecipes(activeCategory);
+        }
+      })
+      .catch((error) => {
+        console.error("Error saving recipe:", error);
+        alert("Error: " + error.message);
+      });
   }
 
-  // Load recipes for the default category (jollibee)
-  loadRecipes("jollibee");
+  // Ensure recipes are loaded on page load
+  document.addEventListener("DOMContentLoaded", function () {
+    // Show the first category's fields if a category is selected
+    if (categorySelect.value) {
+      categorySelect.dispatchEvent(new Event("change"));
+    }
+
+    // Load recipes for the default category (jollibee)
+    loadRecipes("jollibee");
+  });
 });
