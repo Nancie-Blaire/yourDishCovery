@@ -316,7 +316,7 @@
 
 /* Mobile phones (480px and below) */
 /* Add this between your 1080px and 768px media queries */
-@media (max-width: 1000px) and (min-width: 769px) {
+@media only screen and (max-width: 414px) {
   .user-plate {
     top: 70vh;
     left: 53%;
@@ -327,27 +327,27 @@
   }
   /* Adjust utensil positions */
   .image-spoon {
-    left: -35%;
+    left: -45%;
     top: 50vh;
   }
   .image-fork {
-    left: 120%;
+    left: 130%;
     top: 50vh;
   }
   .image-knife {
-    left: -10%;
+    left: -19%;
     top: 50vh;
   }
   .system-image-spoon {
-    left: -35%;
+    left: -45%;
     top: 15vh;
   }
   .system-image-fork {
-    left: 120%;
+    left: 130%;
     top: 15vh;
   }
   .system-image-knife {
-    left: -10%;
+    left: -19%;
     top: 15vh;
   }
   /* Adjust image sizes if needed */
@@ -357,9 +357,13 @@
   .system-image-spoon img,
   .system-image-fork img,
   .system-image-knife img {
-    max-width: 60px;
+    max-width: 50px;
   }
-
+  .image-spoon img:hover,
+    .image-fork img:hover,
+    .image-knife img:hover {
+      transform: scale(1.40);
+    }
 
 }
 
