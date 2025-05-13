@@ -185,8 +185,8 @@ modal.innerHTML = `
     <p style="margin-bottom: 20px; color: #666;">Want to dive into the details?</p>
     
     <div style="display: flex; justify-content: center; gap: 15px;">
-      <button id="yes-button" style="padding: 8px 20px;; background-color: #fdcf3b; color: #333; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: all 0.3s;">YES, TELL ME MORE</button>
-      <button id="no-button" style="padding: 8px 20px;; background-color: #f1f1f1; color: #333; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: all 0.3s;">NO THANKS</button>
+      <button id="yes-button" style="padding: 8px 20px; background-color: #fdcf3b; color: #333; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: all 0.3s;">YES, TELL ME MORE</button>
+      <button id="no-button" style="padding: 8px 20px; background-color: #f1f1f1; color: #333; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: all 0.3s;">NO THANKS</button>
     </div>
   </div>
 `;
