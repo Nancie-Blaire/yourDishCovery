@@ -61,10 +61,12 @@
       width: 50vw;
       max-width: 230px;
       height: auto;
-      border-radius: 10%;
       transition: transform 0.2s ease;
       display: block;
       margin: 10px auto;
+      object-fit: cover;
+      border-radius: 10%;
+      border: 2px solid #000;
     }
 
     .image-spoon{
@@ -178,7 +180,6 @@
       align-items: center;
     }
 
-
     .system-image-spoon img,
     .system-image-fork img,
     .system-image-knife img {
@@ -190,6 +191,35 @@
       display: block;
       margin: 10px auto;
     }
+
+  .fetched-food {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10%;
+    border: 2px solid #000;
+    z-index: 2;
+  }
+
+  .user-food {
+    top: 60vh; /* Adjust to position above the user plate */
+    left: 52vw;
+    transform: translate(-50%, -50%);
+  }
+
+  .system-food {
+    top: 20vh; /* Adjust to position above the system plate */
+    left: 52vw;
+    transform: translate(-50%, -50%);
+  }
+
+  .fetched-food img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
 
     @media (max-width: 1080px) {
     .user-plate img,
@@ -380,6 +410,14 @@
     <img src="images/ForkSpoonKnifeBG.png" class="bg-img" alt="Wood Background" />
   </div>
 
+  <div class="fetched-food user-food">
+    <img src="images/placeholder.png" alt="User Food" />
+  </div>
+
+  <div class="fetched-food system-food">
+    <img src="images/placeholder.png" alt="System Food" />
+  </div>
+
   <div class="user-plate">
     <img src="images/USERPLATE.png" alt="User Plate" />
   </div>
@@ -414,6 +452,6 @@
   
 
 
-
-
 </body>
+</html>
+``` 
