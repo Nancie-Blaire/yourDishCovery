@@ -123,8 +123,8 @@ async function fetchFoodsWithImagesAndBudgetRange(category, minBudget, maxBudget
   return foods;
 }
 
-// Function to fetch foods and their images from the database, filtered by budget range and allergens
-async function fetchFoodsWithFilters(category, minBudget, maxBudget, excludedAllergens) {
+// Function to fetch foods and their images from the database, filtered by budget range and filters
+async function fetchFoodsWithFilters(category, minBudget, maxBudget, excludedFilters) {
   const foods = [];
   const snapshot = await get(ref(db, `recipes/${category}`));
 
@@ -132,21 +132,21 @@ async function fetchFoodsWithFilters(category, minBudget, maxBudget, excludedAll
     const recipes = snapshot.val();
     for (const key in recipes) {
       const recipe = recipes[key];
-      const recipeAllergens = recipe.allergens ? recipe.allergens.split(",").map(a => a.trim().toLowerCase()) : [];
+      const recipeFilters = recipe.filters ? recipe.filters.split(",").map(a => a.trim().toLowerCase()) : [];
 
-      // Check if the recipe meets the budget range and does not contain excluded allergens
-      const hasExcludedAllergens = excludedAllergens.some(allergen => recipeAllergens.includes(allergen.toLowerCase()));
+      // Check if the recipe meets the budget range and does not contain excluded filters
+      const hasExcludedFilters = excludedFilters.some(filter => recipeFilters.includes(filter.toLowerCase()));
       if (
         recipe.name &&
         recipe.image &&
         recipe.budget >= minBudget &&
         recipe.budget <= maxBudget &&
-        !hasExcludedAllergens
+        !hasExcludedFilters
       ) {
         foods.push({ name: recipe.name, image: recipe.image }); // Collect food names and Base64 images
-      } else if (hasExcludedAllergens) {
+      } else if (hasExcludedFilters) {
         console.log(
-          `Skipped recipe "${recipe.name}" due to excluded allergens: ${excludedAllergens.join(", ")}`
+          `Skipped recipe "${recipe.name}" due to excluded filters: ${excludedFilters.join(", ")}`
         );
       } else if (recipe.budget < minBudget || recipe.budget > maxBudget) {
         console.log(
@@ -158,7 +158,7 @@ async function fetchFoodsWithFilters(category, minBudget, maxBudget, excludedAll
     console.warn(`No recipes found in category: ${category}`);
   }
 
-  console.log("Fetched Foods with Filters (Budget and Allergens):", foods);
+  console.log("Fetched Foods with Filters (Budget and Filters):", foods);
   return foods;
 }
 
@@ -342,10 +342,10 @@ async function initializeWheel() {
   const urlParams = new URLSearchParams(window.location.search);
   const category = urlParams.get("category") || "random";
   const budgetRange = urlParams.get("budgetRange") || "0-Infinity";
-  const allergens = urlParams.get("allergens") ? urlParams.get("allergens").split(",") : [];
+  const filters = urlParams.get("filters") ? urlParams.get("filters").split(",") : [];
 
   const [minBudget, maxBudget] = budgetRange.split("-").map(Number);
-  console.log(`Initializing wheel with category: ${category}, budget range: ${minBudget}-${maxBudget}, and excluded allergens: ${allergens.join(", ") || "None"}`);
+  console.log(`Initializing wheel with category: ${category}, budget range: ${minBudget}-${maxBudget}, and excluded filters: ${filters.join(", ") || "None"}`);
 
   if (isNaN(minBudget) || isNaN(maxBudget)) {
     console.error("Invalid budget range provided. Defaulting to show all foods.");
@@ -354,10 +354,10 @@ async function initializeWheel() {
     return;
   }
 
-  const foodData = await fetchFoodsWithFilters(category, minBudget, maxBudget, allergens);
+  const foodData = await fetchFoodsWithFilters(category, minBudget, maxBudget, filters);
 
   if (foodData.length === 0) {
-    finalValue.innerHTML = `<p>No foods available for this category, budget range, and allergen filters.</p>`;
+    finalValue.innerHTML = `<p>No foods available for this category, budget range, and filter filters.</p>`;
     spinBtn.disabled = true;
     return;
   }

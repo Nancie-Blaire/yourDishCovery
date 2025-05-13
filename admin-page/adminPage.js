@@ -44,11 +44,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const instructionsField = document.getElementById("instructionsField");
   const imageField = document.getElementById("imageField");
   const budgetField = document.getElementById("budgetField");
-  const allergenField = document.getElementById("allergenField");
+  const filterField = document.getElementById("filterField");
   const recipeForm = document.getElementById("recipeForm");
   const editRecipeId = document.getElementById("editRecipeId");
   const submitButton = document.getElementById("submitButton");
   const categoryTabs = document.querySelectorAll(".category-tab");
+  const existingImageInput = document.getElementById("existingImage");
+  const currentImagePreview = document.getElementById("currentImagePreview");
+  const currentImage = document.getElementById("currentImage");
 
   window.app = {
     editRecipe: function (id, category) {
@@ -66,8 +69,18 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("description").value =
               recipe.description || "";
             document.getElementById("budget").value = recipe.budget || "";
-            document.getElementById("allergens").value = recipe.allergens || "";
+            document.getElementById("filters").value = recipe.filters || ""; // Use new ID
             editRecipeId.value = id;
+
+            // Show current image if exists
+            if (recipe.image) {
+              existingImageInput.value = recipe.image;
+              currentImage.src = recipe.image;
+              currentImagePreview.style.display = "block";
+            } else {
+              existingImageInput.value = "";
+              currentImagePreview.style.display = "none";
+            }
 
             // Populate ingredients and instructions fields only for "home" category
             if (category === "home") {
@@ -135,14 +148,14 @@ document.addEventListener("DOMContentLoaded", () => {
     if (instructionsField) instructionsField.classList.add("hidden");
     if (imageField) imageField.classList.add("hidden");
     if (budgetField) budgetField.classList.add("hidden");
-    if (allergenField) allergenField.classList.add("hidden");
+    if (filterField) filterField.classList.add("hidden");
 
     // Show relevant fields based on category
     if (["jollibee", "mcdo", "kfc", "random"].includes(value)) {
       if (nameField) nameField.classList.remove("hidden");
       if (imageField) imageField.classList.remove("hidden");
       if (budgetField) budgetField.classList.remove("hidden");
-      if (allergenField) allergenField.classList.remove("hidden");
+      if (filterField) filterField.classList.remove("hidden");
     } else if (value === "home") {
       if (nameField) nameField.classList.remove("hidden");
       if (descField) descField.classList.remove("hidden");
@@ -150,7 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (instructionsField) instructionsField.classList.remove("hidden");
       if (imageField) imageField.classList.remove("hidden");
       if (budgetField) budgetField.classList.remove("hidden");
-      if (allergenField) allergenField.classList.remove("hidden");
+      if (filterField) filterField.classList.remove("hidden");
     }
   });
 
@@ -295,7 +308,7 @@ document.addEventListener("DOMContentLoaded", () => {
         instructions: recipe.instructions || "",
         image: recipe.image || "",
         budget: recipe.budget || 0,
-        allergens: recipe.allergens || "",
+        filters: recipe.allergens || "", // Use new variable name
       };
     });
 
@@ -313,6 +326,8 @@ document.addEventListener("DOMContentLoaded", () => {
     recipeForm.reset();
     editRecipeId.value = "";
     submitButton.textContent = "Add Recipe";
+    existingImageInput.value = "";
+    currentImagePreview.style.display = "none";
 
     // Hide all fields
     if (nameField) nameField.classList.add("hidden");
@@ -321,7 +336,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (instructionsField) instructionsField.classList.add("hidden");
     if (imageField) imageField.classList.add("hidden");
     if (budgetField) budgetField.classList.add("hidden");
-    if (allergenField) allergenField.classList.add("hidden");
+    if (filterField) filterField.classList.add("hidden");
   }
 
   // Handle form submission (both add and edit)
@@ -341,7 +356,7 @@ document.addEventListener("DOMContentLoaded", () => {
       name: document.getElementById("name").value,
       description: document.getElementById("description").value || "",
       budget: parseInt(document.getElementById("budget").value) || 0,
-      allergens: document.getElementById("allergens").value || "",
+      filters: document.getElementById("filters").value || "", // Use new ID and variable
     };
 
     // Process ingredients and instructions for "home" category directly from textareas
@@ -360,8 +375,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const imageFile = document.getElementById("imageUpload").files[0];
+    const existingImage = existingImageInput.value;
 
-    if (!recipeData.name || (!imageFile && !isEditing)) {
+    if (!recipeData.name || (!imageFile && !isEditing && !existingImage)) {
       alert("Name and Image are required");
       return;
     }
@@ -384,9 +400,12 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("Error processing image: " + error.message);
         return;
       }
-    } else if (isEditing) {
-      // Keep the existing image if no new image is uploaded
+    } else if (isEditing && existingImage) {
+      // Use the existing image if no new image is uploaded
+      recipeData.image = existingImage;
       saveRecipeData(recipeData, id, isEditing, category);
+    } else if (!isEditing && !imageFile) {
+      alert("Image is required for new recipes.");
     }
   });
 

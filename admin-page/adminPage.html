@@ -43,14 +43,19 @@
 
         <div id="imageField" class="hidden">
           <label>Upload Image: <input type="file" id="imageUpload" accept="image/*" /></label>
+          <input type="hidden" id="existingImage" />
+          <div id="currentImagePreview" style="margin-top:8px; display:none;">
+            <span style="font-size:0.95em;">Current Image:</span><br>
+            <img id="currentImage" src="" alt="Current Image" style="max-width:120px; max-height:120px; border-radius:6px; margin-top:4px;">
+          </div>
         </div>
 
         <div id="budgetField" class="hidden">
           <label>Budget: <input type="number" id="budget" min="0" /></label>
         </div>
 
-        <div id="allergenField" class="hidden">
-          <label>Allergens: <input type="text" id="allergens" placeholder="Enter allergens (comma-separated)" /></label>
+        <div id="filterField" class="hidden">
+          <label>Filters: <input type="text" id="filters" placeholder="Enter filters (comma-separated)" /></label>
         </div>
 
         <input type="hidden" id="editRecipeId" value="" />

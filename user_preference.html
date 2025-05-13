@@ -72,8 +72,8 @@
         <h1>Set Your Budget</h1>
         <label for="budgetRange">Enter your budget range (e.g., 0-300):</label>
         <input type="text" id="budgetRange" placeholder="Enter range (e.g., 0-300)" />
-        <label for="allergenSelect">Select allergens to exclude:</label>
-        <select id="allergenSelect" multiple>
+        <label for="filterSelect">Select filters to exclude:</label>
+        <select id="filterSelect" multiple>
             <!-- Options will be dynamically populated -->
         </select>
         <button id="applyButton">Apply</button>
@@ -104,48 +104,48 @@
         const category = urlParams.get("category");
         console.log(`User navigated to User Preference page with category: ${category}`);
 
-        // Fetch allergens from Firebase for the selected category
-        async function fetchAllergens(category) {
-            const allergenSet = new Set();
+        // Fetch filters from Firebase for the selected category
+        async function fetchFilters(category) {
+            const filterSet = new Set();
             const snapshot = await get(ref(db, `recipes/${category}`));
 
             if (snapshot.exists()) {
                 const recipes = snapshot.val();
                 for (const key in recipes) {
                     const recipe = recipes[key];
-                    if (recipe.allergens) {
-                        recipe.allergens.split(",").forEach((allergen) => allergenSet.add(allergen.trim()));
+                    if (recipe.filters) {
+                        recipe.filters.split(",").forEach((filter) => filterSet.add(filter.trim()));
                     }
                 }
             } else {
                 console.warn(`No recipes found in category: ${category}`);
             }
 
-            return Array.from(allergenSet);
+            return Array.from(filterSet);
         }
 
-        // Populate the allergen dropdown
-        async function populateAllergenDropdown() {
-            const allergenSelect = document.getElementById("allergenSelect");
-            allergenSelect.innerHTML = ""; // Clear existing options
+        // Populate the filter dropdown
+        async function populateFilterDropdown() {
+            const filterSelect = document.getElementById("filterSelect");
+            filterSelect.innerHTML = ""; // Clear existing options
 
-            const allergens = await fetchAllergens(category);
-            if (allergens.length === 0) {
+            const filters = await fetchFilters(category);
+            if (filters.length === 0) {
                 const option = document.createElement("option");
-                option.textContent = "No allergens available";
+                option.textContent = "No filters available";
                 option.disabled = true;
-                allergenSelect.appendChild(option);
+                filterSelect.appendChild(option);
             } else {
-                allergens.forEach((allergen) => {
+                filters.forEach((filter) => {
                     const option = document.createElement("option");
-                    option.value = allergen;
-                    option.textContent = allergen;
-                    allergenSelect.appendChild(option);
+                    option.value = filter;
+                    option.textContent = filter;
+                    filterSelect.appendChild(option);
                 });
             }
         }
 
-        // Redirect to listofgames.html with category, budget range, and selected allergens
+        // Redirect to listofgames.html with category, budget range, and selected filters
         document.getElementById("applyButton").addEventListener("click", () => {
             const budgetRange = document.getElementById("budgetRange").value.trim();
             const rangeRegex = /^\d+-\d+$/; // Regex to validate range format (e.g., 0-300)
@@ -161,23 +161,23 @@
                 return;
             }
 
-            const selectedAllergens = Array.from(document.getElementById("allergenSelect").selectedOptions).map(
+            const selectedFilters = Array.from(document.getElementById("filterSelect").selectedOptions).map(
                 (option) => option.value
             );
 
             console.log(`User entered budget range: ${budgetRange}`);
-            console.log(`User selected allergens to exclude: ${selectedAllergens}`);
+            console.log(`User selected filters to exclude: ${selectedFilters}`);
             console.log(
-                `Redirecting to listofgames.html with category: ${category}, budget range: ${budgetRange}, and allergens: ${selectedAllergens}`
+                `Redirecting to listofgames.html with category: ${category}, budget range: ${budgetRange}, and filters: ${selectedFilters}`
             );
 
-            window.location.href = `listofgames.html?category=${category}&budgetRange=${budgetRange}&allergens=${encodeURIComponent(
-                selectedAllergens.join(",")
+            window.location.href = `listofgames.html?category=${category}&budgetRange=${budgetRange}&filters=${encodeURIComponent(
+                selectedFilters.join(",")
             )}`;
         });
 
-        // Populate allergens on page load
-        populateAllergenDropdown();
+        // Populate filters on page load
+        populateFilterDropdown();
     </script>
 </body>
 </html>

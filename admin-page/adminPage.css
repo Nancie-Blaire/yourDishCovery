@@ -181,6 +181,10 @@ recipe-info p {
   margin-bottom: 15px;
 }
 
+#filterField {
+  margin-bottom: 15px;
+}
+
 /* Responsive styles */
 @media (min-width: 768px) {
   .recipe-card {
