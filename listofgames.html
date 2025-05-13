@@ -182,6 +182,42 @@
     color: black;
     padding: 8px 20px;
   }
+
+  /* Add styles for custom checkbox filter list */
+  .filter-checkbox-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  .filter-checkbox-label {
+    display: flex;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+    user-select: none;
+    font-weight: normal;
+  }
+  .filter-checkbox-label.checked {
+    background: #4caf50;
+    color: #fff;
+  }
+  .filter-checkbox-label input[type="checkbox"] {
+    accent-color: #4caf50;
+    margin-right: 10px;
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    border: 2px solid #c78456;
+    transition: background 0.2s, border 0.2s;
+  }
+  .filter-checkbox-label.checked input[type="checkbox"] {
+    background: #4caf50;
+    border-color: #388e3c;
+  }
   </style>
 </head>
 <body>
@@ -213,7 +249,7 @@
       <label for="budgetRange">Enter your budget range (e.g., 0-300):</label>
       <input type="text" id="budgetRange" placeholder="Enter range (e.g., 0-300)" />
       <label for="filterSelect">Select filters to exclude:</label>
-      <select id="filterSelect" multiple></select>
+      <div id="filterCheckboxList" class="filter-checkbox-list"></div>
       <button id="applyButton">Apply</button>
       <button id="closeModalButton">Close</button>
     </div>
@@ -242,7 +278,7 @@
     document.addEventListener("DOMContentLoaded", () => {
       const modal = document.getElementById("preference-modal");
       const budgetRangeInput = document.getElementById("budgetRange");
-      const filterSelect = document.getElementById("filterSelect");
+      const filterCheckboxList = document.getElementById("filterCheckboxList");
       const applyButton = document.getElementById("applyButton");
       const closeModalButton = document.getElementById("closeModalButton");
 
@@ -287,12 +323,30 @@
           console.warn(`No recipes found in category: ${category}`);
         }
 
-        filterSelect.innerHTML = "";
-        Array.from(filterSet).forEach((filter) => {
-          const option = document.createElement("option");
-          option.value = filter;
-          option.textContent = filter;
-          filterSelect.appendChild(option);
+        // Clear previous checkboxes
+        filterCheckboxList.innerHTML = "";
+        Array.from(filterSet).forEach((filter, idx) => {
+          const label = document.createElement("label");
+          label.className = "filter-checkbox-label";
+          label.htmlFor = `filter-checkbox-${idx}`;
+          label.textContent = filter;
+
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.value = filter;
+          checkbox.id = `filter-checkbox-${idx}`;
+
+          // When checkbox is toggled, update label background
+          checkbox.addEventListener("change", function() {
+            if (checkbox.checked) {
+              label.classList.add("checked");
+            } else {
+              label.classList.remove("checked");
+            }
+          });
+
+          label.prepend(checkbox);
+          filterCheckboxList.appendChild(label);
         });
 
         console.log("Filters fetched:", Array.from(filterSet));
@@ -301,7 +355,7 @@
       // Apply preferences and redirect to the selected game
       applyButton.addEventListener("click", () => {
         const budgetRange = budgetRangeInput.value.trim();
-        const selectedFilters = Array.from(document.getElementById("filterSelect").selectedOptions).map(option => option.value);
+        const selectedFilters = Array.from(filterCheckboxList.querySelectorAll("input[type='checkbox']:checked")).map(cb => cb.value);
 
         console.log(`Budget range entered: ${budgetRange}`);
         console.log(`Selected filters: ${selectedFilters}`);
@@ -344,4 +398,3 @@
   </script>
 </body>
 </html>
-

@@ -230,7 +230,7 @@
     }
 
     // --- YouTube API KEY (replace with your own) ---
-    const YOUTUBE_API_KEY = "YOUR_YOUTUBE_API_KEY"; // <-- Replace with your API key
+    const YOUTUBE_API_KEY = "AIzaSyAbRGZ3nQA2ANEpqSWZO3mmQeyt34AWDqA";
 
     // Extract YouTube video ID from a URL
     function extractYouTubeVideoId(url) {
@@ -255,6 +255,27 @@
       return null;
     }
 
+    // Get a nice label for non-YouTube links
+    function getLinkLabel(url) {
+      try {
+        const u = new URL(url);
+        // Try to use the hostname, or fallback to "Visit Link"
+        if (u.hostname.includes("mcdo") || u.hostname.includes("mcdonald")) {
+          return "McDonald's Delivery";
+        }
+        if (u.hostname.includes("jollibee")) {
+          return "Jollibee Delivery";
+        }
+        if (u.hostname.includes("kfc")) {
+          return "KFC Delivery";
+        }
+        // Otherwise, show the hostname
+        return u.hostname.replace("www.", "");
+      } catch {
+        return "Visit Link";
+      }
+    }
+
     // Display food details
     async function displayFoodDetails() {
       const foodDetails = await fetchFoodDetails(foodName);
@@ -266,20 +287,18 @@
           document.getElementById("food-image").src = foodDetails.image;
         }
 
-        // Show link if available, with YouTube title if possible
+        // Show link if available, with YouTube title if possible, otherwise use a smart label
         const foodLinkDiv = document.getElementById("food-link");
         if (foodDetails.link && foodDetails.link.trim() !== "") {
           const videoId = extractYouTubeVideoId(foodDetails.link);
           if (videoId) {
             foodLinkDiv.textContent = "Link: Loading...";
             const title = await fetchYouTubeTitle(videoId);
-            if (title) {
-              foodLinkDiv.innerHTML = `Link: <a href="${foodDetails.link}" target="_blank" style="color:#1976d2;text-decoration:underline;font-weight:bold;">${title}</a>`;
-            } else {
-              foodLinkDiv.innerHTML = `Link: <a href="${foodDetails.link}" target="_blank" style="color:#1976d2;text-decoration:underline;font-weight:bold;">YouTube Video</a>`;
-            }
+            foodLinkDiv.innerHTML = `Link: <a href="${foodDetails.link}" target="_blank" style="color:#1976d2;text-decoration:underline;font-weight:bold;">${title || "YouTube Video"}</a>`;
           } else {
-            foodLinkDiv.innerHTML = `Link: <a href="${foodDetails.link}" target="_blank" style="color:#1976d2;text-decoration:underline;font-weight:bold;">YouTube Video</a>`;
+            // Not a YouTube link, use smart label
+            const label = getLinkLabel(foodDetails.link);
+            foodLinkDiv.innerHTML = `Link: <a href="${foodDetails.link}" target="_blank" style="color:#1976d2;text-decoration:underline;font-weight:bold;">${label}</a>`;
           }
         } else {
           foodLinkDiv.innerHTML = "";
