@@ -45,6 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const imageField = document.getElementById("imageField");
   const budgetField = document.getElementById("budgetField");
   const filterField = document.getElementById("filterField");
+  const linkField = document.getElementById("linkField");
   const recipeForm = document.getElementById("recipeForm");
   const editRecipeId = document.getElementById("editRecipeId");
   const submitButton = document.getElementById("submitButton");
@@ -69,7 +70,8 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("description").value =
               recipe.description || "";
             document.getElementById("budget").value = recipe.budget || "";
-            document.getElementById("filters").value = recipe.filters || ""; // Use new ID
+            document.getElementById("filters").value = recipe.filters || "";
+            document.getElementById("link").value = recipe.link || "";
             editRecipeId.value = id;
 
             // Show current image if exists
@@ -149,6 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (imageField) imageField.classList.add("hidden");
     if (budgetField) budgetField.classList.add("hidden");
     if (filterField) filterField.classList.add("hidden");
+    if (linkField) linkField.classList.add("hidden");
 
     // Show relevant fields based on category
     if (["jollibee", "mcdo", "kfc", "random"].includes(value)) {
@@ -156,6 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (imageField) imageField.classList.remove("hidden");
       if (budgetField) budgetField.classList.remove("hidden");
       if (filterField) filterField.classList.remove("hidden");
+      if (linkField) linkField.classList.remove("hidden");
     } else if (value === "home") {
       if (nameField) nameField.classList.remove("hidden");
       if (descField) descField.classList.remove("hidden");
@@ -164,6 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (imageField) imageField.classList.remove("hidden");
       if (budgetField) budgetField.classList.remove("hidden");
       if (filterField) filterField.classList.remove("hidden");
+      if (linkField) linkField.classList.remove("hidden");
     }
   });
 
@@ -309,6 +314,7 @@ document.addEventListener("DOMContentLoaded", () => {
         image: recipe.image || "",
         budget: recipe.budget || 0,
         filters: recipe.allergens || "", // Use new variable name
+        link: recipe.link || "",
       };
     });
 
@@ -337,6 +343,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (imageField) imageField.classList.add("hidden");
     if (budgetField) budgetField.classList.add("hidden");
     if (filterField) filterField.classList.add("hidden");
+    if (linkField) linkField.classList.add("hidden");
+    document.getElementById("link").value = "";
   }
 
   // Handle form submission (both add and edit)
@@ -357,6 +365,7 @@ document.addEventListener("DOMContentLoaded", () => {
       description: document.getElementById("description").value || "",
       budget: parseInt(document.getElementById("budget").value) || 0,
       filters: document.getElementById("filters").value || "", // Use new ID and variable
+      link: document.getElementById("link").value || "",
     };
 
     // Process ingredients and instructions for "home" category directly from textareas

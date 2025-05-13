@@ -162,9 +162,10 @@
         <h1 id="food-name">Loading...</h1>
         <p id="food-budget">Estimated budget: Loading...</p>
         <p id="food-filters">Filters included: Loading...</p>
+        <div id="food-link" style="margin-top:8px;"></div>
       </div>
     </div>
-    <div class="content">
+    <div class="content" id="detailsContent" style="display:none;">
       <div class="section">
         <h2>Ingredients:</h2>
         <ul id="food-ingredients">
@@ -218,10 +219,38 @@
           for (const key in recipes[category]) {
             const recipe = recipes[category][key];
             if (recipe.name.toLowerCase() === foodName.toLowerCase()) {
+              // Attach the found category to the recipe object
+              recipe._category = category;
               return recipe;
             }
           }
         }
+      }
+      return null;
+    }
+
+    // --- YouTube API KEY (replace with your own) ---
+    const YOUTUBE_API_KEY = "YOUR_YOUTUBE_API_KEY"; // <-- Replace with your API key
+
+    // Extract YouTube video ID from a URL
+    function extractYouTubeVideoId(url) {
+      const regExp = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
+      const match = url.match(regExp);
+      return match ? match[1] : null;
+    }
+
+    // Fetch YouTube video title using API
+    async function fetchYouTubeTitle(videoId) {
+      if (!videoId || YOUTUBE_API_KEY === "YOUR_YOUTUBE_API_KEY") return null;
+      try {
+        const apiUrl = `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${YOUTUBE_API_KEY}`;
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+        if (data.items && data.items.length > 0) {
+          return data.items[0].snippet.title;
+        }
+      } catch (e) {
+        console.error("Failed to fetch YouTube title:", e);
       }
       return null;
     }
@@ -237,49 +266,65 @@
           document.getElementById("food-image").src = foodDetails.image;
         }
 
-        const ingredientsList = document.getElementById("food-ingredients");
-        ingredientsList.innerHTML = "";
-        (foodDetails.ingredients || []).forEach(ingredient => {
-          const li = document.createElement("li");
+        // Show link if available, with YouTube title if possible
+        const foodLinkDiv = document.getElementById("food-link");
+        if (foodDetails.link && foodDetails.link.trim() !== "") {
+          const videoId = extractYouTubeVideoId(foodDetails.link);
+          if (videoId) {
+            foodLinkDiv.textContent = "Link: Loading...";
+            const title = await fetchYouTubeTitle(videoId);
+            if (title) {
+              foodLinkDiv.innerHTML = `Link: <a href="${foodDetails.link}" target="_blank" style="color:#1976d2;text-decoration:underline;font-weight:bold;">${title}</a>`;
+            } else {
+              foodLinkDiv.innerHTML = `Link: <a href="${foodDetails.link}" target="_blank" style="color:#1976d2;text-decoration:underline;font-weight:bold;">YouTube Video</a>`;
+            }
+          } else {
+            foodLinkDiv.innerHTML = `Link: <a href="${foodDetails.link}" target="_blank" style="color:#1976d2;text-decoration:underline;font-weight:bold;">YouTube Video</a>`;
+          }
+        } else {
+          foodLinkDiv.innerHTML = "";
+        }
 
-          // Create checkbox
-          const checkbox = document.createElement("input");
-          checkbox.type = "checkbox";
-
-          // Add click event to toggle checked state
-          checkbox.addEventListener("change", () => {
-            li.classList.toggle("checked", checkbox.checked);
+        // Show or hide ingredients/instructions based on category
+        const detailsContent = document.getElementById("detailsContent");
+        if (foodDetails._category === "home") {
+          detailsContent.style.display = "";
+          const ingredientsList = document.getElementById("food-ingredients");
+          ingredientsList.innerHTML = "";
+          (foodDetails.ingredients || []).forEach(ingredient => {
+            const li = document.createElement("li");
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.addEventListener("change", () => {
+              li.classList.toggle("checked", checkbox.checked);
+            });
+            li.appendChild(checkbox);
+            li.appendChild(document.createTextNode(ingredient));
+            ingredientsList.appendChild(li);
           });
 
-          li.appendChild(checkbox);
-          li.appendChild(document.createTextNode(ingredient));
-          ingredientsList.appendChild(li);
-        });
-
-        const instructionsList = document.getElementById("food-instructions");
-        instructionsList.innerHTML = "";
-        (foodDetails.instructions || []).forEach(instruction => {
-          const li = document.createElement("li");
-
-          // Create checkbox
-          const checkbox = document.createElement("input");
-          checkbox.type = "checkbox";
-
-          // Add click event to toggle checked state
-          checkbox.addEventListener("change", () => {
-            li.classList.toggle("checked", checkbox.checked);
+          const instructionsList = document.getElementById("food-instructions");
+          instructionsList.innerHTML = "";
+          (foodDetails.instructions || []).forEach(instruction => {
+            const li = document.createElement("li");
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.addEventListener("change", () => {
+              li.classList.toggle("checked", checkbox.checked);
+            });
+            li.appendChild(checkbox);
+            li.appendChild(document.createTextNode(instruction));
+            instructionsList.appendChild(li);
           });
-
-          li.appendChild(checkbox);
-          li.appendChild(document.createTextNode(instruction));
-          instructionsList.appendChild(li);
-        });
+        } else {
+          detailsContent.style.display = "none";
+        }
       } else {
         document.getElementById("food-name").textContent = "Food not found";
         document.getElementById("food-budget").textContent = "";
         document.getElementById("food-filters").textContent = "";
-        document.getElementById("food-ingredients").innerHTML = "<li>No ingredients available</li>";
-        document.getElementById("food-instructions").innerHTML = "<li>No instructions available</li>";
+        document.getElementById("detailsContent").style.display = "none";
+        document.getElementById("food-link").innerHTML = "";
       }
     }
 
