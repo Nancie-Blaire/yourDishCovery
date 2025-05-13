@@ -178,13 +178,15 @@ modal.style.zIndex = "1000";
 
 modal.innerHTML = `
   <div style="background: white; padding: 20px; border-radius: 12px; text-align: center; width: 90%; max-width: 400px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
-    <h2 style="color: #d88a40; margin-bottom: 15px; font-size: 24px;">You got:</h2>
-    <div id="modal-food-image" style="width: 200px; height: 200px; border-radius: 8px; margin: 0 auto 15px; background-size: cover; background-position: center; border: 3px solid #fdcf3b;"></div>
-    <h3 id="modal-food-name" style="margin-bottom: 20px; font-size: 22px; color: #333;"></h3>
-    <p style="margin-bottom: 20px; color: #666;">Would you like to see more information about this dish?</p>
+    <h2 style="color: #d88a40; margin-bottom: 15px; font-size: 20px;">You got:</h2>
+    <div id="modal-food-image" style="width: 300px; height: 300px; border-radius: 8px; margin: 0 auto 15px; background-size: cover; background-position: center; border: 3px solid #c29339;"></div>
+    
+    <h3 id="modal-food-name" style="margin-bottom: 10px; font-size: 22px; color: #614225; font-family: Play-fair; "></h3>
+    <p style="margin-bottom: 20px; color: #666;">Want to dive into the details?</p>
+    
     <div style="display: flex; justify-content: center; gap: 15px;">
-      <button id="yes-button" style="padding: 12px 24px; background-color: #fdcf3b; color: #333; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: all 0.3s;">YES, TELL ME MORE</button>
-      <button id="no-button" style="padding: 12px 24px; background-color: #f1f1f1; color: #333; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: all 0.3s;">NO THANKS</button>
+      <button id="yes-button" style="padding: 8px 20px;; background-color: #fdcf3b; color: #333; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: all 0.3s;">YES, TELL ME MORE</button>
+      <button id="no-button" style="padding: 8px 20px;; background-color: #f1f1f1; color: #333; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: all 0.3s;">NO THANKS</button>
     </div>
   </div>
 `;
