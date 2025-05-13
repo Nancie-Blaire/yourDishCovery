@@ -117,13 +117,19 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     background: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
+  }
+  
+  .modal[style*="display: block"] {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
   }
 
   .modal-content {
@@ -137,12 +143,16 @@
 
   .modal-content h1 {
     margin-bottom: 20px;
-  }
+    font-size: 28px;
+    margin-top: 20px;
+}
+  
 
   .modal-content label {
     display: block;
     margin-bottom: 10px;
-    font-weight: bold;
+    font-weight: lighter;
+    text-align: left;
   }
 
   .modal-content input,
@@ -150,7 +160,7 @@
     width: 100%;
     padding: 10px;
     margin-bottom: 20px;
-    border: 1px solid #ccc;
+    border: 1px solid #c78456;
     border-radius: 4px;
   }
 
@@ -163,13 +173,14 @@
   }
 
   .modal-content button#applyButton {
-    background-color: #4caf50;
+    background-color:#8a5b3b;
     color: white;
   }
 
   .modal-content button#closeModalButton {
-    background-color: #f44336;
-    color: white;
+    border: 2px solid #c78456;
+    color: black;
+    padding: 8px 20px;
   }
   </style>
 </head>
@@ -198,7 +209,7 @@
 
   <div id="preference-modal" class="modal" style="display: none;">
     <div class="modal-content">
-      <h1>Set Your Budget</h1>
+      <h1>Set Your Preferences</h1>
       <label for="budgetRange">Enter your budget range (e.g., 0-300):</label>
       <input type="text" id="budgetRange" placeholder="Enter range (e.g., 0-300)" />
       <label for="filterSelect">Select filters to exclude:</label>
