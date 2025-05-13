@@ -241,10 +241,24 @@ main p {
     content: "❯";
     position: absolute;
     right: 15px;
-    top: 10px; /* Use absolute pixels instead of percentage */
+    top: 9px; /* Use absolute pixels instead of percentage */
     transition: transform 0.3s ease;
     display: inline-block;
     font-size: 14px;
+     color: #e9a96b;
+}
+
+.dropdown-menu li a {
+    color: #e9a96b !important; /* Force the color to match other sidebar items */
+}
+
+/* Ensure the dropdown menu text has the correct color when displayed */
+.dropdown-menu.show a {
+    color: #e9a96b;
+}
+
+#sidebar .dropdown-toggle span {
+    color: #e9a96b;
 }
 
 /* Only add rotation without any translation */
