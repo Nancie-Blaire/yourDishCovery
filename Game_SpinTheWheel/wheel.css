@@ -5,10 +5,37 @@
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
-body {
-  height: 100vh;
-  background: linear-gradient(135deg, #fae6a3, #ffc444);
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
+
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1; /* Ensure it stays behind everything */
+  overflow: hidden;
+}
+
+/* Style the background image */
+.bg-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  min-width: 100%;
+  min-height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  z-index: -1;
+}
+
 .wrapper {
   width: 90%;
   max-width: 34.37em;
@@ -73,6 +100,51 @@ img {
   margin-top: 1.5em;
   color: #202020;
   font-weight: 500;
+}
+
+#home-logo {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  margin: 0;
+  text-align: left;
+  text-decoration: none;
+  z-index: 10;
+}
+.material-symbols-outlined {
+  font-size: 40px !important;
+  color: #000000;
+  vertical-align: middle;
+}
+
+#games-logo {
+  position: absolute;
+  top: 80px; /* Place it below the home icon (adjust as needed) */
+  left: 24px;
+  margin: 0;
+  text-align: left;
+  text-decoration: none;
+  z-index: 10;
+}
+#games-logo .material-symbols-outlined {
+  font-size: 40px !important;
+  color: #000000; /* Blue, or any color you like */
+  vertical-align: middle;
+}
+
+#home-logo .material-symbols-outlined,
+#games-logo .material-symbols-outlined {
+  font-size: 40px !important;
+  color: #000000;
+  vertical-align: middle;
+  transition: color 0.3s, transform 0.2s cubic-bezier(.34,1.56,.64,1), box-shadow 0.2s;
+}
+
+#home-logo:hover .material-symbols-outlined,
+#games-logo:hover .material-symbols-outlined {
+  color: #9d3f05;
+  transform: scale(1.2);
+  box-shadow: 0 4px 16px rgba(255, 152, 0, 0.15);
 }
 
 @media screen and (max-width: 768px) {

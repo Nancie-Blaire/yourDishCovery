@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DishCovery - List of Games</title>
-  <style>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
   * {
     margin: 0;
     padding: 0;
@@ -148,11 +149,13 @@
 }
   
 
-  .modal-content label {
-    display: block;
+
+
+  .budgetLabel, .selectFilter {
+  display: block;
     margin-bottom: 10px;
     font-weight: lighter;
-    text-align: left;
+    text-align:left;
   }
 
   .modal-content input,
@@ -170,6 +173,8 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    font-family: 'Poppins', Arial, sans-serif;
+    font-weight:bold;
   }
 
   .modal-content button#applyButton {
@@ -178,7 +183,7 @@
   }
 
   .modal-content button#closeModalButton {
-    border: 2px solid #c78456;
+
     color: black;
     padding: 8px 20px;
   }
@@ -200,12 +205,13 @@
   .filter-checkbox-label {
     display: flex;
     align-items: center;
-    padding: 6px 10px;
+
     border-radius: 4px;
     cursor: pointer;
     transition: background 0.2s;
     user-select: none;
     font-weight: normal;
+    margin: 0%;
   }
   .filter-checkbox-label.checked {
     background: #4caf50;
@@ -219,6 +225,7 @@
     border-radius: 4px;
     border: 2px solid #c78456;
     transition: background 0.2s, border 0.2s;
+    margin-bottom:0px;
   }
   .filter-checkbox-label.checked input[type="checkbox"] {
     background: #4caf50;
@@ -252,12 +259,12 @@
   <div id="preference-modal" class="modal" style="display: none;">
     <div class="modal-content">
       <h1>Set Your Preferences</h1>
-      <label for="budgetRange">Enter your budget range (e.g., 0-300):</label>
+      <label for="budgetRange" class="budgetLabel">Enter your budget range (e.g., 0-300):</label>
       <input type="text" id="budgetRange" placeholder="Enter range (e.g., 0-300)" />
-      <label for="filterSelect">Select filters to exclude:</label>
+      <label for="filterSelect" class="selectFilter">Select filters to exclude:</label>
       <div id="filterCheckboxList" class="filter-checkbox-list"></div>
-      <button id="applyButton">Apply</button>
-      <button id="closeModalButton">Close</button>
+      <button id="applyButton">APPLY</button>
+      <button id="closeModalButton">CLOSE</button>
     </div>
   </div>
 
