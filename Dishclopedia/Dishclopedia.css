@@ -122,6 +122,7 @@ body {
     background-color: transparent; /* Removes the white background */
     border: none; /* Removes any border */
     font-family: "Roboto Slab", serif;
+    font-size: 20px;
 }
 
 .dropdown-btn {
@@ -177,7 +178,11 @@ body {
 }
 
 #toggle-btn svg {
-    transition: rotate 150ms ease;
+    transition: transform 0.3s ease; /* Smooth rotation */
+}
+
+#sidebar.close #toggle-btn svg {
+    transform: rotate(180deg); /* Rotate the arrow when the sidebar is closed */
 }
 
 .logo {
@@ -200,85 +205,81 @@ main {
     padding: min(30px, 7%);
 }
 
-main p {
-    color: black;
-    margin-top: 5px;
-    margin-bottom: 15px;
-}
-
-.container {
-    border: 1px solid var(--line-clr);
-    border-radius: 1em;
-    margin-bottom: 20px;
-    padding: min(3em, 15%);
-}
-
-.container h2, .container p {
-    margin-top: 1em;
-}
-
-.username {
-    font-size: 16px; /* Default size */
-    transition: font-size 0.3s ease; /* Smooth transition */
-    padding-left: 0px;
-}
-
-
-/* Modify the dropdown arrow positioning and rotation */
-/* Modify the dropdown arrow positioning and rotation */
+/* Ensure the dropdown toggle aligns properly */
 .dropdown-toggle {
-    cursor: pointer;
+    display: flex;
+    align-items: center; /* Align the SVG and text vertically */
+    gap: 21px; /* Add spacing between the SVG and the text */
     position: relative;
+    padding: 15px; /* Match the padding of other sidebar items */
+    color: #e9a96b;
+    text-decoration: none;
+    font-family: "Roboto Slab", serif;
+    font-size: 20px;
 }
 
-.dropdown-toggle {
-    cursor: pointer;
-    position: relative;
-}
-
-/* Set fixed absolute positioning for the arrow */
+/* Adjust the arrow positioning */
 .dropdown-toggle::after {
     content: "❯";
     position: absolute;
-    right: 15px;
-    top: 9px; /* Use absolute pixels instead of percentage */
+    right: 15px; /* Position the arrow to the far right */
+    top: 50%; /* Center the arrow vertically */
+    transform: translateY(-50%);
     transition: transform 0.3s ease;
-    display: inline-block;
     font-size: 14px;
-     color: #e9a96b;
+    color: #df9144;
 }
 
-.dropdown-menu li a {
-    color: #e9a96b !important; /* Force the color to match other sidebar items */
-}
-
-/* Ensure the dropdown menu text has the correct color when displayed */
-.dropdown-menu.show a {
-    color: #e9a96b;
-}
-
-#sidebar .dropdown-toggle span {
-    color: #e9a96b;
-}
-
-/* Only add rotation without any translation */
+/* Rotate the arrow when the dropdown is open */
 .dropdown-toggle.rotate::after {
-    transform: rotate(90deg);
+    transform: translateY(-50%) rotate(90deg);
 }
 
-/* You may also need to adjust the dropdown-menu styles */
+/* Dropdown menu styles */
 .dropdown-menu {
-    display: none;
-    padding-left: 20px;
-    margin-top: 5px;
+    position: absolute; /* Position the dropdown relative to the parent */
+    top: 100%; /* Place it directly below the toggle */
+    left: 0; /* Align it to the left of the toggle */
+    background-color: #64534b; /* Match the sidebar background */
+    border-radius: 5px; /* Optional: Add rounded corners */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow */
+    z-index: 1000; /* Ensure it appears above other elements */
+    max-height: 0; /* Initially hidden */
     overflow: hidden;
     transition: max-height 0.3s ease-out;
+    padding: 0; /* Remove extra padding */
+    width: 100%; /* Match the width of the parent toggle */
 }
 
 .dropdown-menu.show {
-    display: block;
+    max-height: 200px; /* Adjust based on the content height */
+
 }
 
+.dropdown-menu li {
+    margin: 10; /* Remove extra margin */
+    
+    
+}
+
+
+
+.dropdown-menu li a {
+    padding: 8px 15px;
+    display: block;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.2s;
+    font-family: "Roboto Slab", serif;
+}
+
+.dropdown-menu li a:hover {
+    background-color: var(--hover-clr);
+}
+
+#sidebar.close .dropdown-toggle::after {
+    display: none; /* Hide the dropdown arrow */
+}
 
 /* Card styles */
 .card {
@@ -339,3 +340,4 @@ main p {
 *{
 box-sizing: border-box;
 }
+

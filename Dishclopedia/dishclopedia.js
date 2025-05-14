@@ -3,9 +3,8 @@ const sidebar = document.getElementById('sidebar');
 
 // Function to toggle the sidebar
 function toggleSidebar() {
-    sidebar.classList.toggle('close');
-    toggleButton.classList.toggle('rotate');
-    closeAllDropdowns(); // Close all dropdowns when toggling the sidebar
+    const sidebar = document.getElementById('sidebar');
+    sidebar.classList.toggle('close'); // Toggle the 'close' class on the sidebar
 }
 
 // Function to toggle dropdowns
