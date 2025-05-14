@@ -4,24 +4,32 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Food Info</title>
+   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Poppins', Arial, sans-serif;
       margin: 0;
       padding: 20px;
       background-color: #f4f4f9;
     }
 
-    .container {
+    .container, .container2{
       max-width: 800px;
       margin: 0 auto;
-      background: white;
+      background:#3b240b;
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       position: relative;
     }
 
+    .container2 {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    padding-top: 0px;
+    }
     .header {
       display: flex;
       align-items: center;
@@ -29,8 +37,8 @@
     }
 
     .header img {
-      width: 150px;
-      height: 150px;
+      width: 250px;
+      height: 250px;
       border-radius: 8px;
       object-fit: cover;
     }
@@ -42,23 +50,28 @@
     .header .info h1 {
       margin: 0;
       font-size: 1.8rem;
-      color: #333;
+      color: #ffffff;
     }
 
     .header .info p {
       margin: 5px 0;
       font-size: 1rem;
-      color: #555;
+      color: #ffffff;
     }
 
     .content {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    /* background: crimson; */
+    gap: 20px;
     }
 
     .content .section {
-      width: 48%;
+    width: 48%;
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
     }
 
     .content .section h2 {
@@ -95,46 +108,56 @@
       accent-color: #28a745; /* Green checkbox */
     }
 
-    .buttons {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 20px;
-    }
+   .buttons {
+  display: flex;
+  justify-content: center;
+  gap: 104px;
+  margin-top: 32px;
+}
 
-    .buttons button {
-      padding: 10px 20px;
-      font-size: 1rem;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
+.buttons button {
+  padding: 12px 36px;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: background 0.2s, color 0.2s, transform 0.15s;
+}
 
-    .buttons .back-button {
-      background-color: #fdd835;
-      color: #333;
-    }
+.buttons .back-button {
+  background: #fdd835;
+  color: #333;
+}
 
-    .buttons .back-button:hover {
-      background-color: #fbc02d;
-    }
+.buttons .back-button:hover {
+  background: #fbc02d;
+  color: #000;
+  transform: scale(1.07);
+}
 
-    .buttons .okay-button {
-      background-color: #4caf50;
-      color: white;
-    }
+.buttons .okay-button {
+  background: #ecd8a7;
+  color: #000000;
+}
 
-    .buttons .okay-button:hover {
-      background-color: #45a049;
-    }
-
+.buttons .okay-button:hover {
+  background: #388e3c;
+  color: #fff;
+  transform: scale(1.07);
+}
     .speech-icon {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      width: 50px;
-      height: 50px;
-      cursor: pointer;
-      transition: transform 0.2s ease;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
     }
 
     .speech-icon.enabled {
@@ -142,18 +165,50 @@
     }
 
     .speech-indicator {
-      position: absolute;
-      top: 80px;
-      right: 20px;
-      font-size: 0.9rem;
-      color: #555;
-      text-align: center;
-      width: 70px;
+    position: absolute;
+    top: 80px;
+    right: 20px;
+    font-size: 0.9rem;
+    color: #fff;
+    text-align: center;
+    width: 70px;
+    padding-top: 20px;
     }
+
+
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1; /* Ensure it stays behind everything */
+  overflow: hidden;
+}
+
+/* Style the background image */
+.bg-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  min-width: 100%;
+  min-height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  z-index: -1;
+}
+
   </style>
 </head>
 <body>
+<div class="background">
+    <img src="images/brickwall.jpg" class="bg-img" alt="Cafe Background" />
+  </div>
 
+</div>
   <div class="container">
     <img src="speech.png" alt="Speech Icon" class="speech-icon" id="speechIcon" />
     <div class="speech-indicator" id="speechIndicator">Disabled</div>
@@ -163,13 +218,20 @@
         <h1 id="food-name">Loading...</h1>
         <p id="food-budget">Estimated budget: Loading...</p>
         <p id="food-filters">Filters included: Loading...</p>
-        <div id="food-link" style="margin-top:8px;"></div>
+        <div id="food-link" style="margin-top:8px;color: white;"></div>
       </div>
     </div>
-    <div id="food-description" style="margin: 18px 0 0 0; font-size: 1.08rem; color: #444; background: #f8f8f8; border-radius: 6px; padding: 14px 18px; display: none;">
+    <div id="food-description" style="margin: 18px 0px 0px;
+    font-size: 0.9rem;
+    color: rgb(5 0 0);
+    background: #fff;
+    border-radius: 6px;
+    padding: 14px 18px;">
       <strong>Description:</strong>
       <span id="food-description-text"></span>
     </div>
+    </div>
+   <div class=" container2">
     <div class="content" id="detailsContent" style="display:none;">
       <div class="section">
         <h2>Ingredients:</h2>
@@ -183,12 +245,19 @@
           <!-- Instructions will be dynamically populated -->
         </ul>
       </div>
+      </div>
+<div class="buttons">
+  <button class="back-button" onclick="window.location.href='../listofgames.html'">
+    <span class="material-symbols-outlined" style="vertical-align: middle; margin-right: 8px;">stadia_controller</span>
+    Back
+  </button>
+  <button class="okay-button" onclick="window.location.href='../index.html'">
+    <span class="material-symbols-outlined" style="vertical-align: middle; margin-right: 8px;">house</span>
+    Okay
+  </button>
+</div>
     </div>
-    <div class="buttons">
-      <button class="back-button" onclick="history.back()">Back</button>
-      <button class="okay-button" onclick="alert('Enjoy your meal!')">Okay</button>
-    </div>
-  </div>
+ 
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
