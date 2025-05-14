@@ -487,6 +487,15 @@ function spinWheel() {
 
 // Initialize wheel on page load
 initializeWheel();
+ document.addEventListener("DOMContentLoaded", function() {
+    const gamesLogo = document.getElementById("games-logo");
+    if (gamesLogo) {
+      gamesLogo.addEventListener("click", function(e) {
+        e.preventDefault();
+        history.back();
+      });
+    }
+  });
 
 document.getElementById("home").addEventListener("click", function () {
   window.location.href = "/index.html";
