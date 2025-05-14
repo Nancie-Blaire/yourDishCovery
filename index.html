@@ -18,10 +18,10 @@
     }
 
     .main-section {
-      background: url('mainbg.png') no-repeat center center/cover;
+      background: url('images/mainbg.png') no-repeat center center/cover;
       color: #fff;
       width: 100%;
-      min-height: 200vh; /* since it's two sections worth */
+      min-height: 200vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -30,104 +30,272 @@
       padding: 2rem;
     }
 
+    @media (max-width: 768px) {
+      .main-section {
+        background: url('images/mainbgmobile.png') no-repeat center center/cover;
+        background-attachment: scroll;
+      }
+    }
+
+    .hero-section {
+      margin-bottom: 5%;
+      text-align: center;
+    }
+
     .tagline {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
+      font-size: 4rem;
+      color: #000;
+      margin-right: 20rem;
+      position: relative;
+      display: inline-block;
+      overflow: hidden;
+      background: linear-gradient(90deg, #000000 0%, #fff59b 50%, #000000 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: goldShine 18s linear infinite;
     }
 
-    .description {
-      font-size: 1.2rem;
-      max-width: 800px;
-      margin-bottom: 2rem;
-      line-height: 1.6;
+    @keyframes goldShine {
+      0% { background-position: 200% center; }
+      100% { background-position: -200% center; }
     }
 
-    .start-button {
-      font-size: 1.2rem;
-      background: #c97946;
+    .short-description {
+      font-size: 1rem;
+      max-width: 1100px;
+      padding-bottom: 35rem;
+      color: black;
+      letter-spacing: 3px;
+    }
+
+    .container {
+      display: flex;
+      justify-content: flex-end;
+      width: 100%;
+      margin-top: -30%;
+    }
+
+    .dishcoverypic {
+      max-width: 400px;
+      border-radius: 100px;
+      margin-right: -2%;
+      margin-bottom: 5%;
+      margin-top: 5%;
+    }
+
+    .about {
+      max-width: 500px;
+      border-radius: 100px;
+      margin-right: 72%;
+      margin-bottom: 3%;
+      margin-top: -13%;
+    }
+
+    .aboutdish, .aboutdish2, .aboutdish3 {
+      font-size: 1rem;
+      max-width: 900px;
+      color: black;
+      letter-spacing: 2px;
+      line-height: 1.5;
+      font-family: 'Times New Roman', Times, serif;
+      text-align: left;
+      margin-left: 20%;
+      margin-top: 1.5%;
+    }
+
+    .aboutdish3 {
+      font-size: 1.3rem;
+      margin-top: 3%;
+      font-style: italic;
+      background: linear-gradient(90deg, #000000 0%, #fff59b 50%, #000000 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: goldShine 18s linear infinite;
+    }
+
+    .randomizer-link,
+    .dishclopedia-link {
+      position: absolute;
+      top: 70px;
+      z-index: 1000;
+    }
+
+    .randomizer-link { left: 60px; }
+    .dishclopedia-link { left: 280px; }
+
+    .randomizer-link a,
+    .dishclopedia-link a {
       color: white;
-      padding: 0.6rem 1.5rem;
-      border: none;
-      border-radius: 10px;
       text-decoration: none;
-      transition: transform 0.2s ease;
+      font-size: 1rem;
+      font-family: 'Times New Roman', Times, serif;
+      transition: opacity 0.3s ease;
+      letter-spacing: 3px;
     }
 
-    .start-button:hover {
-      transform: scale(1.05);
+    .randomizer-link a:hover,
+    .dishclopedia-link a:hover {
+      opacity: 0.3;
     }
 
-    .return-top {
-      margin-top: 2rem;
-      font-size: 0.9rem;
-      color: #555;
+    #secret-logo {
+      width: 80px;
+      position: absolute;
+      bottom: 30px;
+      right: 30px;
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.3s ease;
     }
 
+    #secret-logo:hover {
+      opacity: 1;
+    }
+
+    /* Hide mobile About by default */
+    .about-mobile {
+      display: none;
+    }
+
+    /* Responsive styles */
     @media (max-width: 768px) {
       .tagline {
-        font-size: 1.8rem;
+        font-size: 2rem;
+        margin-right: 0;
+        text-align: center;
       }
 
-      .description {
-        font-size: 1rem;
+      .short-description {
+        font-size: 0.9rem;
+        padding-bottom: 10rem;
+        text-align: center;
       }
 
-      .start-button {
-        font-size: 1rem;
+      .hero-section {
+        margin-bottom: 2rem;
       }
+
+      .container {
+        flex-direction: column;
+        align-items: center;
+        margin-top: 0;
+      }
+
+      .dishcoverypic, .about {
+        max-width: 80%;
+        margin: 2rem auto;
+        display: block;
+      }
+
+      .aboutdish, .aboutdish2, .aboutdish3 {
+        font-size: 0.9rem;
+        text-align: center;
+        margin: 1rem auto;
+        margin-top: 1.5%;
+      }
+
+      .randomizer-link, .dishclopedia-link {
+        position: absolute;
+        top: 10px;
+      }
+
+      .randomizer-link { left: 10px; }
+      .dishclopedia-link { right: 10px; left: auto; }
+
+      .randomizer-link a, .dishclopedia-link a {
+        font-size: 0.8rem;
+        letter-spacing: 2px;
+      }
+
+      #secret-logo {
+        width: 60px;
+        bottom: 15px;
+        right: 15px;
+      }
+
+      /* Hide desktop about, show mobile about */
+      .about-desktop { display: none; }
+      .about-mobile { display: block; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Hero Section -->
-  <section class="section-1" id="top">
-    <div>
-      <h1 class="tagline">Your Interactive Food Decision Helper</h1>
-      <p class="description">
-        Search | Find | Eat | Guide | Decide | Help | Indulge | Interact | Guess | Fun | Satisfy | Enjoy | Stress-Free
+  <!-- RANDOMIZER Link -->
+  <div class="randomizer-link">
+    <a href="listofgames.html">RANDOMIZER</a>
+  </div>
+
+  <!-- DISHCLOPEDIA Link -->
+  <div class="dishclopedia-link">
+    <a href="Dishclopedia/dishclopedia.html">DISHCLOPEDIA</a>
+  </div>
+
+  <!-- Main Section -->
+  <section class="main-section" id="top">
+    <!-- Right-aligned image -->
+    <div class="container">
+      <img src="images/dishcovery.png" class="dishcoverypic" />
+    </div>
+
+    <!-- Hero Text -->
+    <div class="hero-section">
+      <h1 class="tagline">Your Interactive Food Discovery Helper</h1>
+      <p class="short-description">
+        Search | Find | Eat | Guide | Decide | Help | Indulge | Interact | Guess | Play | Satisfy | Enjoy | Stress-Free
       </p>
-      <a href="randomizer.html" class="start-button">Start</a>
+    </div>
+
+    <!-- Mobile About Section (hidden on desktop) -->
+    <div class="about-mobile">
+      <div class="container">
+        <img src="images/aboutmain.png" class="about" />
+      </div>
+      <div class="about1">
+        <p class="aboutdish">
+          DishCovery is an interactive food decision helper designed to make choosing what to eat quick, fun, and stress-free. Whether you’re stuck between cravings or just looking for inspiration, DishCovery guides you through a simple process to help you discover the perfect meal tailored to your mood, preferences, and available time.
+        </p>
+      </div>
+      <div class="about2">
+        <p class="aboutdish2">
+          Don’t know what to cook? We’ve got recipe suggestions. Want to grab something fast? We’ll help you decide. DishCovery takes the guesswork out of mealtime and turns decision-making into a delightful experience.
+        </p>
+      </div>
+      <div class="about3">
+        <p class="aboutdish3"><b>Start your food journey with DishCovery! Because great meals begin with great decisions.</b></p>
+      </div>
     </div>
   </section>
 
-  <!-- About Section -->
-  <section class="section-2">
-    <div>
-      <h2>About <img src="images/signboard.png" alt="DishCovery Logo" style="width: 100px; vertical-align: middle;"></h2>
-      <p class="description">
+  <!-- Desktop About Section (hidden on mobile) -->
+  <div class="about-desktop">
+    <div class="container">
+      <img src="images/aboutmain.png" class="about" />
+    </div>
+    <div class="about1">
+      <p class="aboutdish">
         DishCovery is an interactive food decision helper designed to make choosing what to eat quick, fun, and stress-free. Whether you’re stuck between cravings or just looking for inspiration, DishCovery guides you through a simple process to help you discover the perfect meal tailored to your mood, preferences, and available time.
-        <br><br>
-        Don’t know what to cook? We’ve got recipe suggestions. Want to grab something fast? We’ll help you decide. DishCovery takes the guesswork out of mealtime and turns decision-making into a delightful experience.
-        <br><br>
-        Start your food journey with <strong>DishCovery</strong>! Because great meals begin with great decisions.
       </p>
-      <a href="#top" class="return-top">↑ Return to Top</a>
     </div>
-  </section>
+    <div class="about2">
+      <p class="aboutdish2">
+        Don’t know what to cook? We’ve got recipe suggestions. Want to grab something fast? We’ll help you decide. DishCovery takes the guesswork out of mealtime and turns decision-making into a delightful experience.
+      </p>
+    </div>
+    <div class="about3">
+      <p class="aboutdish3"><b>Start your food journey with DishCovery! Because great meals begin with great decisions.</b></p>
+    </div>
+  </div>
 
-  <!-- Secret Triple Tap Redirect -->
+  <!-- Secret Admin Access -->
+  <img id="secret-logo" src="images/dishcovery.png" alt="Admin Access" ondblclick="redirectToAdmin()" />
+
   <script>
-    const signboard = document.querySelector('img[alt="DishCovery Logo"]');
-    let tapCount = 0;
-    let timeout;
-
-    signboard.addEventListener('click', () => {
-      tapCount++;
-
-      if (tapCount === 1) {
-        timeout = setTimeout(() => {
-          tapCount = 0;
-        }, 1000);
-      }
-
-      if (tapCount === 3) {
-        clearTimeout(timeout);
-        tapCount = 0;
-        window.location.href = 'admin-login/login.html';
-      }
-    });
+    function redirectToAdmin() {
+      window.location.href = "admin-login/login.html";
+    }
   </script>
-
 </body>
 </html>
