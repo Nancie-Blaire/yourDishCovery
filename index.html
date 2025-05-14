@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://fonts.googleapis.com/css2?family=Mansalva&display=swap" rel="stylesheet">
-
   <title>DishCovery - Homepage</title>
   <style>
     * {
@@ -13,179 +12,122 @@
       box-sizing: border-box;
     }
 
-    html, body {
-      height: 100%;
+    body {
+      font-family: 'Mansalva', cursive;
+      scroll-behavior: smooth;
+    }
+
+    .main-section {
+      background: url('mainbg.png') no-repeat center center/cover;
+      color: #fff;
       width: 100%;
-      overflow: hidden;
-    }
-
-    .background {
-      position: relative;
-      width: 100vw;
-      height: 100vh;
-    }
-
-    .bg-img {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: 0;
-    }
-
-    .tree {
-      position: absolute;
-      top: -55vh;
-      left: 0;
-      width: 35vw;
-      max-width: 500px;
-      z-index: 2;
-    }
-
-    .dishcovery-sign {
-      position: absolute;
-      top: -3%;
-      right: -1%;
-      width: 30vw;
-      max-width: 500px;
-      z-index: 3;
-    }
-
-    .menu-board-container {
-      position: absolute;
-      top: 80%;
-      right: -1%;
-      width: 25vw;
-      max-width: 400px;
-      z-index: 3;
-      transform: translateY(-50%);
+      min-height: 200vh; /* since it's two sections worth */
       display: flex;
+      flex-direction: column;
       justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
     }
 
-    .menu-board {
-      width: 100%;
+    .tagline {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
 
+    .description {
+      font-size: 1.2rem;
+      max-width: 800px;
+      margin-bottom: 2rem;
+      line-height: 1.6;
     }
 
     .start-button {
-      position: absolute;
-      font-size: clamp(1.2rem, 2.5vw, 2.2rem);
-      font-family: 'Mansalva', cursive;
-      padding: clamp(6px, 1.5vw, 14px) clamp(10px, 2vw, 22px);
+      font-size: 1.2rem;
+      background: #c97946;
+      color: white;
+      padding: 0.6rem 1.5rem;
+      border: none;
       border-radius: 10px;
-      cursor: pointer;
-      z-index: 4;
-      transition: all 0.2s ease;
       text-decoration: none;
-      color: #fffefe;
-      top: 40%;
-      left: 67%;
-      transform: translate(-50%, -50%);
+      transition: transform 0.2s ease;
     }
-
 
     .start-button:hover {
-
-      transform: translate(-50%, -50%) scale(1.05);
+      transform: scale(1.05);
     }
 
+    .return-top {
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      color: #555;
+    }
 
     @media (max-width: 768px) {
-      .tree {
-        width: 50vw;
-        top: -40vh;
+      .tagline {
+        font-size: 1.8rem;
       }
 
-      .dishcovery-sign {
-        top: -5%;
-        width: 60vw;
+      .description {
+        font-size: 1rem;
       }
 
-      .menu-board-container {
-        top: 90%;
-        width: 50vw;
-        right: -2%;
-      }
-
-      .start-button {
-        font-size: 2rem;
-        padding: 8px 18px;
-      }
-    }
-
-    @media (max-width: 579px) {
-      .start-button {
-        font-size: 2rem;
-        padding: 6px 14px;
-      }
-
-      .tree {
-        width: 50vw;
-        top: -40vh;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .tree {
-        width:60vw;
-        top: -25vh;
-      }
-
-      .dishcovery-sign {
-        top: -2%;
-        width: 70vw;
-      }
-      
-      .menu-board-container {
-        top: 80%;
-        width: 50vw;
-        right: -2%;
-      }
-      
       .start-button {
         font-size: 1rem;
-        padding: 6px 12px;
       }
-
-
     }
   </style>
 </head>
 <body>
-  <div class="background">
-    <img src="images/homeBg.jpg" class="bg-img" alt="Cafe Background" />
-    <img src="images/signboard.png" class="dishcovery-sign" alt="DishCovery Sign" />
-    <img src="images/tree.png" class="tree" alt="Tree" />
-    <div class="menu-board-container">
-      <img src="images/menu-board.png" class="menu-board" alt="Menu Board" />
-      <a href="categories.html?param1=value1&param2=value2" class="start-button" onclick="console.log('User clicked START button on the homepage');">START</a>
-    </div>
-  </div>
 
+  <!-- Hero Section -->
+  <section class="section-1" id="top">
+    <div>
+      <h1 class="tagline">Your Interactive Food Decision Helper</h1>
+      <p class="description">
+        Search | Find | Eat | Guide | Decide | Help | Indulge | Interact | Guess | Fun | Satisfy | Enjoy | Stress-Free
+      </p>
+      <a href="randomizer.html" class="start-button">Start</a>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="section-2">
+    <div>
+      <h2>About <img src="images/signboard.png" alt="DishCovery Logo" style="width: 100px; vertical-align: middle;"></h2>
+      <p class="description">
+        DishCovery is an interactive food decision helper designed to make choosing what to eat quick, fun, and stress-free. Whether you’re stuck between cravings or just looking for inspiration, DishCovery guides you through a simple process to help you discover the perfect meal tailored to your mood, preferences, and available time.
+        <br><br>
+        Don’t know what to cook? We’ve got recipe suggestions. Want to grab something fast? We’ll help you decide. DishCovery takes the guesswork out of mealtime and turns decision-making into a delightful experience.
+        <br><br>
+        Start your food journey with <strong>DishCovery</strong>! Because great meals begin with great decisions.
+      </p>
+      <a href="#top" class="return-top">↑ Return to Top</a>
+    </div>
+  </section>
+
+  <!-- Secret Triple Tap Redirect -->
   <script>
-    const signboard = document.querySelector('.dishcovery-sign');
+    const signboard = document.querySelector('img[alt="DishCovery Logo"]');
     let tapCount = 0;
     let timeout;
-  
+
     signboard.addEventListener('click', () => {
       tapCount++;
-  
+
       if (tapCount === 1) {
-        // Start/reset timeout on first tap
         timeout = setTimeout(() => {
           tapCount = 0;
-        }, 1000); // 1 second window to do 3 taps
+        }, 1000);
       }
-  
+
       if (tapCount === 3) {
         clearTimeout(timeout);
         tapCount = 0;
-        // Redirect to login page
         window.location.href = 'admin-login/login.html';
       }
     });
   </script>
-  
+
 </body>
 </html>
