@@ -1,0 +1,386 @@
+/* ...existing code moved from <style> in HTML... */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+}
+
+.background {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
+.bg-img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.user-plate {
+  border: none;
+  background: none;
+  padding: 0;
+  position: absolute;
+  top: 75vh;
+  left: 52vw;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  align-items: center;
+}
+.system-plate {
+  border: none;
+  background: none;
+  padding: 0;
+  position: absolute;
+  top: 27vh;
+  left: 52vw;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  align-items: center;
+}
+
+.user-plate img,
+.system-plate img {
+  width: 50vw;
+  max-width: 230px;
+  height: auto;
+  transition: transform 0.2s ease;
+  display: block;
+  margin: 10px auto;
+  object-fit: cover;
+  border-radius: 10%;
+}
+
+.image-spoon{
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  position: absolute;
+  top: 63vh;
+  left: -6vw;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.image-fork{
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  position: absolute;
+  top: 63vh;
+  left: 20vw;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.image-knife{
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  position: absolute;
+  top: 63vh;
+  left: -2vw;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.image-spoon img,
+.image-fork img,
+.image-knife img {
+  width: 25vw;
+  max-width: 70px;
+  height: auto;
+  border-radius: 10%;
+  transition: transform 0.2s ease;
+  display: block;
+  margin: 10px auto;
+}
+
+/*Hover Effect*/
+.image-spoon img:hover,
+.image-fork img:hover,
+.image-knife img:hover {
+  transform: scale(1.40);
+}
+
+.image-spoon img.clicked,
+.image-fork img.clicked,
+.image-knife img.clicked {
+  transform: scale(1.50);
+}
+.system-image-spoon{
+  border: none;
+  background: none;
+  padding: 0;
+  position: absolute;
+  top: 18vh;
+  left: -6vw;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.system-image-fork{
+  border: none;
+  background: none;
+  padding: 0;
+  position: absolute;
+  top: 18vh;
+  left: 20vw;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.system-image-knife{
+  border: none;
+  background: none;
+  padding: 0;
+  position: absolute;
+  top: 18vh;
+  left: -2vw;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.system-image-spoon img,
+.system-image-fork img,
+.system-image-knife img {
+  width: 25vw;
+  max-width: 70px;
+  height: auto;
+  border-radius: 10%;
+  transition: transform 0.2s ease;
+  display: block;
+  margin: 10px auto;
+}
+
+.fetched-food {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10%;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.user-food {
+  top: 60vh; /* Adjust to position above the user plate */
+  left: 52vw;
+  transform: translate(-50%, -50%);
+}
+
+.system-food {
+  top: 20vh; /* Adjust to position above the system plate */
+  left: 52vw;
+  transform: translate(-50%, -50%);
+}
+
+.fetched-food img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 10%;
+}
+
+@media (max-width: 1080px) {
+  .user-plate img,
+  .system-plate img {
+    width: 50vw;
+    max-width: 170px;
+  }
+  .user-plate {
+    top: 70vh;
+    left: 53vw;}
+  .system-plate {
+    top: 33vh;
+    left: 53vw;
+  }
+  .image-spoon,
+  .image-fork,
+  .image-knife {
+    top: 50vh;
+  }
+  .image-spoon img:hover,
+  .image-fork img:hover,
+  .image-knife img:hover {
+    transform: scale(1.40);
+  }
+  .system-image-spoon,
+  .system-image-fork,
+  .system-image-knife {
+    top: 15vh;
+  }
+  .image-spoon img,
+  .image-fork img,
+  .image-knife img,
+  .system-image-spoon img,
+  .system-image-fork img,
+  .system-image-knife img {
+    width: 25vw;
+    max-width: 60px;
+  }
+  .image-spoon {
+    left: -8vw;
+  }
+  .image-fork {
+    left: 22vw;
+  }
+  .image-knife {
+    left: -3vw;
+  }
+  .system-image-spoon {
+    left: -8vw;
+  }
+  .system-image-fork {
+    left: 22vw;
+  }
+  .system-image-knife {
+    left: -3vw;
+  }
+}
+
+/* Tablets (768px and below) */
+@media (max-width: 768px) {
+  .user-plate img,
+  .system-plate img {
+    width: 50vw;
+    max-width: 150px;
+  }
+  .user-plate {
+    top: 67vh;
+    left: 55vw;}
+  .system-plate {
+    top: 35vh;
+    left: 55vw;
+  }
+  .image-spoon,
+  .image-fork,
+  .image-knife {
+    top: 48vh;
+  }
+  .image-spoon img:hover,
+  .image-fork img:hover,
+  .image-knife img:hover {
+    transform: scale(1.40);
+  }
+  .system-image-spoon,
+  .system-image-fork,
+  .system-image-knife {
+    top: 15vh;
+  }
+  .image-spoon img,
+  .image-fork img,
+  .image-knife img,
+  .system-image-spoon img,
+  .system-image-fork img,
+  .system-image-knife img {
+    width: 25vw;
+    max-width: 55px;
+  }
+  .image-spoon {
+    left: -15vw;
+  }
+  .image-fork {
+    left: 37vw;
+  }
+  .image-knife {
+    left: -4vw;
+  }
+  .system-image-spoon {
+    left: -15vw;
+  }
+  .system-image-fork {
+    left: 37vw;
+  }
+  .system-image-knife {
+    left: -4vw;
+  }
+}
+
+/* Mobile phones (480px and below) */
+@media only screen and (max-width: 414px) {
+  .bg-img {
+    position: absolute;
+    left: -14%; /* Shift background to the left */
+    width: 120%; /* Slightly increase width to cover the shifted area */
+  }
+  .user-plate {
+    top: 70vh;
+    left: 53%;
+  }
+  .system-plate {
+    top: 33vh;
+    left: 53%;
+  }
+  /* Adjust utensil positions */
+  .image-spoon {
+    left: -45%;
+    top: 50vh;
+  }
+  .image-fork {
+    left: 130%;
+    top: 50vh;
+  }
+  .image-knife {
+    left: -19%;
+    top: 50vh;
+  }
+  .system-image-spoon {
+    left: -45%;
+    top: 15vh;
+  }
+  .system-image-fork {
+    left: 130%;
+    top: 15vh;
+  }
+  .system-image-knife {
+    left: -19%;
+    top: 15vh;
+  }
+  /* Adjust image sizes if needed */
+  .image-spoon img,
+  .image-fork img,
+  .image-knife img,
+  .system-image-spoon img,
+  .system-image-fork img,
+  .system-image-knife img {
+    max-width: 50px;
+  }
+  .image-spoon img:hover,
+  .image-fork img:hover,
+  .image-knife img:hover {
+    transform: scale(1.40);
+  }
+}
