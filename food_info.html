@@ -247,7 +247,7 @@
       </div>
       </div>
 <div class="buttons">
-  <button class="back-button"></button>
+  <button class="back-button" onclick="window.location.href='../listofgames.html'">
     <span class="material-symbols-outlined" style="vertical-align: middle; margin-right: 8px;">stadia_controller</span>
     Back
   </button>
@@ -450,7 +450,7 @@
       recognition.lang = "en-US";
 
       recognition.onstart = () => {
-        console.log("Speech recognition started.");
+        console.log("Speech recognition started");
         speechIndicator.textContent = "Listening...";
       };
 
@@ -458,7 +458,7 @@
         const transcript = event.results[0][0].transcript.trim().toLowerCase();
         console.log("Heard:", transcript);
 
-        if (transcript === "tell me the instructions") {
+        if (transcript === "tell me the instructions.") {
           const instructions = Array.from(document.querySelectorAll("#food-instructions li"))
             .map(li => li.textContent.trim())
             .join(", ");
@@ -522,17 +522,6 @@
         }
       }
     });
-
-    initializeWheel();
- document.addEventListener("DOMContentLoaded", function() {
-    const gamesLogo = document.getElementById("back-button");
-    if (gamesLogo) {
-      gamesLogo.addEventListener("click", function(e) {
-        e.preventDefault();
-        history.back();
-      });
-    }
-  });
   </script>
 </body>
 </html>

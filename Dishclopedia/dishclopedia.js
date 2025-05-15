@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+  
     // Static home cards click handler
     document.querySelectorAll('#home-static-cards .card-link').forEach(link => {
         link.addEventListener('click', function (e) {

@@ -21,10 +21,6 @@
 
   <nav id="sidebar">
     <ul>
-    <div id="search-container">
-        <input type="text" id="search-input" placeholder="Search dishes...">
-        <button id="search-btn">Search</button>
-    </div>
         <button onclick="toggleSidebar()" id="toggle-btn">
           <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m313-480 155 156q11 11 11.5 27.5T468-268q-11 11-28 11t-28-11L228-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l184-184q11-11 27.5-11.5T468-692q11 11 11 28t-11 28L313-480Zm264 0 155 156q11 11 11.5 27.5T732-268q-11 11-28 11t-28-11L492-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l184-184q11-11 27.5-11.5T732-692q11 11 11 28t-11 28L577-480Z"/></svg>
         </button>
@@ -63,6 +59,19 @@
 <!-- Add this where you want the cards to appear -->
 <main>
   <main>
+        <div id="search-container">
+        <input type="text" id="search-input" placeholder="Search dishes...">
+        <button id="search-btn">Search</button>
+    </div>
+
+    <h1 id="app-title">DISHCLOPEDIA</h1>
+
+
+
+
+
+
+
   <div class="static-card-container" id="home-static-cards">
     <div class="card">
       <a href="#" class="card-link" data-category="home">
@@ -124,22 +133,24 @@
   const db = firebase.database();
 
   // Helper to render cards for a given category
-     function renderCardsForCategory(category) {
+   function renderCardsForCategory(category) {
         const cardContainer = document.querySelector('.card-container');
         const staticCards = document.getElementById('home-static-cards');
-        // Show static cards only for 'static-home'
         if (staticCards) {
             staticCards.style.display = (category === 'static-home') ? 'flex' : 'none';
         }
         cardContainer.innerHTML = "";
-        // Only fetch and show dynamic cards if NOT 'static-home'
-        if (category !== 'static-home') {
+        const allowedCategories = ['home', 'jollibee', 'mcdo', 'kfc'];
+        if (category !== 'static-home' && allowedCategories.includes(category)) {
             db.ref('recipes/' + category).once('value').then(snapshot => {
                 let found = false;
+                const shownRecipes = new Set();
                 snapshot.forEach(childSnapshot => {
                     const recipe = childSnapshot.val();
-                    if (recipe.name && recipe.image) {
+                    const recipeName = recipe.name && recipe.name.toLowerCase();
+                    if (recipe.name && recipe.image && !shownRecipes.has(recipeName)) {
                         found = true;
+                        shownRecipes.add(recipeName);
                         const card = document.createElement('div');
                         card.className = 'card';
                         card.innerHTML = `

@@ -132,6 +132,7 @@ body {
 #sidebar svg {
     flex-shrink: 0;
     fill: var(--text-clr);
+    
 }
 
 #sidebar a span, #sidebar .dropdown-btn span {
@@ -169,21 +170,25 @@ body {
 }
 
 #toggle-btn {
-    margin-left: auto;   /* Pushes it to the right */
-    margin-right: 0;
+    margin-left: 80%;
     padding: 5px;
     border: none;
     border-radius: .5em;
     background: none;
     cursor: pointer;
+    transition: transform 0.3s ease; /* Add transition for movement */
 }
 
 #toggle-btn svg {
     transition: transform 0.3s ease; /* Smooth rotation */
 }
 
+#sidebar.close #toggle-btn {
+    transform: translateX(-30px); /* Moves button 20px to the left */
+}
+
 #sidebar.close #toggle-btn svg {
-    transform: rotate(180deg); /* Rotate the arrow when the sidebar is closed */
+    transform: rotate(180deg);
 }
 
 .logo {
@@ -348,4 +353,55 @@ box-sizing: border-box;
   gap: 24px;           /* space between cards */
   justify-content: center;
   padding: 32px 0;     /* space above and below the cards */
+}
+
+#search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 10px;
+    position: relative;
+    font-family: "Roboto Slab", serif;
+    font-size: 16px;
+    width: 30%;
+    left: 70%;
+    top: -40px; /* <-- Moves it up */
+}
+
+#search-input {
+    padding: 8px 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+    flex: 1;                    /* Optional: makes it stretch */
+    min-width: 100px;
+}
+
+#search-btn {
+    padding: 8px 16px;
+    background-color: #c78456;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 16px;
+}
+
+#search-btn:hover {
+    background-color: #2980b9;
+}
+
+#app-title {
+    font-family: "Roboto Slab", serif; /* Stylish font */
+    font-size: 300%;         /* Adjust as needed */
+    font-weight: bold;
+    color: #a54d16;          /* Dark, elegant */
+    text-align: center;      /* Center it */
+    margin-top: 20px;
+    margin-bottom: 10px;
+    position: relative;      /* Allows you to move it with top/left */
+    top: -10px;              /* Move it up slightly if needed */
 }
