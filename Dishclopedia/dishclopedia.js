@@ -49,13 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Static home cards click handler
-    document.querySelectorAll('#home-static-cards .card-link').forEach(link => {
-        link.addEventListener('click', function (e) {
-            e.preventDefault();
-            const category = this.getAttribute('data-category');
-            renderCardsForCategory(category);
-        });
-    });
+
 
     // Search button handler (should only be added once)
     const searchBtn = document.getElementById('search-btn');
