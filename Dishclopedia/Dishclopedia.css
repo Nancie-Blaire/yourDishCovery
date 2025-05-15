@@ -398,10 +398,40 @@ box-sizing: border-box;
     font-family: "Roboto Slab", serif; /* Stylish font */
     font-size: 300%;         /* Adjust as needed */
     font-weight: bold;
-    color: #a54d16;          /* Dark, elegant */
+    color: #ffffff;         /* Dark, elegant */
     text-align: center;      /* Center it */
     margin-top: 20px;
     margin-bottom: 10px;
     position: relative;      /* Allows you to move it with top/left */
-    top: -10px;              /* Move it up slightly if needed */
+    top: -15vh;              /* Move it up slightly if needed */
+    border: 2px solid #ffffff;     /* Border width, style, color */
+    padding: 10px 20px;            /* Space inside the border */
+    border-radius: 8px;            /* Rounded corners (optional) */
+    display: inline-block;         /* Keeps width to content size */
+    background-color: #584237;     /* Optional background inside the border */
+
+}
+#intro-text {
+    font-family: "Roboto Slab", serif;
+    font-size: 18px;
+    line-height: 1.6;
+    color: #2c3e50;
+    background-color: #fdfdfd;
+    padding: 20px 25px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+
+    width: 90%;             /* Adjust width as needed */
+    margin: 20px auto;      /* Center horizontally with margin */
+    position: relative;     /* Makes it movable with top/left if needed */
+    top: -15vh;             /* Adjust vertical position */
+    left: -8vh
+}
+
+#intro-text .tagline {
+    font-weight: bold;
+    font-size: 20px;
+    margin-top: 15px;
+    color: #e67e22;         /* Highlighted call-to-action */
 }
