@@ -247,7 +247,7 @@
       </div>
       </div>
 <div class="buttons">
-  <button class="back-button" onclick="window.location.href='../listofgames.html'">
+  <button class="back-button"></button>
     <span class="material-symbols-outlined" style="vertical-align: middle; margin-right: 8px;">stadia_controller</span>
     Back
   </button>
@@ -522,6 +522,17 @@
         }
       }
     });
+
+    initializeWheel();
+ document.addEventListener("DOMContentLoaded", function() {
+    const gamesLogo = document.getElementById("back-button");
+    if (gamesLogo) {
+      gamesLogo.addEventListener("click", function(e) {
+        e.preventDefault();
+        history.back();
+      });
+    }
+  });
   </script>
 </body>
 </html>

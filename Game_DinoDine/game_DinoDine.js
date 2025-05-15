@@ -223,6 +223,21 @@ function clearScreen() {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 
+function showFoodInfoModal(foodName, foodImage) {
+  const modal = document.getElementById("food-info-modal");
+  if (!modal) return;
+  document.getElementById("modal-food-image").style.backgroundImage = `url(${foodImage.src})`;
+  document.getElementById("modal-food-name").textContent = foodName;
+  modal.style.display = "flex";
+  document.getElementById("yes-button").onclick = () => {
+    window.location.href = `/food_info.html?food=${encodeURIComponent(foodName)}`;
+  };
+  document.getElementById("no-button").onclick = () => {
+    modal.style.display = "none";
+    // Optionally, allow replay/reset here if needed
+  };
+}
+
 function gameLoop(currentTime) {
   if (previousTime === null) {
     previousTime = currentTime;
@@ -268,6 +283,13 @@ function gameLoop(currentTime) {
         h2Element.classList.add("got-food");
         h2Element.textContent = `You got: ${foodName}`;
       }
+
+      // Show modal popup for food info
+      // Find the food image object by id
+      const foodObj = foodController.foodImages.find(f => f.id === collidedFood.id);
+      if (foodObj) {
+        showFoodInfoModal(foodName, foodObj.image);
+      }
     }
   }
 
@@ -301,60 +323,79 @@ function getFoodNameFromId(foodId) {
   return food ? food.name : "Unknown Food";
 }
 
-async function fetchFoods(category) {
+async function fetchFoods(category, minBudget, maxBudget, excludeFilters) {
   const foods = [];
   const snapshot = await get(ref(db, `recipes/${category}`));
 
   if (snapshot.exists()) {
     const recipes = snapshot.val();
-    console.log(`Fetched recipes for category "${category}":`, Object.keys(recipes)); // Log only keys for brevity
-
-    let idCounter = 1; // Counter for generating placeholder IDs
+    let idCounter = 1;
     for (const key in recipes) {
-      if (recipes[key].name && recipes[key].image) {
-        const placeholderId = `id${idCounter++}`; // Generate placeholder ID (e.g., id1, id2)
+      const recipe = recipes[key];
+      // Use 'budget' property (not 'price')
+      const budget = Number(recipe.budget);
+      // Parse filters as array
+      const recipeFilters = recipe.filters
+        ? recipe.filters.split(",").map(f => f.trim().toLowerCase())
+        : [];
+      // Check budget
+      const inBudget = !isNaN(budget) && budget >= minBudget && budget <= maxBudget;
+      // Check if any excluded filter is present
+      const hasExcludedFilter = excludeFilters.some(f =>
+        recipeFilters.includes(f.toLowerCase())
+      );
+      if (
+        recipe.name &&
+        recipe.image &&
+        inBudget &&
+        !hasExcludedFilter
+      ) {
+        const placeholderId = `id${idCounter++}`;
         foodMapping[placeholderId] = {
-          name: recipes[key].name,
-          image: recipes[key].image,
-        }; // Map placeholder ID to food details
-
+          name: recipe.name,
+          image: recipe.image,
+        };
         foods.push({
-          id: placeholderId, // Use the placeholder ID
-          name: recipes[key].name,
-          image: recipes[key].image, // Base64 string
-          width: 110 / 1.5, // Default width
-          height: 100 / 1.5, // Default height
+          id: placeholderId,
+          name: recipe.name,
+          image: recipe.image,
+          width: 110 / 1.5,
+          height: 100 / 1.5,
         });
-      } else {
-        console.warn(`Skipped recipe without name or image:`, key); // Log only the key
       }
     }
-  } else {
-    console.warn(`No recipes found in category: ${category}`);
   }
-
-  console.log(`Fetched foods for category "${category}":`, foods.map(food => food.name)); // Log only names
-  console.log(`Food mapping:`, foodMapping); // Log the mapping for debugging
   return foods;
 }
 
 async function initializeGame() {
   const urlParams = new URLSearchParams(window.location.search);
-  const category = urlParams.get("category") || "random"; // Default to "random" if no category is specified
+  const category = urlParams.get("category") || "random";
+  // Parse budgetRange (e.g., "0-300")
+  let minBudget = 0, maxBudget = Infinity;
+  const budgetRange = urlParams.get("budgetRange");
+  if (budgetRange && /^\d+-\d+$/.test(budgetRange)) {
+    [minBudget, maxBudget] = budgetRange.split("-").map(Number);
+  }
+  // Parse filters (comma-separated)
+  const filtersParam = urlParams.get("filters");
+  const excludeFilters = filtersParam
+    ? filtersParam.split(",").map(f => f.trim()).filter(f => f)
+    : [];
 
-  const fetchedFoods = await fetchFoods(category);
+  const fetchedFoods = await fetchFoods(category, minBudget, maxBudget, excludeFilters);
 
   if (fetchedFoods.length === 0) {
-    alert("No foods available for this category.");
+    alert("No foods available for this category and preferences.");
     return;
   }
 
   const foodImages = fetchedFoods.map((food) => {
     const image = new Image();
-    image.src = food.image; // Set the Base64 string as the image source
+    image.src = food.image;
     return {
-      id: food.id, // Include the placeholder ID for matching
-      image: image, // Image object
+      id: food.id,
+      image: image,
       name: food.name,
       width: food.width * scaleRatio,
       height: food.height * scaleRatio,

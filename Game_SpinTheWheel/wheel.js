@@ -431,7 +431,7 @@ async function initializeWheel() {
         tooltip: false,
         legend: { display: false },
         datalabels: {
-          color: "#000",
+          color: "#FFF",
           formatter: (_, context) => context.chart.data.labels[context.dataIndex],
           font: (context) => {
             const label = context.chart.data.labels[context.dataIndex];
