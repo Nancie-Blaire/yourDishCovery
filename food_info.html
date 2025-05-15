@@ -458,7 +458,7 @@
         const transcript = event.results[0][0].transcript.trim().toLowerCase();
         console.log("Heard:", transcript);
 
-        if (transcript === "tell me the instructions.") {
+        if (transcript === "tell me the instructions") {
           const instructions = Array.from(document.querySelectorAll("#food-instructions li"))
             .map(li => li.textContent.trim())
             .join(", ");
