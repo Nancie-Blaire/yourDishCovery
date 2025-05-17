@@ -370,13 +370,34 @@ box-sizing: border-box;
 }
 
 #search-input {
-    padding: 8px 12px;
+    padding: 8px 32px 8px 12px; /* space for the clear button */
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-family: inherit;
     flex: 1;                    /* Optional: makes it stretch */
     min-width: 100px;
+    position: relative;
+}
+
+#clear-search {
+    position: absolute;
+    right: 100px; /* adjust if needed depending on search-btn width */
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    color: #888;
+    cursor: pointer;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0 6px;
+    z-index: 2;
+    display: none;
+    line-height: 1;
+}
+
+#clear-search:hover {
+    color: #c78456;
 }
 
 #search-btn {
@@ -434,4 +455,32 @@ box-sizing: border-box;
     font-size: 20px;
     margin-top: 15px;
     color: #e67e22;         /* Highlighted call-to-action */
+}
+
+.suggestions-dropdown {
+    position: absolute;
+    top: 110%; /* below the search input */
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 0 0 6px 6px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    z-index: 100;
+    max-height: 220px;
+    overflow-y: auto;
+    font-family: "Roboto Slab", serif;
+    font-size: 16px;
+}
+
+.suggestions-dropdown .suggestion-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    color: #333;
+}
+
+.suggestions-dropdown .suggestion-item:hover,
+.suggestions-dropdown .suggestion-item.active {
+    background: #f3e7d9;
+    color: #c78456;
 }
