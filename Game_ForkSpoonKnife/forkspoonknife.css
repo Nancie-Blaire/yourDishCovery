@@ -194,13 +194,6 @@ html, body {
   overflow: hidden; /* Ensures the image doesn't overflow the circle */
 }
 
-.fetched-food img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-}
-
 
 .user-food {
   top: 75vh; /* Adjust to position above the user plate */
@@ -219,7 +212,7 @@ html, body {
   height: 100%;
   object-fit: cover;
   display: block;
-  border-radius: 10%;
+  border-radius: 50%;
 }
 
 @media (max-width: 1080px) {
@@ -277,10 +270,41 @@ html, body {
   .system-image-knife {
     left: -3vw;
   }
+.fetched-food {
+  position: absolute;
+  z-index: 3;
+  pointer-events: none;
+  width: 100px; /* Or any fixed size */
+  height: 100px; /* Same as width to make it a circle */
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+
+.user-food {
+  top: 70vh; /* Adjust to position above the user plate */
+  left: 53vw;
+  transform: translate(-50%, -50%);
+}
+
+.system-food {
+  top: 33vh; /* Adjust to position above the system plate */
+  left: 53vw;
+  transform: translate(-50%, -50%);
+}
+
+.fetched-food img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 50%; /* Optional since the container is already a circle */
+}
+
 }
 
 /* Tablets (768px and below) */
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   .user-plate img,
   .system-plate img {
     width: 50vw;
@@ -335,6 +359,39 @@ html, body {
   .system-image-knife {
     left: -4vw;
   }
+
+.fetched-food {
+  position: absolute;
+  z-index: 3;
+  pointer-events: none;
+  width: 60px; /* Or any fixed size */
+  height: 60px; /* Same as width to make it a circle */
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+
+.user-food {
+  top: 70vh; /* Adjust to position above the user plate */
+  left: 53vw;
+  transform: translate(-50%, -50%);
+}
+
+.system-food {
+  top: 33vh; /* Adjust to position above the system plate */
+  left: 53vw;
+  transform: translate(-50%, -50%);
+}
+
+.fetched-food img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 50%; /* Optional since the container is already a circle */
+}
+
+
 }
 
 /* Mobile phones (480px and below) */
@@ -391,4 +448,36 @@ html, body {
   .image-knife img:hover {
     transform: scale(1.40);
   }
+
+.fetched-food {
+  position: absolute;
+  z-index: 3;
+  pointer-events: none;
+  width: 100px; /* Or any fixed size */
+  height: 100px; /* Same as width to make it a circle */
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+
+.user-food {
+  top: 70vh; /* Adjust to position above the user plate */
+  left: 53vw;
+  transform: translate(-50%, -50%);
+}
+
+.system-food {
+  top: 33vh; /* Adjust to position above the system plate */
+  left: 53vw;
+  transform: translate(-50%, -50%);
+}
+
+.fetched-food img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 50%; /* Optional since the container is already a circle */
+}
+
 }

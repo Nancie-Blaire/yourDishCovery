@@ -163,7 +163,31 @@ function handleResetKey(event) {
   }
 }
 
+let modalOpen = false; // Track if modal is open
+
+function showFoodInfoModal(foodName, foodImage) {
+  const modal = document.getElementById("food-info-modal");
+  if (!modal) return;
+  modalOpen = true;
+  document.getElementById("modal-food-image").style.backgroundImage = `url(${foodImage.src})`;
+  document.getElementById("modal-food-name").textContent = foodName;
+  modal.style.display = "flex";
+  document.getElementById("yes-button").onclick = () => {
+    modalOpen = false;
+    modal.style.display = "none";
+    window.location.href = `/food_info.html?food=${encodeURIComponent(foodName)}`;
+  };
+  document.getElementById("no-button").onclick = () => {
+    modalOpen = false;
+    modal.style.display = "none";
+    // Now allow reset after modal is closed
+    setupGameReset();
+  };
+}
+
 function reset(event) {
+  if (modalOpen) return;
+
   if (event && event.type === "keydown" && event.code !== "Space") {
     return; // Ignore non-Space key presses
   }
@@ -223,21 +247,6 @@ function clearScreen() {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 
-function showFoodInfoModal(foodName, foodImage) {
-  const modal = document.getElementById("food-info-modal");
-  if (!modal) return;
-  document.getElementById("modal-food-image").style.backgroundImage = `url(${foodImage.src})`;
-  document.getElementById("modal-food-name").textContent = foodName;
-  modal.style.display = "flex";
-  document.getElementById("yes-button").onclick = () => {
-    window.location.href = `/food_info.html?food=${encodeURIComponent(foodName)}`;
-  };
-  document.getElementById("no-button").onclick = () => {
-    modal.style.display = "none";
-    // Optionally, allow replay/reset here if needed
-  };
-}
-
 function gameLoop(currentTime) {
   if (previousTime === null) {
     previousTime = currentTime;
@@ -273,23 +282,22 @@ function gameLoop(currentTime) {
     const collidedFood = foodController.collideWith(player);
     if (collidedFood) {
       gameOver = true;
-      setupGameReset();
       score.setHighScore();
 
       // Update the <h2> element with the food name on collision
-      const foodName = getFoodNameFromId(collidedFood.id); // Use the placeholder ID to get the name
+      const foodName = getFoodNameFromId(collidedFood.id);
       const h2Element = document.querySelector("h2");
       if (h2Element) {
         h2Element.classList.add("got-food");
         h2Element.textContent = `You got: ${foodName}`;
       }
 
-      // Show modal popup for food info
-      // Find the food image object by id
+      // Show modal popup for food info (only if not already open)
       const foodObj = foodController.foodImages.find(f => f.id === collidedFood.id);
-      if (foodObj) {
+      if (foodObj && !modalOpen) {
         showFoodInfoModal(foodName, foodObj.image);
       }
+      // Do NOT call setupGameReset() here; only after modal closes
     }
   }
 
