@@ -261,8 +261,10 @@
       <h1>Set Your Preferences</h1>
       <label for="budgetRange" class="budgetLabel">Enter your budget range (e.g., 0-300):</label>
       <input type="text" id="budgetRange" placeholder="Enter range (e.g., 0-300)" />
-      <label for="filterSelect" class="selectFilter">Select filters to exclude:</label>
+      <label for="filterSelect" class="selectFilter">Not in the mood for something? Exclude it here:</label>
       <div id="filterCheckboxList" class="filter-checkbox-list"></div>
+      <label for="allergenSelect" class="selectFilter">Got allergies? Let us know what to skip!</label>
+      <div id="allergenCheckboxList" class="filter-checkbox-list"></div>
       <button id="applyButton">APPLY</button>
       <button id="closeModalButton">CLOSE</button>
     </div>
@@ -292,6 +294,8 @@
       const modal = document.getElementById("preference-modal");
       const budgetRangeInput = document.getElementById("budgetRange");
       const filterCheckboxList = document.getElementById("filterCheckboxList");
+      // Add allergen checkbox list
+      const allergenCheckboxList = document.getElementById("allergenCheckboxList");
       const applyButton = document.getElementById("applyButton");
       const closeModalButton = document.getElementById("closeModalButton");
 
@@ -318,10 +322,11 @@
         modal.style.display = "none";
       });
 
-      // Fetch filters dynamically based on the selected category
+      // Fetch filters and allergens dynamically based on the selected category
       async function populateFilterDropdown() {
         console.log("Fetching filters for category:", category);
         const filterSet = new Set();
+        const allergenSet = new Set();
         const snapshot = await get(ref(db, `recipes/${category}`));
 
         if (snapshot.exists()) {
@@ -330,6 +335,9 @@
             const recipe = recipes[key];
             if (recipe.filters) {
               recipe.filters.split(",").forEach((filter) => filterSet.add(filter.trim()));
+            }
+            if (recipe.allergens) {
+              recipe.allergens.split(",").forEach((allergen) => allergenSet.add(allergen.trim()));
             }
           }
         } else {
@@ -362,16 +370,43 @@
           filterCheckboxList.appendChild(label);
         });
 
-        console.log("Filters fetched:", Array.from(filterSet));
+        // Allergen checkboxes
+        allergenCheckboxList.innerHTML = "";
+        Array.from(allergenSet).forEach((allergen, idx) => {
+          const label = document.createElement("label");
+          label.className = "filter-checkbox-label";
+          label.htmlFor = `allergen-checkbox-${idx}`;
+          label.textContent = allergen;
+
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.value = allergen;
+          checkbox.id = `allergen-checkbox-${idx}`;
+
+          checkbox.addEventListener("change", function() {
+            if (checkbox.checked) {
+              label.classList.add("checked");
+            } else {
+              label.classList.remove("checked");
+            }
+          });
+
+          label.prepend(checkbox);
+          allergenCheckboxList.appendChild(label);
+        });
+
+        console.log("Filters and allergens fetched:", Array.from(filterSet), Array.from(allergenSet));
       }
 
       // Apply preferences and redirect to the selected game
       applyButton.addEventListener("click", () => {
         const budgetRange = budgetRangeInput.value.trim();
         const selectedFilters = Array.from(filterCheckboxList.querySelectorAll("input[type='checkbox']:checked")).map(cb => cb.value);
+        const selectedAllergens = Array.from(allergenCheckboxList.querySelectorAll("input[type='checkbox']:checked")).map(cb => cb.value);
 
         console.log(`Budget range entered: ${budgetRange}`);
         console.log(`Selected filters: ${selectedFilters}`);
+        console.log(`Selected allergens: ${selectedAllergens}`);
 
         if (!/^\d+-\d+$/.test(budgetRange)) {
           alert("Please enter a valid budget range (e.g., 0-300).");
@@ -405,7 +440,7 @@
         }
 
         console.log(`Redirecting to game: ${gamePath}, URL: ${gameUrl}`);
-        window.location.href = `${gameUrl}?category=${category}&budgetRange=${budgetRange}&filters=${encodeURIComponent(selectedFilters.join(","))}`;
+        window.location.href = `${gameUrl}?category=${category}&budgetRange=${budgetRange}&filters=${encodeURIComponent(selectedFilters.join(","))}&allergens=${encodeURIComponent(selectedAllergens.join(","))}`;
       });
     });
   </script>

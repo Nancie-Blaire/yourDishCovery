@@ -53,6 +53,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const existingImageInput = document.getElementById("existingImage");
   const currentImagePreview = document.getElementById("currentImagePreview");
   const currentImage = document.getElementById("currentImage");
+  const historyField = document.getElementById("historyField");
+  const allergenField = document.getElementById("allergenField");
 
   window.app = {
     editRecipe: function (id, category) {
@@ -71,6 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
               recipe.description || "";
             document.getElementById("budget").value = recipe.budget || "";
             document.getElementById("filters").value = recipe.filters || "";
+            document.getElementById("allergens").value = recipe.allergens || "";
             document.getElementById("link").value = recipe.link || "";
             editRecipeId.value = id;
 
@@ -88,15 +91,16 @@ document.addEventListener("DOMContentLoaded", () => {
             if (category === "home") {
               const ingredientsTextarea = document.getElementById("ingredients");
               const instructionsTextarea = document.getElementById("instructions");
-              
+              const historyTextarea = document.getElementById("history");
               // Join ingredients and instructions arrays into multi-line text
               if (recipe.ingredients && Array.isArray(recipe.ingredients)) {
                 ingredientsTextarea.value = recipe.ingredients.join("\n");
               }
-              
               if (recipe.instructions && Array.isArray(recipe.instructions)) {
                 instructionsTextarea.value = recipe.instructions.join("\n");
               }
+              // Set history field
+              if (historyTextarea) historyTextarea.value = recipe.history || "";
             }
 
             // Change button text
@@ -152,6 +156,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (budgetField) budgetField.classList.add("hidden");
     if (filterField) filterField.classList.add("hidden");
     if (linkField) linkField.classList.add("hidden");
+    if (historyField) historyField.classList.add("hidden");
+    if (allergenField) allergenField.classList.add("hidden");
 
     // Show relevant fields based on category
     if (["jollibee", "mcdo", "kfc", "random"].includes(value)) {
@@ -160,6 +166,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (budgetField) budgetField.classList.remove("hidden");
       if (filterField) filterField.classList.remove("hidden");
       if (linkField) linkField.classList.remove("hidden");
+      if (allergenField) allergenField.classList.remove("hidden");
+      if (historyField) historyField.classList.add("hidden");
     } else if (value === "home") {
       if (nameField) nameField.classList.remove("hidden");
       if (descField) descField.classList.remove("hidden");
@@ -169,6 +177,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (budgetField) budgetField.classList.remove("hidden");
       if (filterField) filterField.classList.remove("hidden");
       if (linkField) linkField.classList.remove("hidden");
+      if (historyField) historyField.classList.remove("hidden");
+      if (allergenField) allergenField.classList.remove("hidden");
     }
   });
 
@@ -344,7 +354,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (budgetField) budgetField.classList.add("hidden");
     if (filterField) filterField.classList.add("hidden");
     if (linkField) linkField.classList.add("hidden");
+    if (historyField) historyField.classList.add("hidden");
+    if (allergenField) allergenField.classList.add("hidden");
     document.getElementById("link").value = "";
+    document.getElementById("history") && (document.getElementById("history").value = "");
+    document.getElementById("allergens") && (document.getElementById("allergens").value = "");
   }
 
   // Handle form submission (both add and edit)
@@ -364,7 +378,8 @@ document.addEventListener("DOMContentLoaded", () => {
       name: document.getElementById("name").value,
       description: document.getElementById("description").value || "",
       budget: parseInt(document.getElementById("budget").value) || 0,
-      filters: document.getElementById("filters").value || "", // Use new ID and variable
+      filters: document.getElementById("filters").value || "",
+      allergens: document.getElementById("allergens").value || "",
       link: document.getElementById("link").value || "",
     };
 
@@ -381,6 +396,9 @@ document.addEventListener("DOMContentLoaded", () => {
       recipeData.instructions = instructionsText ? 
         instructionsText.split('\n').map(item => item.trim()).filter(item => item) : 
         [];
+      
+      // Add history field
+      recipeData.history = document.getElementById("history").value || "";
     }
 
     const imageFile = document.getElementById("imageUpload").files[0];

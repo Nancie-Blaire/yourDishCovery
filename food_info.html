@@ -216,8 +216,16 @@
       <img id="food-image" src="" alt="Food Image">
       <div class="info">
         <h1 id="food-name">Loading...</h1>
+        <!-- Servings control with arrows -->
+        <div style="color:#fff;font-size:1rem;margin-top:8px;display:flex;align-items:center;gap:8px;">
+          Servings:
+          <button id="servings-decrease" type="button" style="margin-left:8px;padding:2px 10px;font-size:1.2rem;border-radius:50%;border:none;background:#ecd8a7;cursor:pointer;">&#8592;</button>
+          <input id="servings-input" type="number" min="1" max="20" value="4" style="width:48px;text-align:center;font-size:1rem;border-radius:6px;border:1px solid #ccc;" />
+          <button id="servings-increase" type="button" style="padding:2px 10px;font-size:1.2rem;border-radius:50%;border:none;background:#ecd8a7;cursor:pointer;">&#8594;</button>
+        </div>
         <p id="food-budget">Estimated budget: Loading...</p>
         <p id="food-filters">Filters included: Loading...</p>
+        <p id="food-allergens" style="margin:5px 0;font-size:1rem;color:#ffffff;">Allergens: Loading...</p>
         <div id="food-link" style="margin-top:8px;color: white;"></div>
       </div>
     </div>
@@ -230,6 +238,17 @@
       <strong>Description:</strong>
       <span id="food-description-text"></span>
     </div>
+    <div id="food-history" style="margin: 18px 0px 0px;
+    font-size: 0.9rem;
+    color: rgb(5 0 0);
+    background: #fff;
+    border-radius: 6px;
+    padding: 14px 18px;
+    display: none;">
+      <strong>History:</strong>
+      <span id="food-history-text"></span>
+    </div>
+    <!--add the history here -->
     </div>
    <div class=" container2">
     <div class="content" id="detailsContent" style="display:none;">
@@ -350,13 +369,84 @@
       }
     }
 
+    let currentFoodDetails = null;
+    let defaultServings = 4; // Default servings per recipe
+
+    // Utility: Convert a fraction string to a float (e.g., "1/2" => 0.5, "2 1/2" => 2.5)
+function parseFraction(str) {
+  str = str.trim();
+  // Match "2 1/2", "1/2", "2"
+  const mixed = str.match(/^(\d+)\s+(\d+)\/(\d+)$/);
+  if (mixed) {
+    return parseInt(mixed[1]) + parseInt(mixed[2]) / parseInt(mixed[3]);
+  }
+  const frac = str.match(/^(\d+)\/(\d+)$/);
+  if (frac) {
+    return parseInt(frac[1]) / parseInt(frac[2]);
+  }
+  const num = str.match(/^\d+(\.\d+)?$/);
+  if (num) {
+    return parseFloat(str);
+  }
+  return null;
+}
+
+// Utility: Scale ingredient string (e.g., "2 cups rice" or "1/2 cup rice") by a factor
+function scaleIngredient(ingredient, scale) {
+  // Match leading quantity (supports "2 1/2", "1/2", "2")
+  const match = ingredient.match(/^((\d+\s+\d+\/\d+)|(\d+\/\d+)|(\d+(\.\d+)?))(\s*)(.*)$/);
+  if (match) {
+    const qtyStr = match[1];
+    const rest = match[7];
+    const qty = parseFraction(qtyStr);
+    if (qty !== null) {
+      // Round to 2 decimal places, remove trailing .00
+      let scaled = (qty * scale).toFixed(2).replace(/\.00$/, "");
+      return `${scaled} ${rest}`;
+    }
+  }
+  return ingredient; // No number to scale
+}
+
+    // Update UI for servings
+    function updateServingsUI(servings) {
+      if (!currentFoodDetails) return;
+      const scale = servings / defaultServings;
+      // Update budget
+      const budget = currentFoodDetails.budget || 0;
+      document.getElementById("food-budget").textContent =
+        `Estimated budget: ₱${Math.round(budget * scale)}`;
+      // Update ingredients
+      if (currentFoodDetails._category === "home") {
+        const ingredientsList = document.getElementById("food-ingredients");
+        ingredientsList.innerHTML = "";
+        (currentFoodDetails.ingredients || []).forEach(ingredient => {
+          const li = document.createElement("li");
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.addEventListener("change", () => {
+            li.classList.toggle("checked", checkbox.checked);
+          });
+          li.appendChild(checkbox);
+          li.appendChild(document.createTextNode(scaleIngredient(ingredient, scale)));
+          ingredientsList.appendChild(li);
+        });
+      }
+    }
+
     // Display food details
     async function displayFoodDetails() {
       const foodDetails = await fetchFoodDetails(foodName);
+      currentFoodDetails = foodDetails;
+      // Set default servings (from DB or fallback to 4)
+      defaultServings = (foodDetails && foodDetails.servings) ? Number(foodDetails.servings) : 4;
+      document.getElementById("servings-input").value = defaultServings;
+
       if (foodDetails) {
         document.getElementById("food-name").textContent = foodDetails.name;
         document.getElementById("food-budget").textContent = `Estimated budget: ₱${foodDetails.budget || "N/A"}`;
         document.getElementById("food-filters").textContent = `Filters included: ${foodDetails.filters || "none"}`;
+        document.getElementById("food-allergens").textContent = `Allergens: ${foodDetails.allergens || "none"}`;
         if (foodDetails.image) {
           document.getElementById("food-image").src = foodDetails.image;
         }
@@ -370,6 +460,17 @@
         } else {
           descText.textContent = "";
           descDiv.style.display = "none";
+        }
+
+        // Show history if available
+        const historyDiv = document.getElementById("food-history");
+        const historyText = document.getElementById("food-history-text");
+        if (foodDetails.history && foodDetails.history.trim() !== "") {
+          historyText.textContent = " " + foodDetails.history;
+          historyDiv.style.display = "";
+        } else {
+          historyText.textContent = "";
+          historyDiv.style.display = "none";
         }
 
         // Show link if available, with YouTube title if possible, otherwise use a smart label
@@ -431,8 +532,46 @@
         document.getElementById("food-link").innerHTML = "";
         document.getElementById("food-description-text").textContent = "";
         document.getElementById("food-description").style.display = "none";
+        document.getElementById("food-history-text").textContent = "";
+        document.getElementById("food-history").style.display = "none";
+        document.getElementById("food-allergens").textContent = "";
       }
+
+      // After rendering, update for current servings
+      updateServingsUI(Number(document.getElementById("servings-input").value));
     }
+
+    // Listen for servings change (arrows and input)
+    document.addEventListener("DOMContentLoaded", () => {
+      const servingsInput = document.getElementById("servings-input");
+      const decreaseBtn = document.getElementById("servings-decrease");
+      const increaseBtn = document.getElementById("servings-increase");
+
+      function clamp(val, min, max) {
+        return Math.max(min, Math.min(max, val));
+      }
+
+      decreaseBtn.addEventListener("click", () => {
+        let val = parseInt(servingsInput.value) || 1;
+        val = clamp(val - 1, 1, 20);
+        servingsInput.value = val;
+        updateServingsUI(val);
+      });
+
+      increaseBtn.addEventListener("click", () => {
+        let val = parseInt(servingsInput.value) || 1;
+        val = clamp(val + 1, 1, 20);
+        servingsInput.value = val;
+        updateServingsUI(val);
+      });
+
+      servingsInput.addEventListener("input", () => {
+        let val = parseInt(servingsInput.value) || 1;
+        val = clamp(val, 1, 20);
+        servingsInput.value = val;
+        updateServingsUI(val);
+      });
+    });
 
     displayFoodDetails();
 
