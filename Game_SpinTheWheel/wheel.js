@@ -249,7 +249,7 @@ function showFoodInfoModal(foodName) {
 
         yesButton.onclick = () => {
           console.log(`Redirecting to food_info.html for food: ${foodName}`);
-          window.location.href = `/food_info.html?food=${encodeURIComponent(foodName)}`;
+          window.location.href = `../Food_info/food_info.html?food=${encodeURIComponent(foodName)}`;
         };
 
         noButton.onclick = () => {
