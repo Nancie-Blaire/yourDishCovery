@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food Info</title>
+   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="food_info.css">
+</head>
+<body>
+<div class="background">
+    <img src="../images/brickwall.jpg" class="bg-img" alt="Cafe Background" />
+  </div>
+
+</div>
+  <div class="container">
+    <img src="speech.png" alt="Speech Icon" class="speech-icon" id="speechIcon" />
+    <div class="speech-indicator" id="speechIndicator">Disabled</div>
+    <div class="header">
+      <img id="food-image" src="" alt="Food Image">
+      <div class="info">
+        <h1 id="food-name">Loading...</h1>
+        <!-- Servings control with arrows -->
+        <div style="color:#fff;font-size:1rem;margin-top:8px;display:flex;align-items:center;gap:8px;">
+          Servings:
+          <button id="servings-decrease" type="button" style="margin-left:8px;padding:2px 10px;font-size:1.2rem;border-radius:50%;border:none;background:#ecd8a7;cursor:pointer;">&#8592;</button>
+          <input id="servings-input" type="number" min="1" max="20" value="4" style="width:48px;text-align:center;font-size:1rem;border-radius:6px;border:1px solid #ccc;" />
+          <button id="servings-increase" type="button" style="padding:2px 10px;font-size:1.2rem;border-radius:50%;border:none;background:#ecd8a7;cursor:pointer;">&#8594;</button>
+        </div>
+        <p id="food-budget">Estimated budget: Loading...</p>
+        <p id="food-filters">Filters included: Loading...</p>
+        <p id="food-allergens" style="margin:5px 0;font-size:1rem;color:#ffffff;">Allergens: Loading...</p>
+        <div id="food-link" style="margin-top:8px;color: white;"></div>
+      </div>
+    </div>
+    <div id="food-description" style="margin: 18px 0px 0px;
+    font-size: 0.9rem;
+    color: rgb(5 0 0);
+    background: #fff;
+    border-radius: 6px;
+    padding: 14px 18px;">
+      <strong>Description:</strong>
+      <span id="food-description-text"></span>
+    </div>
+    <div id="food-history" style="margin: 18px 0px 0px;
+    font-size: 0.9rem;
+    color: rgb(5 0 0);
+    background: #fff;
+    border-radius: 6px;
+    padding: 14px 18px;
+    display: none;">
+      <strong>History:</strong>
+      <span id="food-history-text"></span>
+    </div>
+    <!--add the history here -->
+    </div>
+   <div class=" container2">
+    <div class="content" id="detailsContent" style="display:none;">
+      <div class="section">
+        <h2>Ingredients:</h2>
+        <ul id="food-ingredients">
+          <!-- Ingredients will be dynamically populated -->
+        </ul>
+      </div>
+      <div class="section">
+        <h2>Instructions:</h2>
+        <ul id="food-instructions">
+          <!-- Instructions will be dynamically populated -->
+        </ul>
+      </div>
+      </div>
+<div class="buttons">
+  <button class="back-button" onclick="window.location.href='../listofgames.html'">
+    <span class="material-symbols-outlined" style="vertical-align: middle; margin-right: 8px;">stadia_controller</span>
+    Back
+  </button>
+  <button class="okay-button" onclick="window.location.href='../index.html'">
+    <span class="material-symbols-outlined" style="vertical-align: middle; margin-right: 8px;">house</span>
+    Okay
+  </button>
+</div>
+    </div>
+ 
+
+  <script type="module" src="food_info.js"></script>
+</body>
+</html>

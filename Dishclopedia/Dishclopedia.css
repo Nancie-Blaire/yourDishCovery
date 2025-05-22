@@ -443,11 +443,10 @@ box-sizing: border-box;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 
-    width: 90%;             /* Adjust width as needed */
-    margin: 20px auto;      /* Center horizontally with margin */
+    width: 95%;             /* Adjust width as needed */     /* Center horizontally with margin */
     position: relative;     /* Makes it movable with top/left if needed */
     top: -15vh;             /* Adjust vertical position */
-    left: -8vh
+    left: 1vh
 }
 
 #intro-text .tagline {
@@ -483,4 +482,60 @@ box-sizing: border-box;
 .suggestions-dropdown .suggestion-item.active {
     background: #f3e7d9;
     color: #c78456;
+}
+
+.arrow {
+  display: inline-block;
+  transition: transform 0.3s;
+}
+.arrow.rotate {
+  transform: rotate(90deg);
+  transition: transform 0.3s ease;
+}
+
+
+.dropdown-toggle.selected {
+  background-color: #444; /* Dark background */
+  color: white; /* Text color */
+  border-radius: 5px;
+}
+
+.dropdown-toggle.selected svg {
+  fill: white; /* Change icon color when selected */
+}
+
+.dropdown-toggle.selected span {
+  color: white;
+}
+
+@media only screen and (max-width: 414px) {
+
+    #app-title {
+        font-size: 100%; /* Smaller title on small screens */
+        left:-6vh;
+    }
+    #intro-text {
+        width: 70%; /* Wider intro text on small screens */
+        left: -6vh; /* Center it */
+        font-size: 90%;
+    }
+    #search-container {
+        width: 60%;
+        left: -4vh;
+        top: 78vh;
+        margin-top: 24px;
+        margin-bottom: 10px;
+        position: relative; /* Allow top/left to work if needed */
+    }
+    .card {
+        width: 68%;
+        margin: 10px 0 5px -63px;
+        left: 0;
+    }
+    main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
 }
