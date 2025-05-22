@@ -61,6 +61,46 @@
       100% { background-position: -200% center; }
     }
 
+    .randomizer-link a,
+    .dishclopedia-link a,
+    .search-link a,
+    .about-link a,
+    .help-link a {
+      color: #000;
+      text-decoration: none;
+      font-size: 1rem;
+      font-family: 'Times New Roman', Times, serif;
+      letter-spacing: 3px;
+      padding: 10px 20px;
+      border: 2px solid #fff59b;
+      border-radius: 30px;
+      background-color: rgba(255, 245, 155, 0.4);
+      box-shadow: 0 0 10px #fff59b, 0 0 20px #fff59b;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+      animation: pulseGlow 3s infinite ease-in-out;
+      cursor: pointer;
+    }
+
+    .randomizer-link a:hover,
+    .dishclopedia-link a:hover,
+    .search-link a:hover,
+    .about-link a:hover,
+    .help-link a:hover {
+      background-color: #fff59b;
+      box-shadow: 0 0 20px #fff59b, 0 0 40px #fff59b;
+      transform: scale(1.05);
+      opacity: 1;
+    }
+
+    @keyframes pulseGlow {
+      -10%, 100% {
+        box-shadow: 0 0 10px #000000, 0 0 20px #fff59b;
+      }
+      50% {
+        box-shadow: 0 0 10px #000000, 0 0 40px #fff59b;
+      }
+    }
+
     .short-description {
       font-size: 1rem;
       max-width: 1100px;
@@ -116,29 +156,19 @@
     }
 
     .randomizer-link,
-    .dishclopedia-link {
+    .dishclopedia-link,
+    .search-link,
+    .about-link,
+    .help-link {
       position: absolute;
-      top: 40px;
       z-index: 1000;
     }
 
-    .randomizer-link { left: 60px; }
-    .dishclopedia-link { left: 280px; }
-
-    .randomizer-link a,
-    .dishclopedia-link a {
-      color: white;
-      text-decoration: none;
-      font-size: 1rem;
-      font-family: 'Times New Roman', Times, serif;
-      transition: opacity 0.3s ease;
-      letter-spacing: 3px;
-    }
-
-    .randomizer-link a:hover,
-    .dishclopedia-link a:hover {
-      opacity: 0.3;
-    }
+    .randomizer-link { padding-top: 630px; left: 60px; }
+    .dishclopedia-link { padding-top: 630px; left: 520px; }
+    .search-link { padding-top: 630px; right: 385px; }
+    .about-link { padding-top: 55px; left: 30px; }
+    .help-link { padding-top: 55px; left: 200px; }
 
     #secret-logo {
       width: 80px;
@@ -154,12 +184,10 @@
       opacity: 1;
     }
 
-    /* Hide mobile About by default */
     .about-mobile {
       display: none;
     }
 
-    /* Responsive styles */
     @media (max-width: 768px) {
       .tagline {
         font-size: 2rem;
@@ -193,20 +221,10 @@
         font-size: 0.9rem;
         text-align: center;
         margin: 1rem auto;
-        margin-top: 1.5%;
       }
 
-      .randomizer-link, .dishclopedia-link {
-        position: absolute;
+      .randomizer-link, .dishclopedia-link, .search-link, .about-link, .help-link {
         top: 10px;
-      }
-
-      .randomizer-link { left: 10px; }
-      .dishclopedia-link { right: 10px; left: auto; }
-
-      .randomizer-link a, .dishclopedia-link a {
-        font-size: 0.8rem;
-        letter-spacing: 2px;
       }
 
       #secret-logo {
@@ -215,32 +233,121 @@
         right: 15px;
       }
 
-      /* Hide desktop about, show mobile about */
       .about-desktop { display: none; }
       .about-mobile { display: block; }
+    }
+
+    #return-to-top {
+      position: absolute;
+      bottom:-700px;
+      right: 40px;
+      background-color: rgba(255, 244, 216, 0.759);
+      border: 2px solid #ffffff;
+      border-radius: 30px;
+      padding: 10px 20px;
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 1rem;
+      letter-spacing: 3px;
+      cursor: pointer;
+      box-shadow: 0 0 10px hsl(193, 100%, 77%), 0 0 20px #9bc5ff;
+      animation: pulseGlow 3s infinite ease-in-out;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+      z-index: 1000;
+    }
+
+    #return-to-top:hover {
+      background-color: #fff59b;
+      box-shadow: 0 0 20px #fff59b, 0 0 40px #fff59b;
+      transform: scale(1.05);
+      opacity: 1;
+    }
+
+    /* FAQ Popup Styles */
+    .faq-popup {
+      position: absolute;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      width:600%;
+      max-width: 600px;
+      background: #fffef5;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 0 20px #ffd77a;
+      display: none;
+      z-index: 2000;
+      font-family: 'Times New Roman', Times, serif;
+      color: #000;
+    }
+
+    .faq-popup h2 {
+      text-align: center;
+      margin-bottom: 5rem;
+      margin-top: 2rem;
+      letter-spacing: 2px;
+    }
+
+    .faq-item {
+      margin-bottom: 2rem;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .faq-question {
+      cursor: pointer;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      font-size:  110%;
+      letter-spacing: 1px;
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, opacity 0.4s ease;
+      opacity: 0;
+      margin-top: 0;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+    }
+
+    .faq-answer.open {
+      max-height: 200px; /* adjust as needed */
+      opacity: 1;
+      margin-top: 0.5rem;
+    }
+
+    .close-faq {
+      float: right;
+      cursor: pointer;
+      font-weight: bold;
+      background: #ff9b9b;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      margin-top:-0.5%;
+      font-size: 1rem;
     }
   </style>
 </head>
 <body>
 
-  <!-- RANDOMIZER Link -->
-  <div class="randomizer-link">
-    <a href="categories.html">RANDOMIZER</a>
-  </div>
+  <!-- Navigation Buttons -->
+  <div class="randomizer-link"><a href="categories.html">RANDOMIZER</a></div>
+  <div class="dishclopedia-link"><a href="Dishclopedia/dishclopedia.html">DISHCLOPEDIA</a></div>
+  <div class="search-link"><a href="Dishclopedia/dishclopedia.html">SEARCH</a></div>
+  <div class="about-link"><a href="#about-section" id="about-btn">ABOUT</a></div>
+  <div class="help-link"><a href="#" id="help-btn">HELP</a></div>
 
-  <!-- DISHCLOPEDIA Link -->
-  <div class="dishclopedia-link">
-    <a href="Dishclopedia/dishclopedia.html">DISHCLOPEDIA</a>
-  </div>
+  <!-- Return to Top Button -->
+  <button id="return-to-top" title="Return to Top">TOP</button>
 
   <!-- Main Section -->
   <section class="main-section" id="top">
-    <!-- Right-aligned image -->
     <div class="container">
       <img src="images/dishcovery.png" class="dishcoverypic" />
     </div>
-
-    <!-- Hero Text -->
     <div class="hero-section">
       <h1 class="tagline">Your Interactive Food Discovery Helper</h1>
       <p class="short-description">
@@ -248,29 +355,19 @@
       </p>
     </div>
 
-    <!-- Mobile About Section (hidden on desktop) -->
+    <!-- Mobile About Section -->
     <div class="about-mobile">
       <div class="container">
         <img src="images/aboutmain.png" class="about" />
       </div>
-      <div class="about1">
-        <p class="aboutdish">
-          DishCovery is an interactive food decision helper designed to make choosing what to eat quick, fun, and stress-free. Whether you’re stuck between cravings or just looking for inspiration, DishCovery guides you through a simple process to help you discover the perfect meal tailored to your mood, preferences, and available time.
-        </p>
-      </div>
-      <div class="about2">
-        <p class="aboutdish2">
-          Don’t know what to cook? We’ve got recipe suggestions. Want to grab something fast? We’ll help you decide. DishCovery takes the guesswork out of mealtime and turns decision-making into a delightful experience.
-        </p>
-      </div>
-      <div class="about3">
-        <p class="aboutdish3"><b>Start your food journey with DishCovery! Because great meals begin with great decisions.</b></p>
-      </div>
+      <p class="aboutdish">DishCovery is an interactive food decision helper...</p>
+      <p class="aboutdish2">Don’t know what to cook? We’ve got recipe suggestions...</p>
+      <p class="aboutdish3"><b>Start your food journey with DishCovery...</b></p>
     </div>
   </section>
 
-  <!-- Desktop About Section (hidden on mobile) -->
-  <div class="about-desktop">
+   <!-- Desktop About Section with Scroll Target -->
+  <section id="about-section" class="about-desktop">
     <div class="container">
       <img src="images/aboutmain.png" class="about" />
     </div>
@@ -287,15 +384,103 @@
     <div class="about3">
       <p class="aboutdish3"><b>Start your food journey with DishCovery! Because great meals begin with great decisions.</b></p>
     </div>
+  </section>
+
+  <!-- Secret Logo -->
+  <img src="images/dishcovery.png" alt="Secret Logo" id="secret-logo" onclick="redirectToAdmin()" />
+
+<!-- FAQ Popup -->
+<div class="faq-popup" id="faq-popup">
+  <button class="close-faq" onclick="toggleFAQ()">X</button>
+  <h2>FREQUENTLY ASKED QUESTIONS</h2>
+
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleAnswer(this)">What is DishCovery? <span>▼</span></div>
+    <div class="faq-answer">DishCovery is an interactive guide that helps you decide what to eat, whether you're cooking at home or choosing where to eat out.</div>
   </div>
 
-  <!-- Secret Admin Access -->
-  <img id="secret-logo" src="images/dishcovery.png" alt="Admin Access" ondblclick="redirectToAdmin()" />
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleAnswer(this)">Is it free to use? <span>▼</span></div>
+    <div class="faq-answer">Yes, DishCovery is completely free to use.</div>
+  </div>
 
-  <script>
-    function redirectToAdmin() {
-      window.location.href = "admin-login/login.html";
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleAnswer(this)">How does DishCovery help me decide what to eat? <span>▼</span></div>
+    <div class="faq-answer">It uses a food randomizer, filters, and recipe suggestions to help you explore options based on your cravings or preferences.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleAnswer(this)">Do I need to create an account to use DishCovery? <span>▼</span></div>
+    <div class="faq-answer">No account is required to use the basic features.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleAnswer(this)">How does the food randomizer work? <span>▼</span></div>
+    <div class="faq-answer">The randomizer selects a food or cuisine option based on your selected filters like type (home-cooked or fast food) and category.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleAnswer(this)">Does DishCovery provide recipes? <span>▼</span></div>
+    <div class="faq-answer">Yes, if you choose to cook, the system suggests a recipe complete with ingredients and preparation steps.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleAnswer(this)">Is my data safe and private? <span>▼</span></div>
+    <div class="faq-answer">Yes. We prioritize privacy and do not share user data with third parties.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleAnswer(this)">What personal information does DishCovery collect? <span>▼</span></div>
+    <div class="faq-answer">DishCovery only collects minimal usage data to improve the app. No personal info is required to use it.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" onclick="toggleAnswer(this)">Can I tell DishCovery to avoid certain foods?  <span>▼</span></div>
+    <div class="faq-answer">Yes! You can specify if you want to avoid fried food, sugar, dairy, red meat, seafood, or anything else you prefer not to eat.</div>
+  </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+  function redirectToAdmin() {
+    window.location.href = "login.html";
+  }
+
+  document.getElementById('about-btn').addEventListener('click', function(event) {
+    event.preventDefault();
+    document.querySelector('#about-section').scrollIntoView({ behavior: 'smooth' });
+  });
+
+  document.getElementById('return-to-top').addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  function toggleFAQ() {
+    const popup = document.getElementById('faq-popup');
+    popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+  }
+
+  document.getElementById('help-btn').addEventListener('click', function(event) {
+    event.preventDefault();
+    toggleFAQ();
+  });
+
+  function toggleAnswer(questionElem) {
+    const answer = questionElem.nextElementSibling;
+    const isOpen = answer.classList.contains("open");
+
+    // Close all open answers
+    document.querySelectorAll('.faq-answer').forEach(el => {
+      el.classList.remove('open');
+      el.previousElementSibling.querySelector('span').textContent = '▼';
+    });
+
+    if (!isOpen) {
+      answer.classList.add("open");
+      questionElem.querySelector('span').textContent = '▲';
     }
+  }
+</script>
   </script>
 </body>
 </html>
