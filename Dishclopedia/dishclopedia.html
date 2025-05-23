@@ -79,16 +79,13 @@
 
     <div id="intro-text">
         <p><strong>Dishclopedia</strong> is your go-to destination for exploring the world of food — from iconic recipes to restaurant favorites.</p>
-        
         <p>Search dishes by name. Discover hidden gems from street stalls to gourmet kitchens. Whether you're cooking at home or browsing for your next food adventure, Dishclopedia makes it easy to learn, explore, and get inspired.</p>
-        
         <p class="tagline">Search. Discover. Taste.</p>
     </div>
 
+    <h2 id="category-title" style="display:none; text-align:center; margin-top: 1em;"></h2>
 
-
- 
-  <div class="card-container">
+    <div class="card-container">
     <!-- Cards will be rendered here -->
   </div>
 </main>
@@ -128,7 +125,6 @@
           found = true;
           const card = document.createElement('div');
           card.className = 'card';
-          // Ensure the link points to the correct food_info.html with food name as query param
           card.innerHTML = `
             <a href="../Food_info/food_info.html?food=${encodeURIComponent(recipe.name)}" class="card-link">
               <img src="${recipe.image}" alt="${recipe.name}">
@@ -145,20 +141,42 @@
       }
     });
   }
-  // Default: show 'home' recipes
-  renderCardsForCategory('home');
 
-  // Attach click handlers to sidebar links for categories
   document.addEventListener('DOMContentLoaded', function () {
-    // Default: show 'home' recipes
-    renderCardsForCategory('home');
-
     // Attach click handlers to sidebar links for categories
     document.querySelectorAll('a[data-category]').forEach(link => {
       link.addEventListener('click', function (e) {
         e.preventDefault();
         const category = this.getAttribute('data-category');
-        renderCardsForCategory(category);
+        const introText = document.getElementById('intro-text');
+        const appTitle = document.getElementById('app-title');
+        const cardContainer = document.querySelector('.card-container');
+        const categoryTitle = document.getElementById('category-title');
+        if (category === 'static-home' || category === 'home') {
+          // Show intro and title, hide cards and category title
+          if (introText) introText.style.display = '';
+          if (appTitle) appTitle.style.display = '';
+          if (categoryTitle) {
+            categoryTitle.style.display = 'none';
+            categoryTitle.textContent = '';
+          }
+          if (cardContainer) cardContainer.innerHTML = '';
+        } else {
+          // Hide intro and app title, show cards and category title
+          if (introText) introText.style.display = 'none';
+          if (appTitle) appTitle.style.display = 'none';
+          if (categoryTitle) {
+            // Format category name for display
+            let displayName = category.replace(/-/g, ' ');
+            if (displayName === 'mcdo') displayName = 'MCDONALDS';
+            else if (displayName === 'jollibee') displayName = 'JOLLIBEE';
+            else if (displayName === 'kfc') displayName = 'KFC';
+            else displayName = displayName.toUpperCase();
+            categoryTitle.textContent = displayName;
+            categoryTitle.style.display = 'block';
+          }
+          renderCardsForCategory(category);
+        }
       });
     });
   });
