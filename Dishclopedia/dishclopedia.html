@@ -56,7 +56,7 @@
 </li>
 
 <li class="active">
-  <a href="/index.html" data-category="static-home">
+  <a href="/index.html" data-category="home">
     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/></svg>
     <span>Back</span>
   </a>
@@ -87,40 +87,7 @@
 
 
 
-  <div class="static-card-container" id="home-static-cards">
-    <div class="card">
-      <a href="#" class="card-link" data-category="home">
-        <img src="dishcovery.png" alt="Home Recipes">
-        <div class="card-content">
-          <p class="recipe-name">Home Recipes</p>
-        </div>
-      </a>
-    </div>
-    <div class="card">
-      <a href="#" class="card-link" data-category="jollibee">
-        <img src="images/jabee.png" alt="Jollibee">
-        <div class="card-content">
-          <p class="recipe-name">Jollibee</p>
-        </div>
-      </a>
-    </div>
-    <div class="card">
-      <a href="#" class="card-link" data-category="mcdo">
-        <img src="images/mcdo.jpg" alt="McDonalds">
-        <div class="card-content">
-          <p class="recipe-name">McDonalds</p>
-        </div>
-      </a>
-    </div>
-    <div class="card">
-      <a href="#" class="card-link" data-category="kfc">
-        <img src="images/kfc.jpg" alt="KFC">
-        <div class="card-content">
-          <p class="recipe-name">KFC</p>
-        </div>
-      </a>
-    </div>
-  </div>
+ 
   <div class="card-container">
     <!-- Cards will be rendered here -->
   </div>
@@ -148,62 +115,53 @@
   const db = firebase.database();
 
   // Helper to render cards for a given category
-    function renderCardsForCategory(category) {
-        const cardContainer = document.querySelector('.card-container');
-        const staticCards = document.getElementById('home-static-cards');
-        if (staticCards) {
-            staticCards.style.display = (category === 'static-home') ? 'flex' : 'none';
+  function renderCardsForCategory(category) {
+    const cardContainer = document.querySelector('.card-container');
+    cardContainer.innerHTML = ""; // Clear previous cards
+
+    db.ref('recipes/' + category).once('value').then(snapshot => {
+      let found = false;
+      snapshot.forEach(childSnapshot => {
+        const recipe = childSnapshot.val();
+        const recipeId = childSnapshot.key;
+        if (recipe.name && recipe.image) {
+          found = true;
+          const card = document.createElement('div');
+          card.className = 'card';
+          // Ensure the link points to the correct food_info.html with food name as query param
+          card.innerHTML = `
+            <a href="../Food_info/food_info.html?food=${encodeURIComponent(recipe.name)}" class="card-link">
+              <img src="${recipe.image}" alt="${recipe.name}">
+              <div class="card-content">
+                <p class="recipe-name">${recipe.name}</p>
+              </div>
+            </a>
+          `;
+          cardContainer.appendChild(card);
         }
-        cardContainer.innerHTML = "";
-        const allowedCategories = ['home', 'jollibee', 'mcdo', 'kfc'];
-        if (category !== 'static-home' && allowedCategories.includes(category)) {
-            db.ref('recipes/' + category).once('value').then(snapshot => {
-                let found = false;
-                const shownRecipes = new Set();
-                snapshot.forEach(childSnapshot => {
-                    const recipe = childSnapshot.val();
-                    const recipeName = recipe.name && recipe.name.toLowerCase();
-                    if (recipe.name && recipe.image && !shownRecipes.has(recipeName)) {
-                        found = true;
-                        shownRecipes.add(recipeName);
-                        const card = document.createElement('div');
-                        card.className = 'card';
-                        card.innerHTML = `
-                            <a href="/food_info.html?food=${encodeURIComponent(recipe.name)}" class="card-link">
-                                <img src="${recipe.image}" alt="${recipe.name}">
-                                <div class="card-content">
-                                    <p class="recipe-name">${recipe.name}</p>
-                                </div>
-                            </a>
-                        `;
-                        cardContainer.appendChild(card);
-                    }
-                });
-                if (!found) {
-                    cardContainer.innerHTML = "<p style='color:#333;text-align:center;'>No recipes found for this category.</p>";
-                }
-            });
-        }
-    }
-    // Default: show static cards
-    renderCardsForCategory('static-home');
+      });
+      if (!found) {
+        cardContainer.innerHTML = "<p style='color:#333;text-align:center;'>No recipes found for this category.</p>";
+      }
+    });
+  }
+  // Default: show 'home' recipes
+  renderCardsForCategory('home');
 
   // Attach click handlers to sidebar links for categories
-document.addEventListener('DOMContentLoaded', function () {
-  // Default: show static cards
-  renderCardsForCategory('static-home');
+  document.addEventListener('DOMContentLoaded', function () {
+    // Default: show 'home' recipes
+    renderCardsForCategory('home');
 
-  // Attach click handlers to sidebar links for categories
-  document.querySelectorAll('a[data-category]').forEach(link => {
-    link.addEventListener('click', function (e) {
-      e.preventDefault();
-      const category = this.getAttribute('data-category');
-      renderCardsForCategory(category);
+    // Attach click handlers to sidebar links for categories
+    document.querySelectorAll('a[data-category]').forEach(link => {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        const category = this.getAttribute('data-category');
+        renderCardsForCategory(category);
+      });
     });
   });
-});
-
-   
 </script>
 </body>
 </html>

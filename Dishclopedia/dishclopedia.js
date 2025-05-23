@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             const card = document.createElement('div');
                             card.className = 'card';
                             card.innerHTML = `
-                                <a href="/food_info.html?food=${encodeURIComponent(recipe.name)}" class="card-link">
+                                <a href="../Food_info/food_info.html?food=${encodeURIComponent(recipe.name)}" class="card-link">
                                     <img src="${recipe.image}" alt="${recipe.name}">
                                     <div class="card-content">
                                         <p class="recipe-name">${recipe.name}</p>
@@ -238,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 const card = document.createElement('div');
                                 card.className = 'card';
                                 card.innerHTML = `
-                                    <a href="/food_info.html?food=${encodeURIComponent(recipe.name)}" class="card-link">
+                                    <a href="../Food_info/food_info.html?food=${encodeURIComponent(recipe.name)}" class="card-link">
                                         <img src="${recipe.image}" alt="${recipe.name}">
                                         <div class="card-content">
                                             <p class="recipe-name">${recipe.name}</p>
