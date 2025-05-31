@@ -27,7 +27,7 @@
       justify-content: center;
       align-items: center;
       text-align: center;
-      padding: 2rem;
+      padding-top: 15%;
     }
 
     @media (max-width: 768px) {
@@ -45,10 +45,10 @@
     .tagline {
       font-size: 4rem;
       color: #000;
-      margin-right: 20rem;
+      padding-right: 20rem;
+      padding-bottom: 60%;
       position: relative;
       display: inline-block;
-      overflow: hidden;
       background: linear-gradient(90deg, #000000 0%, #fff59b 50%, #000000 100%);
       background-size: 200% auto;
       -webkit-background-clip: text;
@@ -101,13 +101,7 @@
       }
     }
 
-    .short-description {
-      font-size: 1rem;
-      max-width: 1100px;
-      padding-bottom: 35rem;
-      color: black;
-      letter-spacing: 3px;
-    }
+    
 
     .container {
       display: flex;
@@ -195,11 +189,7 @@
         text-align: center;
       }
 
-      .short-description {
-        font-size: 0.9rem;
-        padding-bottom: 10rem;
-        text-align: center;
-      }
+    
 
       .hero-section {
         margin-bottom: 2rem;
@@ -350,9 +340,7 @@
     </div>
     <div class="hero-section">
       <h1 class="tagline">Your Interactive Food Discovery Helper</h1>
-      <p class="short-description">
-        Search | Find | Eat | Guide | Decide | Help | Indulge | Interact | Guess | Play | Satisfy | Enjoy | Stress-Free
-      </p>
+    
     </div>
 
     <!-- Mobile About Section -->
@@ -440,6 +428,13 @@
   </div>
 </div>
 
+<div id="meal-of-the-day" style="margin-top: -68%; padding-left: 76%; text-align: center; font-size: 100%;">
+  <h2 style="color: #000000; letter-spacing: 2px; font-family: 'Times New Roman', Times, serif;">Meal of the Day</h2>
+  <img id="meal-image" src="" alt="Meal of the Day" style="width: 250px; border-radius: 10px; margin-top: 1rem;" />
+  <p id="meal-name" style="color: rgb(0, 0, 0); font-size: 1.2rem; margin-top: -0.2%;"></p>
+</div>
+
+
 <!-- JavaScript -->
 <script>
   function redirectToAdmin() {
@@ -482,5 +477,24 @@
   }
 </script>
   </script>
+  <script>
+  const meals = [
+    { name: "Spaghetti Bolognese", image: "images/meals/spaghetti.png" },
+    { name: "Chicken Teriyaki Bowl", image: "images/meals/teriyaki.png" },
+    { name: "Veggie Tacos", image: "images/meals/tacos.png" },
+    { name: "Beef Stroganoff", image: "images/meals/stroganoff.png" },
+    { name: "Butter Chicken", image: "images/meals/butterchicken.png" },
+    { name: "Ramen Noodles", image: "images/meals/ramen.png" },
+    { name: "Pork Sisig", image: "images/porksisig.png" },
+  ];
+
+  // Get day of week (0 = Sunday, 6 = Saturday)
+  const dayIndex = new Date().getDay();
+  const meal = meals[dayIndex % meals.length];
+
+  document.getElementById("meal-image").src = meal.image;
+  document.getElementById("meal-name").textContent = meal.name;
+</script>
+
 </body>
 </html>
