@@ -60,12 +60,17 @@ function renderCardsForCategoryWithLoading(category) {
     showGlobalLoading("Fetching recipes...");
     cardContainer.innerHTML = ""; // Clear previous cards
 
+    // Prevent duplicate cards by tracking names
+    const shownRecipes = new Set();
+
     db.ref('recipes/' + category).once('value').then(snapshot => {
         let found = false;
         snapshot.forEach(childSnapshot => {
             const recipe = childSnapshot.val();
-            if (recipe.name && recipe.image) {
+            // Only add if not already shown
+            if (recipe.name && recipe.image && !shownRecipes.has(recipe.name.toLowerCase())) {
                 found = true;
+                shownRecipes.add(recipe.name.toLowerCase());
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.innerHTML = `
@@ -115,8 +120,8 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Sidebar category click handler with loading indicator
-    document.querySelectorAll('a[data-category]').forEach(link => {
+    // Attach sidebar handler only to sidebar links (not static cards)
+    document.querySelectorAll('#sidebar a[data-category]').forEach(link => {
         link.addEventListener('click', function (e) {
             e.preventDefault();
             const category = this.getAttribute('data-category');
@@ -147,6 +152,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const appTitle = document.getElementById('app-title');
             const cardContainer = document.querySelector('.card-container');
             const categoryTitle = document.getElementById('category-title');
+            const staticCards = document.getElementById('home-static-cards'); // <-- add this line
             if (category === 'static-home' || category === 'home') {
                 // Always fetch and show foods from "home" category in Firebase
                 if (introText) introText.style.display = 'none';
@@ -155,6 +161,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     categoryTitle.textContent = "HOME";
                     categoryTitle.style.display = 'block';
                 }
+                if (staticCards) staticCards.style.display = 'none'; // <-- hide static cards
                 showGlobalLoading("Fetching data...");
                 renderCardsForCategoryWithLoading('home');
             } else {
@@ -177,6 +184,43 @@ document.addEventListener('DOMContentLoaded', function () {
                 showGlobalLoading("Fetching data...");
                 renderCardsForCategoryWithLoading(category);
             }
+        });
+    });
+
+    // Attach static card handler only to static card links
+    document.querySelectorAll('.static-card-container .card-link[data-category]').forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const category = this.getAttribute('data-category');
+            // Hide static cards before rendering recipes
+            const staticCards = document.getElementById('home-static-cards');
+            if (staticCards) staticCards.style.display = 'none';
+            // Hide intro and app title, show cards and category title
+            const introText = document.getElementById('intro-text');
+            const appTitle = document.getElementById('app-title');
+            const categoryTitle = document.getElementById('category-title');
+            if (introText) introText.style.display = 'none';
+            if (appTitle) appTitle.style.display = 'none';
+            if (categoryTitle) {
+                let displayName = category.replace(/-/g, ' ');
+                if (displayName === 'mcdo') displayName = 'MCDONALDS';
+                else if (displayName === 'jollibee') displayName = 'JOLLIBEE';
+                else if (displayName === 'kfc') displayName = 'KFC';
+                else displayName = displayName.toUpperCase();
+                categoryTitle.textContent = displayName;
+                categoryTitle.style.display = 'block';
+            }
+            // Clear card container before rendering (fixes duplication)
+            const cardContainer = document.querySelector('.card-container');
+            if (cardContainer) cardContainer.innerHTML = '';
+            // Render cards for the selected category
+            renderCardsForCategoryWithLoading(category);
+            // Highlight the correct sidebar link
+            document.querySelectorAll('#sidebar li').forEach(li => li.classList.remove('active'));
+            document.querySelectorAll(`#sidebar a[data-category="${category}"]`).forEach(a => {
+                if (a.closest('li')) a.closest('li').classList.add('active');
+            });
         });
     });
 
