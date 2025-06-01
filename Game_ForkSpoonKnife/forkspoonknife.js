@@ -37,7 +37,12 @@ function setupUI() {
   if (document.getElementById("game-info-bar")) {
     document.getElementById("game-info-bar").remove();
   }
-  // Create info bar
+  // Remove old menu if exists (to avoid duplicates on restart)
+  if (document.getElementById("game-menu-btn")) {
+    document.getElementById("game-menu-btn").remove();
+  }
+
+  // Create info/menu bar (menu + round/score in one flex row)
   const infoBar = document.createElement("div");
   infoBar.id = "game-info-bar";
   infoBar.style.position = "fixed";
@@ -49,25 +54,79 @@ function setupUI() {
   infoBar.style.fontWeight = "bold";
   infoBar.style.fontSize = "1.15rem";
   infoBar.style.display = "flex";
-  infoBar.style.justifyContent = "space-between";
+  infoBar.style.justifyContent = "flex-start";
   infoBar.style.alignItems = "center";
-  infoBar.style.padding = "10px 24px";
+  infoBar.style.padding = "0";
   infoBar.style.zIndex = "1001";
   infoBar.style.boxShadow = "0 2px 8px rgba(0,0,0,0.07)";
-  infoBar.innerHTML = `
-    <span id="round-info">Round: 1</span>
-    <span id="score-info">You: 0 | System: 0</span>
-  `;
+
+  // Menu button (top-left, flush to corner)
+  const menuBtn = document.createElement("button");
+  menuBtn.id = "game-menu-btn";
+  menuBtn.innerHTML = "☰";
+  menuBtn.style.background = "#fffbe7";
+  menuBtn.style.border = "2px solid #c78456";
+  menuBtn.style.borderRadius = "0 0 12px 0";
+  menuBtn.style.fontSize = "1.7em";
+  menuBtn.style.width = "48px";
+  menuBtn.style.height = "48px";
+  menuBtn.style.cursor = "pointer";
+  menuBtn.style.boxShadow = "0 2px 8px rgba(0,0,0,0.08)";
+  menuBtn.style.display = "flex";
+  menuBtn.style.alignItems = "center";
+  menuBtn.style.justifyContent = "center";
+  menuBtn.style.fontWeight = "bold";
+  menuBtn.style.transition = "background 0.2s";
+  menuBtn.title = "Menu";
+  menuBtn.style.margin = "0";
+  menuBtn.style.padding = "0";
+  menuBtn.style.position = "static";
+
+  // Info (round/score) container
+  const infoFlex = document.createElement("div");
+  infoFlex.style.display = "flex";
+  infoFlex.style.alignItems = "center";
+  infoFlex.style.justifyContent = "flex-end";
+  infoFlex.style.flex = "1";
+  infoFlex.style.height = "48px";
+  infoFlex.style.marginLeft = "auto";
+  infoFlex.style.gap = "32px";
+  infoFlex.style.paddingRight = "32px";
+
+  const roundSpan = document.createElement("span");
+  roundSpan.id = "round-info";
+  roundSpan.textContent = "Round: 1";
+  roundSpan.style.marginRight = "24px";
+  roundSpan.style.fontWeight = "bold";
+
+  const scoreSpan = document.createElement("span");
+  scoreSpan.id = "score-info";
+  scoreSpan.textContent = "You: 0 | System: 0";
+  scoreSpan.style.fontWeight = "bold";
+
+  infoFlex.appendChild(roundSpan);
+  infoFlex.appendChild(scoreSpan);
+
+  infoBar.appendChild(menuBtn);
+  infoBar.appendChild(infoFlex);
+
   document.body.appendChild(infoBar);
   roundDiv = document.getElementById("round-info");
   scoreDiv = document.getElementById("score-info");
   console.log("[Game] UI setup complete");
+
+  // Always create or update the menu modal and button handler
+  createGameMenu(window._currentCategory);
 }
 
+// --- Update round and score display ---
 function updateUI() {
-  if (roundDiv) roundDiv.textContent = `Round: ${round}`;
-  if (scoreDiv) scoreDiv.textContent = `You: ${userScore} | System: ${systemScore}`;
-  console.log(`[Game] UI updated: Round ${round}, You: ${userScore}, System: ${systemScore}`);
+  if (roundDiv) {
+    roundDiv.textContent = `Round: ${round}`;
+  }
+  if (scoreDiv) {
+    scoreDiv.textContent = `You: ${userScore} | System: ${systemScore}`;
+  }
 }
 
 // --- Fetch food with filters, budget, and category ---
@@ -488,6 +547,177 @@ function showFinalResult() {
   });
 }
 
+// --- Menu UI ---
+function createGameMenu(category) {
+  // Create modal if not exists
+  let menuModal = document.getElementById("game-menu-modal");
+  if (!menuModal) {
+    menuModal = document.createElement("div");
+    menuModal.id = "game-menu-modal";
+    menuModal.style.position = "fixed";
+    menuModal.style.top = "0";
+    menuModal.style.left = "0";
+    menuModal.style.width = "100vw";
+    menuModal.style.height = "100vh";
+    menuModal.style.background = "rgba(0,0,0,0.18)";
+    menuModal.style.display = "none";
+    menuModal.style.zIndex = "3000";
+    menuModal.style.justifyContent = "flex-start";
+    menuModal.style.alignItems = "flex-start";
+    menuModal.innerHTML = `
+      <div style="
+        margin: 32px 0 0 32px;
+        background: #fffbe7;
+        border: 2px solid #c78456;
+        border-radius: 14px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.13);
+        padding: 30px 36px 24px 36px;
+        min-width: 220px;
+        max-width: 90vw;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        font-family: 'Roboto Slab', serif;
+      ">
+        <button id="menu-help-btn" style="padding: 10px 0; font-size: 1.1em; background: none; border: none; color: #c78456; font-weight: bold; text-align: left; cursor: pointer;">Help</button>
+        <button id="menu-resume-btn" style="padding: 10px 0; font-size: 1.1em; background: none; border: none; color: #614225; font-weight: bold; text-align: left; cursor: pointer;">Resume</button>
+        <button id="menu-restart-btn" style="padding: 10px 0; font-size: 1.1em; background: none; border: none; color: #614225; font-weight: bold; text-align: left; cursor: pointer;">Restart</button>
+        <button id="menu-exit-btn" style="padding: 10px 0; font-size: 1.1em; background: none; border: none; color: #d32f2f; font-weight: bold; text-align: left; cursor: pointer;">Exit</button>
+      </div>
+    `;
+    document.body.appendChild(menuModal);
+
+    // Modal button handlers (only set once)
+    menuModal.querySelector("#menu-resume-btn").onclick = () => {
+      menuModal.style.display = "none";
+    };
+    menuModal.querySelector("#menu-restart-btn").onclick = () => {
+      window.location.reload();
+    };
+    menuModal.querySelector("#menu-exit-btn").onclick = () => {
+      let cat = category || window._currentCategory || "home";
+      window.location.href = `/listofgames.html?category=${encodeURIComponent(cat)}`;
+    };
+    menuModal.querySelector("#menu-help-btn").onclick = () => {
+      showHelpModal();
+    };
+    menuModal.addEventListener("mousedown", function (e) {
+      if (e.target === menuModal) menuModal.style.display = "none";
+    });
+  }
+
+  // Always attach menu button handler to open the modal
+  const menuBtn = document.getElementById("game-menu-btn");
+  if (menuBtn) {
+    menuBtn.onclick = () => {
+      menuModal.style.display = "flex";
+    };
+  }
+}
+
+// --- Help Modal ---
+function createHelpModal() {
+  if (document.getElementById("forkspoonknife-help-modal")) return;
+  const modal = document.createElement("div");
+  modal.id = "forkspoonknife-help-modal";
+  modal.style.position = "fixed";
+  modal.style.top = "0";
+  modal.style.left = "0";
+  modal.style.width = "100vw";
+  modal.style.height = "100vh";
+  modal.style.background = "rgba(0,0,0,0.28)";
+  modal.style.display = "none";
+  modal.style.zIndex = "4000";
+  modal.style.justifyContent = "center";
+  modal.style.alignItems = "center";
+  modal.innerHTML = `
+    <div style="
+      background: #fffbe7;
+      color: #614225;
+      border-radius: 14px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.13);
+      padding: 32px 24px 24px 24px;
+      max-width: 480px;
+      width: 92vw;
+      max-height: 80vh;
+      overflow-y: auto;
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 1.08rem;
+      position: relative;
+      ">
+      <button id="close-help-modal" style="
+        position: absolute;
+        top: 12px;
+        right: 18px;
+        background: none;
+        border: none;
+        font-size: 1.5em;
+        color: #c78456;
+        cursor: pointer;
+        font-weight: bold;
+      " title="Close">&times;</button>
+      <div style="white-space: pre-line; text-align:left;">
+🍴 <b>Fork, Spoon, Knife – Mini-Game Overview</b>
+Fork, Spoon, Knife is a mini-game inside our Dishcovery project. It's a two-player turn-based game between the user and the system, combining simple combat mechanics with food preferences.
+
+🎮 <b>Game Mechanics</b>
+Players: User vs System
+
+<b>Starting Point:</b>
+- The user is assigned a random food based on their selected category and preferences.
+- The system gets a food from any random category, excluding the user’s chosen one.
+
+<b>Utensils:</b> The core of the game is a rock-paper-scissors-like mechanic using:
+- Spoon
+- Fork
+- Knife
+
+🥊 <b>Utensil Rules</b>
+Each player selects a utensil, and the outcome is based on these rules:
+- Spoon vs Knife → 🥄 Spoon wins
+- Spoon vs Fork → 🍴 Fork wins
+- Knife vs Fork → 🔪 Knife wins
+- Same utensil → 🤝 Draw
+
+🔄 <b>Game Rounds</b>
+- The game continues in rounds until either the user or the system wins 3 rounds.
+- After each round, the foods on each plate may change depending on the outcome.
+
+🍽️ <b>Food Change Logic Per Round</b>
+<b>Draw:</b>
+- No change in food for both players.
+
+<b>User Wins:</b>
+- If the user’s current food is from their preferred category, it stays the same.
+- If not, the user’s food changes to a random food from their preferred category.
+- The system's food always changes when the user wins.
+
+<b>User Loses:</b>
+- The user’s food changes to the system's current food.
+- The system's food changes again, becoming a new random dish.
+
+🏁 <b>Winning Condition</b>
+- The first to win 3 rounds is the overall winner.
+- Score is tracked and updated each round.
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+
+  // Close logic
+  modal.querySelector("#close-help-modal").onclick = () => {
+    modal.style.display = "none";
+  };
+  modal.addEventListener("mousedown", function (e) {
+    if (e.target === modal) modal.style.display = "none";
+  });
+}
+
+function showHelpModal() {
+  const modal = document.getElementById("forkspoonknife-help-modal");
+  if (modal) modal.style.display = "flex";
+}
+
 // --- Entry point: get user preferences from URL and start game ---
 document.addEventListener("DOMContentLoaded", async () => {
   // Get user preferences from URL
@@ -496,7 +726,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   const budgetRange = urlParams.get("budgetRange") || "0-9999";
   const filters = urlParams.get("filters") ? urlParams.get("filters").split(",") : [];
 
+  // Store category globally for exit
+  window._currentCategory = category;
+
   // Start game with preferences
   startGame(category, budgetRange, filters);
   setupGame();
+  createGameMenu(category);
+
+  // Ensure help modal is created so it can be shown from menu
+  createHelpModal();
 });

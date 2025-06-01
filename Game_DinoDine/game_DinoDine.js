@@ -49,6 +49,7 @@ let gameSpeed = GAME_SPEED_START;
 let gameOver = false;
 let hasAddedEventListenersForRestart = false;
 let waitingToStart = true; // Define and initialize globally
+let paused = false; // Add paused state
 
 // Ensure waitingToStart is accessible globally
 window.waitingToStart = waitingToStart;
@@ -248,6 +249,11 @@ function clearScreen() {
 }
 
 function gameLoop(currentTime) {
+  if (paused) {
+    // Don't update or draw anything while paused, but keep previousTime in sync
+    previousTime = currentTime;
+    return;
+  }
   if (previousTime === null) {
     previousTime = currentTime;
     requestAnimationFrame(gameLoop);
@@ -419,3 +425,37 @@ initializeGame();
 
 window.addEventListener("keyup", reset, { once: true });
 window.addEventListener("touchstart", reset, { once: true });
+
+// --- Menu Pause/Resume Logic ---
+function setupMenuPauseResume() {
+  const menuBtn = document.getElementById("game-menu-btn");
+  const menuModal = document.getElementById("game-menu-modal");
+  const resumeBtn = document.getElementById("menu-resume-btn");
+
+  if (!menuBtn || !menuModal || !resumeBtn) return;
+
+  menuBtn.onclick = () => {
+    paused = true;
+    menuModal.style.display = "flex";
+  };
+  resumeBtn.onclick = () => {
+    menuModal.style.display = "none";
+    paused = false;
+    previousTime = null; // Reset previousTime to avoid large frameTimeDelta
+    requestAnimationFrame(gameLoop);
+  };
+  // Also pause if menu is opened by clicking outside
+  menuModal.addEventListener("mousedown", function (e) {
+    if (e.target === menuModal) {
+      menuModal.style.display = "none";
+      paused = false;
+      previousTime = null; // Reset previousTime to avoid large frameTimeDelta
+      requestAnimationFrame(gameLoop);
+    }
+  });
+}
+
+// Wait for DOMContentLoaded to ensure menu elements exist
+document.addEventListener("DOMContentLoaded", () => {
+  setupMenuPauseResume();
+});

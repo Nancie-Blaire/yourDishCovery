@@ -523,6 +523,24 @@ box-sizing: border-box;
     display: none; /* will be set to block by JS */
 }
 
+#global-loading-indicator {
+    position: fixed;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    background: #fffbe7;
+    border: 2px solid #c78456;
+    border-radius: 8px;
+    padding: 12px 32px;
+    font-size: 1.2em;
+    color: #c78456;
+    font-family: "Roboto Slab", serif;
+    box-shadow: 0 2px 12px rgba(199,132,86,0.08);
+    display: none;
+    pointer-events: none; /* allow clicks through */
+}
+
 @media only screen and (max-width: 414px) {
 
     #app-title {

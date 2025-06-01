@@ -38,6 +38,73 @@ document.addEventListener('click', function (event) {
     }
 });
 
+// --- Loading Indicator Utilities ---
+function showGlobalLoading(msg = "Fetching data...") {
+    const indicator = document.getElementById('global-loading-indicator');
+    if (indicator) {
+        indicator.style.display = 'block';
+        indicator.innerHTML = `<span style="color:#c78456;font-weight:bold;">${msg}</span>`;
+        indicator.style.pointerEvents = "none";
+    }
+    console.log(`[Dishclopedia] ${msg}`);
+}
+function hideGlobalLoading() {
+    const indicator = document.getElementById('global-loading-indicator');
+    if (indicator) indicator.style.display = 'none';
+    console.log("[Dishclopedia] Done fetching data.");
+}
+
+// Helper to render cards for a given category with loading indicator
+function renderCardsForCategoryWithLoading(category) {
+    const cardContainer = document.querySelector('.card-container');
+    showGlobalLoading("Fetching recipes...");
+    cardContainer.innerHTML = ""; // Clear previous cards
+
+    db.ref('recipes/' + category).once('value').then(snapshot => {
+        let found = false;
+        snapshot.forEach(childSnapshot => {
+            const recipe = childSnapshot.val();
+            if (recipe.name && recipe.image) {
+                found = true;
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <a href="../Food_info/food_info.html?food=${encodeURIComponent(recipe.name)}" class="card-link">
+                        <img src="${recipe.image}" alt="${recipe.name}">
+                        <div class="card-content">
+                            <p class="recipe-name">${recipe.name}</p>
+                        </div>
+                    </a>
+                `;
+                cardContainer.appendChild(card);
+            }
+        });
+        if (!found) {
+            cardContainer.innerHTML = "<p style='color:#333;text-align:center;'>No recipes found for this category.</p>";
+        }
+    }).finally(() => {
+        hideGlobalLoading();
+    });
+}
+
+// Helper to set category title and UI state
+function setCategoryUI(category) {
+    const introText = document.getElementById('intro-text');
+    const appTitle = document.getElementById('app-title');
+    const categoryTitle = document.getElementById('category-title');
+    if (introText) introText.style.display = 'none';
+    if (appTitle) appTitle.style.display = 'none';
+    if (categoryTitle) {
+        let displayName = category.replace(/-/g, ' ');
+        if (displayName === 'mcdo') displayName = 'MCDONALDS';
+        else if (displayName === 'jollibee') displayName = 'JOLLIBEE';
+        else if (displayName === 'kfc') displayName = 'KFC';
+        else displayName = displayName.toUpperCase();
+        categoryTitle.textContent = displayName;
+        categoryTitle.style.display = 'block';
+    }
+}
+
 // Initialize dropdown toggles
 document.addEventListener('DOMContentLoaded', function () {
     const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
@@ -48,32 +115,94 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-  
-    // Static home cards click handler
-
+    // Sidebar category click handler with loading indicator
+    document.querySelectorAll('a[data-category]').forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            const category = this.getAttribute('data-category');
+            // --- Fix: Show intro if Dishclopedia is clicked ---
+            if (category === 'dishclopedia') {
+                // Show intro and reset UI
+                const introText = document.getElementById('intro-text');
+                const appTitle = document.getElementById('app-title');
+                const cardContainer = document.querySelector('.card-container');
+                const categoryTitle = document.getElementById('category-title');
+                if (introText) introText.style.display = '';
+                if (appTitle) appTitle.style.display = '';
+                if (categoryTitle) {
+                    categoryTitle.style.display = 'none';
+                    categoryTitle.textContent = '';
+                }
+                if (cardContainer) cardContainer.innerHTML = '';
+                // Set sidebar active state
+                document.querySelectorAll('#sidebar li').forEach(li => li.classList.remove('active'));
+                const dishLi = document.getElementById('dishclopedia-link-li');
+                if (dishLi) dishLi.classList.add('active');
+                // Show static cards
+                const staticCards = document.getElementById('home-static-cards');
+                if (staticCards) staticCards.style.display = 'flex';
+                return; // Do not fetch recipes for "dishclopedia"
+            }
+            const introText = document.getElementById('intro-text');
+            const appTitle = document.getElementById('app-title');
+            const cardContainer = document.querySelector('.card-container');
+            const categoryTitle = document.getElementById('category-title');
+            if (category === 'static-home' || category === 'home') {
+                // Always fetch and show foods from "home" category in Firebase
+                if (introText) introText.style.display = 'none';
+                if (appTitle) appTitle.style.display = 'none';
+                if (categoryTitle) {
+                    categoryTitle.textContent = "HOME";
+                    categoryTitle.style.display = 'block';
+                }
+                showGlobalLoading("Fetching data...");
+                renderCardsForCategoryWithLoading('home');
+            } else {
+                // Hide intro and app title, show cards and category title
+                if (introText) introText.style.display = 'none';
+                if (appTitle) appTitle.style.display = 'none';
+                if (categoryTitle) {
+                    // Format category name for display
+                    let displayName = category.replace(/-/g, ' ');
+                    if (displayName === 'mcdo') displayName = 'MCDONALDS';
+                    else if (displayName === 'jollibee') displayName = 'JOLLIBEE';
+                    else if (displayName === 'kfc') displayName = 'KFC';
+                    else displayName = displayName.toUpperCase();
+                    categoryTitle.textContent = displayName;
+                    categoryTitle.style.display = 'block';
+                }
+                // Hide static cards
+                const staticCards = document.getElementById('home-static-cards');
+                if (staticCards) staticCards.style.display = 'none';
+                showGlobalLoading("Fetching data...");
+                renderCardsForCategoryWithLoading(category);
+            }
+        });
+    });
 
     // Search button handler (should only be added once)
     const searchBtn = document.getElementById('search-btn');
     const searchInput = document.getElementById('search-input');
     const suggestionsBox = document.getElementById('search-suggestions');
     const clearBtn = document.getElementById('clear-search');
-    // ...existing code...
     if (searchBtn && searchInput) {
         searchBtn.addEventListener('click', function () {
             const query = searchInput.value.trim().toLowerCase();
             if (!query) return;
-    
+
             const cardContainer = document.querySelector('.card-container');
             const staticCards = document.getElementById('home-static-cards');
             if (staticCards) staticCards.style.display = 'none';
             cardContainer.innerHTML = "<p style='color:#333;text-align:center;'>Searching...</p>";
-    
+
             // Only search these categories
             const allowedCategories = ['home', 'jollibee', 'mcdo', 'kfc'];
             const shownRecipes = new Set();
-    
+
+            showGlobalLoading("Fetching recipes...");
             db.ref('recipes').once('value').then(snapshot => {
                 let found = false;
+                let foundCategory = null;
                 cardContainer.innerHTML = "";
                 snapshot.forEach((categorySnap) => {
                     if (!allowedCategories.includes(categorySnap.key)) return;
@@ -86,6 +215,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             !shownRecipes.has(recipe.name.toLowerCase())
                         ) {
                             found = true;
+                            foundCategory = categorySnap.key;
                             shownRecipes.add(recipe.name.toLowerCase());
                             const card = document.createElement('div');
                             card.className = 'card';
@@ -101,17 +231,21 @@ document.addEventListener('DOMContentLoaded', function () {
                         }
                     });
                 });
-                if (!found) {
+                if (found) {
+                    setCategoryUI(foundCategory);
+                } else {
                     cardContainer.innerHTML = "<p style='color:#333;text-align:center;'>No recipes found for your search.</p>";
                 }
+            }).finally(() => {
+                hideGlobalLoading();
             });
         });
 
-          searchInput.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter') {
-            searchBtn.click();
-        }
-    });
+        searchInput.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                searchBtn.click();
+            }
+        });
 
     }
 
@@ -148,6 +282,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const allowedCategories = ['home', 'jollibee', 'mcdo', 'kfc'];
             const shownNames = new Set();
+            showGlobalLoading("Fetching suggestions...");
             db.ref('recipes').once('value').then(snapshot => {
                 suggestions = [];
                 snapshot.forEach(categorySnap => {
@@ -170,6 +305,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     ).join('');
                     suggestionsBox.style.display = "block";
                 }
+            }).finally(() => {
+                hideGlobalLoading();
             });
         });
 
@@ -223,6 +360,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 cardContainer.innerHTML = "<p style='color:#333;text-align:center;'>Loading...</p>";
                 const allowedCategories = ['home', 'jollibee', 'mcdo', 'kfc'];
                 let found = false;
+                showGlobalLoading("Fetching recipe details...");
                 db.ref('recipes').once('value').then(snapshot => {
                     cardContainer.innerHTML = "";
                     snapshot.forEach(categorySnap => {
@@ -252,6 +390,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (!found) {
                         cardContainer.innerHTML = "<p style='color:#333;text-align:center;'>No recipe found.</p>";
                     }
+                }).finally(() => {
+                    hideGlobalLoading();
                 });
             }
         });

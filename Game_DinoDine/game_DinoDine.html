@@ -50,10 +50,130 @@
         left: 0;
         margin: 10px;
       }
+      /* --- Menu Button and Modal Styles --- */
+      #game-info-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        background: #fffbe7;
+        color: #614225;
+        font-weight: bold;
+        font-size: 1.15rem;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 0;
+        z-index: 1001;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      }
+      #game-menu-btn {
+        background: #fffbe7;
+        border: 2px solid #c78456;
+        border-radius: 0 0 12px 0;
+        font-size: 1.7em;
+        width: 48px;
+        height: 48px;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        transition: background 0.2s;
+        margin: 0;
+        padding: 0;
+        position: static;
+      }
+      #game-menu-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0,0,0,0.18);
+        display: none;
+        z-index: 3000;
+        justify-content: flex-start;
+        align-items: flex-start;
+      }
+      #game-menu-modal .menu-content {
+        margin: 32px 0 0 32px;
+        background: #fffbe7;
+        border: 2px solid #c78456;
+        border-radius: 14px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.13);
+        padding: 30px 36px 24px 36px;
+        min-width: 220px;
+        max-width: 90vw;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        font-family: 'Roboto Slab', serif;
+      }
+      #game-menu-modal button {
+        padding: 10px 0;
+        font-size: 1.1em;
+        background: none;
+        border: none;
+        font-weight: bold;
+        text-align: left;
+        cursor: pointer;
+        transition: color 0.2s;
+      }
+      #menu-resume-btn { color: #614225; }
+      #menu-restart-btn { color: #614225; }
+      #menu-exit-btn { color: #d32f2f; }
     </style>
     <script src="game_DinoDine.js" defer type="module"></script>
   </head>
   <body>
+    <!-- --- Menu Bar and Modal --- -->
+    <div id="game-info-bar">
+      <button id="game-menu-btn" title="Menu">☰</button>
+    </div>
+    <div id="game-menu-modal">
+      <div class="menu-content">
+        <button id="menu-help-btn">Help</button>
+        <button id="menu-resume-btn">Resume</button>
+        <button id="menu-restart-btn">Restart</button>
+        <button id="menu-exit-btn">Exit</button>
+      </div>
+    </div>
+    <!-- Help Modal -->
+    <div id="dinodine-help-modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.28); z-index:4000; justify-content:center; align-items:center;">
+      <div style="background: #fffbe7; color: #614225; border-radius: 14px; box-shadow: 0 4px 16px rgba(0,0,0,0.13); padding: 32px 24px 24px 24px; max-width: 480px; width: 92vw; max-height: 80vh; overflow-y: auto; font-family: 'Poppins', Arial, sans-serif; font-size: 1.08rem; position: relative;">
+        <button id="close-help-modal" style="position: absolute; top: 12px; right: 18px; background: none; border: none; font-size: 1.5em; color: #c78456; cursor: pointer; font-weight: bold;" title="Close">&times;</button>
+        <div style="white-space: pre-line; text-align:left;">
+🦖 <b>Dino Dine – Mini-Game Overview</b>
+Dino Dine is a fast-paced, reflex-based mini-game inspired by the classic Chrome Dino game — but with a tasty twist!
+
+🎮 <b>Game Concept</b>
+- You play as a hungry dino running through a world of food.
+- The obstacles are various foods from the category you selected in Dishcovery.
+- You’re not picking food — you’re trying to survive!
+
+⚙️ <b>How It Works</b>
+<b>Run and Jump</b>
+- Your dino runs automatically. Tap or press to jump over food obstacles.
+
+<b>Obstacles = Food</b>
+- Each food in your path is something you can accidentally eat.
+
+<b>Game Over on Collision</b>
+- If you hit a food, the game ends.
+- That food becomes your final meal — whether you wanted it or not!
+
+🎯 <b>Objective</b>
+- Stay alive by dodging as many foods as you can.
+- The longer you survive, the higher your score.
+- But once you slip up and hit a food — that’s what’s on your plate!
+
+💡 <b>Tip</b>
+React fast! You can’t stack or choose foods — it’s all about instinct. One bite, and it’s dino dinner time.
+        </div>
+      </div>
+    </div>
     <button id="home">Home</button>
     <h1>Dino Dine</h1>
     <canvas id="game"></canvas>
@@ -93,6 +213,52 @@
           reset();
         }
       });
+
+      // --- Menu Modal Logic ---
+      (function setupMenuModal() {
+        const menuBtn = document.getElementById("game-menu-btn");
+        const menuModal = document.getElementById("game-menu-modal");
+        const resumeBtn = document.getElementById("menu-resume-btn");
+        const restartBtn = document.getElementById("menu-restart-btn");
+        const exitBtn = document.getElementById("menu-exit-btn");
+        const helpBtn = document.getElementById("menu-help-btn");
+        const helpModal = document.getElementById("dinodine-help-modal");
+        const closeHelpBtn = document.getElementById("close-help-modal");
+
+        // Open menu modal
+        menuBtn.onclick = () => {
+          menuModal.style.display = "flex";
+        };
+        // Resume closes modal
+        resumeBtn.onclick = () => {
+          menuModal.style.display = "none";
+        };
+        // Restart reloads page
+        restartBtn.onclick = () => {
+          window.location.reload();
+        };
+        // Exit goes back to listofgames.html with category param if available
+        exitBtn.onclick = () => {
+          const urlParams = new URLSearchParams(window.location.search);
+          const category = urlParams.get("category") || "home";
+          window.location.href = `/listofgames.html?category=${encodeURIComponent(category)}`;
+        };
+        // Help opens help modal
+        helpBtn.onclick = () => {
+          helpModal.style.display = "flex";
+        };
+        // Close help modal
+        closeHelpBtn.onclick = () => {
+          helpModal.style.display = "none";
+        };
+        helpModal.addEventListener("mousedown", function (e) {
+          if (e.target === helpModal) helpModal.style.display = "none";
+        });
+        // Click outside closes menu modal
+        menuModal.addEventListener("mousedown", function (e) {
+          if (e.target === menuModal) menuModal.style.display = "none";
+        });
+      })();
     </script>
   </body>
 </html>
