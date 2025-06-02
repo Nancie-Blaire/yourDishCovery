@@ -66,7 +66,7 @@
     .search-link a,
     .about-link a,
     .help-link a {
-      color: #000;
+      color: #ffffff;
       text-decoration: none;
       font-size: 1rem;
       font-family: 'Times New Roman', Times, serif;
@@ -74,7 +74,7 @@
       padding: 10px 20px;
       border: 2px solid #fff59b;
       border-radius: 30px;
-      background-color: rgba(255, 245, 155, 0.4);
+      background-color: rgba(221, 165, 96, 0.503);
       box-shadow: 0 0 10px #fff59b, 0 0 20px #fff59b;
       transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
       animation: pulseGlow 3s infinite ease-in-out;
@@ -111,9 +111,9 @@
     }
 
     .dishcoverypic {
-      max-width: 400px;
+      max-width: 300px;
       border-radius: 100px;
-      margin-right: -2%;
+      margin-right: 2%;
       margin-bottom: 5%;
       margin-top: 5%;
     }
@@ -158,11 +158,11 @@
       z-index: 1000;
     }
 
-    .randomizer-link { padding-top: 630px; left: 60px; }
-    .dishclopedia-link { padding-top: 630px; left: 520px; }
-    .search-link { padding-top: 630px; right: 385px; }
-    .about-link { padding-top: 55px; left: 30px; }
-    .help-link { padding-top: 55px; left: 200px; }
+    .randomizer-link { padding-top: 55px; left: 30px; }
+    .dishclopedia-link { padding-top: 55px; left: 250px; }
+    .search-link { padding-top: 55px; left: 485px; }
+    .about-link { padding-top: 55px; left: 650px; }
+    .help-link { padding-top: 55px; left: 803px; }
 
     #secret-logo {
       width: 80px;
@@ -231,15 +231,15 @@
       position: absolute;
       bottom:-700px;
       right: 40px;
-      background-color: rgba(255, 244, 216, 0.759);
-      border: 2px solid #ffffff;
+      background-color: rgba(221, 165, 96, 0.503);
+      border: 2px solid #fff59b;
       border-radius: 30px;
       padding: 10px 20px;
       font-family: 'Times New Roman', Times, serif;
       font-size: 1rem;
       letter-spacing: 3px;
       cursor: pointer;
-      box-shadow: 0 0 10px hsl(193, 100%, 77%), 0 0 20px #9bc5ff;
+      box-shadow: 0 0 10px #fff59b, 0 0 20px #fff59b;
       animation: pulseGlow 3s infinite ease-in-out;
       transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
       z-index: 1000;
@@ -331,7 +331,7 @@
   <div class="help-link"><a href="#" id="help-btn">HELP</a></div>
 
   <!-- Return to Top Button -->
-  <button id="return-to-top" title="Return to Top">TOP</button>
+  <button id="return-to-top" title="Return to Top">RETURN</button>
 
   <!-- Main Section -->
   <section class="main-section" id="top">
@@ -340,7 +340,6 @@
     </div>
     <div class="hero-section">
       <h1 class="tagline">Your Interactive Food Discovery Helper</h1>
-    
     </div>
 
     <!-- Mobile About Section -->
@@ -480,7 +479,7 @@
   <script>
   const meals = [
     { name: "Spaghetti Bolognese", image: "images/meals/spaghetti.png" },
-    { name: "Chicken Teriyaki Bowl", image: "images/meals/teriyaki.png" },
+    { name: "Chicken Teriyaki", image: "images/chickenteri.jpg" },
     { name: "Veggie Tacos", image: "images/meals/tacos.png" },
     { name: "Beef Stroganoff", image: "images/meals/stroganoff.png" },
     { name: "Butter Chicken", image: "images/meals/butterchicken.png" },
