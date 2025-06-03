@@ -21,27 +21,27 @@
 
   <nav id="sidebar">
     <ul>
-        <button onclick="toggleSidebar()" id="toggle-btn">
+      <button onclick="toggleSidebar()" id="toggle-btn">
           <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m313-480 155 156q11 11 11.5 27.5T468-268q-11 11-28 11t-28-11L228-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l184-184q11-11 27.5-11.5T468-692q11 11 11 28t-11 28L313-480Zm264 0 155 156q11 11 11.5 27.5T732-268q-11 11-28 11t-28-11L492-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l184-184q11-11 27.5-11.5T732-692q11 11 11 28t-11 28L577-480Z"/></svg>
         </button>
-      </span>
-    </li>
-      <li class="active">
-        <a href="#" data-category="static-home">
-          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M240-200h120v-200q0-17 11.5-28.5T400-440h160q17 0 28.5 11.5T600-400v200h120v-360L480-740 240-560v360Zm-80 0v-360q0-19 8.5-36t23.5-28l240-180q21-16 48-16t48 16l240 180q15 11 23.5 28t8.5 36v360q0 33-23.5 56.5T720-120H560q-17 0-28.5-11.5T520-160v-200h-80v200q0 17-11.5 28.5T400-120H240q-33 0-56.5-23.5T160-200Zm320-270Z"/></svg>
+      <!-- Dishclopedia link at the top -->
+      <li id="dishclopedia-link-li" class="active">
+        <a href="#" id="dishclopedia-link" data-category="dishclopedia">
+           <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M240-200h120v-200q0-17 11.5-28.5T400-440h160q17 0 28.5 11.5T600-400v200h120v-360L480-740 240-560v360Zm-80 0v-360q0-19 8.5-36t23.5-28l240-180q21-16 48-16t48 16l240 180q15 11 23.5 28t8.5 36v360q0 33-23.5 56.5T720-120H560q-17 0-28.5-11.5T520-160v-200h-80v200q0 17-11.5 28.5T400-120H240q-33 0-56.5-23.5T160-200Zm320-270Z"/></svg>
+          <circle cx="480" cy="-480" r="220"/>
+          </svg>
           <span>Home</span>
         </a>
       </li>
-
-
-
-<li class="dropdown-toggle">
-  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m160-120-80-80h800l-80 80H160Zm-40-120q6-18 16-34t24-30v-296h-40v-60h40v-30h-40v-60h40v-30h-40v-60h280q33 0 56.5 23.5T480-760v10h360v60H480v10q0 33-23.5 56.5T400-600h-80v244q14 2 28 6t26 12q26-65 83-103.5T583-480q90 0 153.5 61.5T800-268v28H120Zm334-80h252q-17-36-50-58t-73-22q-42 0-77 21t-52 59ZM320-750h80v-30h-80v30Zm0 90h80v-30h-80v30Zm-100-90h40v-30h-40v30Zm0 90h40v-30h-40v30Zm0 314q10-5 19.5-7.5T260-358v-242h-40v254Zm360 26Z" /></svg>
-  <span>Recipe</span>
-  <ul class="dropdown-menu">
-<li><a href="#" data-category="heavy-meal">Heavy Meal</a></li>
-<li><a href="#" data-category="light-meal">Light Meal</a></li>
-<li><a href="#" data-category="dessert">Dessert</a></li>
+      <!-- Home link -->
+<li class="dropdown-toggle" id="home-dropdown">
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="2px" fill="#e8eaed"><path d="m160-120-80-80h800l-80 80H160Zm-40-120q6-18 16-34t24-30v-296h-40v-60h40v-30h-40v-60h40v-30h-40v-60h280q33 0 56.5 23.5T480-760v10h360v60H480v10q0 33-23.5 56.5T400-600h-80v244q14 2 28 6t26 12q26-65 83-103.5T583-480q90 0 153.5 61.5T800-268v28H120Zm334-80h252q-17-36-50-58t-73-22q-42 0-77 21t-52 59ZM320-750h80v-30h-80v30Zm0 90h80v-30h-80v30Zm-100-90h40v-30h-40v30Zm0 90h40v-30h-40v30Zm0 314q10-5 19.5-7.5T260-358v-242h-40v254Zm360 26Z" /></svg>
+<a href="#" id="home-link" data-category="home" class="nopadding">
+    <span>Recipe</span></a>
+  <ul class="dropdown-menu" style="display:none;">
+    <li><a href="#" data-category="home-breakfast">Breakfast</a></li>
+    <li><a href="#" data-category="home-lunch">Lunch</a></li>
+    <li><a href="#" data-category="home-dinner">Dinner</a></li>
   </ul>
 </li>
 
@@ -56,8 +56,8 @@
 </li>
 
 <li class="active">
-  <a href="/index.html" data-category="home">
-    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/></svg>
+  <a href="../index.html" id="indexpage">
+<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/></svg>
     <span>Back</span>
   </a>
 </li>
@@ -74,6 +74,9 @@
         <button id="search-btn">Search</button>
         <div id="search-suggestions" class="suggestions-dropdown" style="display:none;"></div>
     </div>
+    <div id="global-loading-indicator">
+      <span style="color:#c78456;font-weight:bold;">Loading...</span>
+    </div>
 
     <h1 id="app-title">DISHCLOPEDIA</h1>
 
@@ -82,9 +85,43 @@
         <p>Search dishes by name. Discover hidden gems from street stalls to gourmet kitchens. Whether you're cooking at home or browsing for your next food adventure, Dishclopedia makes it easy to learn, explore, and get inspired.</p>
         <p class="tagline">Search. Discover. Taste.</p>
     </div>
+    <div class="static-card-container" id="home-static-cards">
+      <div class="card">
+        <a href="#" class="card-link" data-category="home">
+          <img src="dishcovery.png" alt="Home Recipes">
+          <div class="card-content">
+            <p class="recipe-name">Home Recipes</p>
+          </div>
+        </a>
+      </div>
+      <div class="card">
+        <a href="#" class="card-link" data-category="jollibee">
+          <img src="images/jabee.png" alt="Jollibee">
+          <div class="card-content">
+            <p class="recipe-name">Jollibee</p>
+          </div>
+        </a>
+      </div>
+      <div class="card">
+        <a href="#" class="card-link" data-category="mcdo">
+          <img src="images/mcdo.jpg" alt="McDonalds">
+          <div class="card-content">
+            <p class="recipe-name">McDonalds</p>
+          </div>
+        </a>
+      </div>
+      <div class="card">
+        <a href="#" class="card-link" data-category="kfc">
+          <img src="images/kfc.jpg" alt="KFC">
+          <div class="card-content">
+            <p class="recipe-name">KFC</p>
+          </div>
+        </a>
+      </div>
+    </div>
+    <!-- End static cards -->
 
     <h2 id="category-title" style="display:none; text-align:center; margin-top: 1em;"></h2>
-
     <div class="card-container">
     <!-- Cards will be rendered here -->
   </div>
@@ -143,42 +180,37 @@
   }
 
   document.addEventListener('DOMContentLoaded', function () {
-    // Attach click handlers to sidebar links for categories
-    document.querySelectorAll('a[data-category]').forEach(link => {
-      link.addEventListener('click', function (e) {
+    // --- Dishclopedia sidebar link logic ---
+    const dishclopediaLink = document.getElementById('dishclopedia-link');
+    const introText = document.getElementById('intro-text');
+    const appTitle = document.getElementById('app-title');
+    const cardContainer = document.querySelector('.card-container');
+    const categoryTitle = document.getElementById('category-title');
+
+    function showDishclopediaIntro() {
+      if (introText) introText.style.display = '';
+      if (appTitle) appTitle.style.display = '';
+      if (categoryTitle) {
+        categoryTitle.style.display = 'none';
+        categoryTitle.textContent = '';
+      }
+      if (cardContainer) cardContainer.innerHTML = '';
+      // Set sidebar active state
+      document.querySelectorAll('#sidebar li').forEach(li => li.classList.remove('active'));
+      const dishLi = document.getElementById('dishclopedia-link-li');
+      if (dishLi) dishLi.classList.add('active');
+    }
+
+    // Show intro by default on load and set sidebar active state
+    showDishclopediaIntro();
+
+    // Sidebar Dishclopedia link click
+    if (dishclopediaLink) {
+      dishclopediaLink.addEventListener('click', function (e) {
         e.preventDefault();
-        const category = this.getAttribute('data-category');
-        const introText = document.getElementById('intro-text');
-        const appTitle = document.getElementById('app-title');
-        const cardContainer = document.querySelector('.card-container');
-        const categoryTitle = document.getElementById('category-title');
-        if (category === 'static-home' || category === 'home') {
-          // Show intro and title, hide cards and category title
-          if (introText) introText.style.display = '';
-          if (appTitle) appTitle.style.display = '';
-          if (categoryTitle) {
-            categoryTitle.style.display = 'none';
-            categoryTitle.textContent = '';
-          }
-          if (cardContainer) cardContainer.innerHTML = '';
-        } else {
-          // Hide intro and app title, show cards and category title
-          if (introText) introText.style.display = 'none';
-          if (appTitle) appTitle.style.display = 'none';
-          if (categoryTitle) {
-            // Format category name for display
-            let displayName = category.replace(/-/g, ' ');
-            if (displayName === 'mcdo') displayName = 'MCDONALDS';
-            else if (displayName === 'jollibee') displayName = 'JOLLIBEE';
-            else if (displayName === 'kfc') displayName = 'KFC';
-            else displayName = displayName.toUpperCase();
-            categoryTitle.textContent = displayName;
-            categoryTitle.style.display = 'block';
-          }
-          renderCardsForCategory(category);
-        }
+        showDishclopediaIntro();
       });
-    });
+    }
   });
 </script>
 </body>
