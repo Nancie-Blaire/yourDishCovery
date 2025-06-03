@@ -71,6 +71,12 @@ body {
     display: grid;
     grid-template-columns: auto 1fr;
 }
+#intro-text p {
+  margin-bottom: 0.0rem; /* or even 0 */
+}
+.static-card-container {
+  margin-top: 0;
+}
 
 #sidebar {
     box-sizing: border-box;
@@ -106,11 +112,10 @@ body {
     font-weight: 600;
 }
 
-#sidebar ul li.active a {
-    color: #e9a96b;
-    fill: var(--accent-clr);
+#home-link {
+   padding: 0px;
+   gap: 0px
 }
-
 #sidebar a, #sidebar .dropdown-btn, #sidebar .logo {
     border-radius: .5em;
     padding: .85em;
@@ -139,9 +144,7 @@ body {
     flex-grow: 1;
 }
 
-#sidebar a:hover, #sidebar .dropdown-btn:hover {
-    background-color: var(--hover-clr);
-}
+
 
 #sidebar .sub-menu {
     display: grid;
@@ -352,7 +355,7 @@ box-sizing: border-box;
   flex-wrap: wrap;
   gap: 24px;           /* space between cards */
   justify-content: center;
-  padding: 32px 0;     /* space above and below the cards */
+  /* space above and below the cards */
 }
 
 #search-container {

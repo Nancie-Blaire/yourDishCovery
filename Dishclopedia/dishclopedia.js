@@ -118,6 +118,42 @@ document.addEventListener('DOMContentLoaded', function () {
             event.stopPropagation();
             toggleDropdown(this);
         });
+        const homeDropdown = document.getElementById('home-dropdown');
+    const homeLink = document.getElementById('home-link');
+    const dropdownMenu = homeDropdown ? homeDropdown.querySelector('.dropdown-menu') : null;
+
+    if (homeLink && dropdownMenu) {
+        homeLink.addEventListener('click', function (e) {
+            e.preventDefault();
+            // Show all home recipes
+            const introText = document.getElementById('intro-text');
+            const appTitle = document.getElementById('app-title');
+            const staticCards = document.getElementById('home-static-cards');
+            const categoryTitle = document.getElementById('category-title');
+            if (introText) introText.style.display = 'none';
+            if (appTitle) appTitle.style.display = 'none';
+            if (staticCards) staticCards.style.display = 'none';
+            if (categoryTitle) {
+                categoryTitle.textContent = "HOME";
+                categoryTitle.style.display = 'block';
+            }
+            document.querySelectorAll('#sidebar li').forEach(li => li.classList.remove('active'));
+            homeDropdown.classList.add('active');
+            renderCardsForCategoryWithLoading('home');
+            // Show the dropdown menu
+            dropdownMenu.style.display = 'block';
+        });
+
+        // Optional: clicking the arrow also toggles the dropdown
+        const dropdownArrow = homeLink.querySelector('.dropdown-arrow');
+        if (dropdownArrow) {
+            dropdownArrow.addEventListener('click', function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+                dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+            });
+        }
+    }
     });
 
     // Attach sidebar handler only to sidebar links (not static cards)
