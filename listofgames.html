@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DishCovery - List of Games</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+ <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" />
+
+
 <style>
   * {
     margin: 0;
@@ -231,13 +234,44 @@
     background: #4caf50;
     border-color: #388e3c;
   }
+
+  #home-logo {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  margin: 0;
+  text-align: left;
+  text-decoration: none;
+  z-index: 10;
+}
+
+.material-symbols-outlined {
+  font-size: 40px !important;
+  color: #000000;
+  vertical-align: middle;
+}
+#home-logo .material-symbols-outlined{
+  font-size: 40px !important;
+  color: #000000;
+  vertical-align: middle;
+  transition: color 0.3s, transform 0.2s cubic-bezier(.34,1.56,.64,1), box-shadow 0.2s;
+}
+
+#home-logo:hover .material-symbols-outlined {
+  color: #f9d8c3;
+  transform: scale(1.2);
+  box-shadow: 0 4px 16px rgba(255, 152, 0, 0.15);
+}
+
   </style>
 </head>
 <body>
   <div class="background">
     <img src="images/listofgames.png" class="bg-img" alt="Cafe Background" />
   </div>
-
+    <a href="../index.html" id="home-logo" title="Home">
+    <span class="material-symbols-outlined">house</span>
+  </a>
 
   <!-- HINIWALAY KO NG DIV KSI SA PHONE NAHAHIGHLIGHT LAHAT NG BUTTONS KPAG HINOLD -->
 

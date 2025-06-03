@@ -515,7 +515,7 @@ function showFoodInfoModal(foodObj) {
   document.getElementById("modal-food-name").textContent = foodObj.name;
   modal.style.display = "flex";
   document.getElementById("yes-button").onclick = () => {
-    window.location.href = `/food_info.html?food=${encodeURIComponent(foodObj.name)}`;
+    window.location.href = `../Food_info/food_info.html?food=${encodeURIComponent(foodObj.name)}`;
   };
   document.getElementById("no-button").onclick = () => {
     modal.style.display = "none";

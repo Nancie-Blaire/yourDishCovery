@@ -176,7 +176,7 @@ function showFoodInfoModal(foodName, foodImage) {
   document.getElementById("yes-button").onclick = () => {
     modalOpen = false;
     modal.style.display = "none";
-    window.location.href = `/food_info.html?food=${encodeURIComponent(foodName)}`;
+    window.location.href = `../Food_info/food_info.html?food=${encodeURIComponent(foodName)}`;
   };
   document.getElementById("no-button").onclick = () => {
     modalOpen = false;
