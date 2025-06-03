@@ -685,3 +685,13 @@ window.addEventListener("beforeunload", () => {
     window.speechSynthesis.cancel();
   }
 });
+ document.addEventListener("DOMContentLoaded", function() {
+    const gamesLogo = document.getElementById("back-button");
+    if (gamesLogo) {
+      gamesLogo.addEventListener("click", function(e) {
+        e.preventDefault();
+        history.back();
+      });
+    }
+  });
+
