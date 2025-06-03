@@ -593,16 +593,4 @@ box-sizing: border-box;
       flex-shrink: 0;
     }
     
-    /* Ensure the dropdown item layout is proper */
-.recipe-dropdown .recipe-icon {
-  width: 24px;
-  height: 24px;
-  fill: #e8eaed;
-  flex-shrink: 0;
-}
-
-.recipe-dropdown {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+ 
