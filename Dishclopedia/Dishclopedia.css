@@ -71,12 +71,6 @@ body {
     display: grid;
     grid-template-columns: auto 1fr;
 }
-#intro-text p {
-  margin-bottom: 0.0rem; /* or even 0 */
-}
-.static-card-container {
-  margin-top: 0;
-}
 
 #sidebar {
     box-sizing: border-box;
@@ -112,27 +106,29 @@ body {
     font-weight: 600;
 }
 
-#home-link {
-   padding: 0px;
-   gap: 0px
+#sidebar ul li.active a {
+    color: #e9a96b;
+    fill: var(--accent-clr);
 }
-#sidebar a, #sidebar .dropdown-btn, #sidebar .logo {
+
+#sidebar a, #sidebar .dropdown-btn, #sidebar .dropdown-toggle, #sidebar .logo {
     border-radius: .5em;
-    padding: .85em;
+    padding: .80em;
     text-decoration: none;
     color: #e9a96b;
     display: flex;
     align-items: center;
     gap: 1em;
-    background-color: transparent; /* Removes the white background */
-    border: none; /* Removes any border */
+    background-color: transparent;
+    border: none;
     font-family: "Roboto Slab", serif;
     font-size: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 48px;
+    transition: background-color 0.2s ease;
 }
 
-.dropdown-btn {
-    font-size: 16px;
-}
 
 #sidebar svg {
     flex-shrink: 0;
@@ -144,7 +140,10 @@ body {
     flex-grow: 1;
 }
 
-
+#sidebar ul > li > a:hover,
+#sidebar ul > .dropdown-toggle:hover {
+    background-color: var(--hover-clr) !important;
+}
 
 #sidebar .sub-menu {
     display: grid;
@@ -227,11 +226,6 @@ main {
     font-size: 20px;
 }
 
-/* Remove extra gap if present */
-.dropdown-toggle > span {
-    flex-grow: 1;
-}
-
 /* Adjust the arrow positioning */
 .dropdown-toggle::after {
     content: "❯";
@@ -285,7 +279,6 @@ main {
     border-radius: 5px;
     transition: background-color 0.2s;
     font-family: "Roboto Slab", serif;
-    padding-left: 2em !important; /* Add !important to override the conflicting rule */
 }
 
 .dropdown-menu li a:hover {
@@ -551,36 +544,7 @@ box-sizing: border-box;
 
 
 
-.dropdown-toggle {
-    width: 100%;
-    box-sizing: border-box;
-    padding: .40em;
-    gap: 1em;
-    border-radius: .5em;
-    background: transparent;
-    border: none;
-    font-family: "Roboto Slab", serif;
-    font-size: 20px;
-    color: #e9a96b;
-    display: flex;
-    align-items: center;
-    position: relative;
-    text-align: left;
-    margin-left: 0;
-}
 
-/* Sidebar menu item unified styling for alignment */
-#sidebar ul > li,
-#sidebar ul > li > a,
-#sidebar ul > .dropdown-toggle {
-    display: flex;
-    align-items: center;
-    gap: 1em;
-    padding-left: 0.10em;   /* Consistent left indent */
-    padding-right: 0.5em;
-    box-sizing: border-box;
-    min-height: 48px;
-}
 
 #sidebar ul > li > a,
 #sidebar ul > .dropdown-toggle {
@@ -591,6 +555,7 @@ box-sizing: border-box;
     border-radius: .5em;
     background: transparent !important; /* Remove any background */
     transition: background 0.2s, color 0.2s;
+    padding-left: 3.5px;
 }
 
 #sidebar ul > li > a svg,
@@ -612,10 +577,20 @@ box-sizing: border-box;
 }
 
 
-/* sidebar hover menu background */
-#sidebar ul > li > a:hover,
-#sidebar ul > .dropdown-toggle:hover {
-    background-color: var(--hover-clr) !important;
-
-}
-
+/* Custom sizing for the Recipe dropdown toggle */
+    .recipe-dropdown .recipe-icon {
+      width: 2px;
+      height: 2px;
+      fill: #e8eaed;
+      flex-shrink: 0; /* Prevent icon from shrinking */
+    }
+    
+    /* Optional: Alternative approach with a simpler recipe icon */
+    .recipe-dropdown .simple-recipe-icon {
+      width: 20px;
+      height: 20px;
+      fill: #e8eaed;
+      flex-shrink: 0;
+    }
+    
+ 

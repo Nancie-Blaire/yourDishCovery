@@ -216,6 +216,14 @@ async function displayFoodDetails() {
   defaultServings = (foodDetails && foodDetails.servings) ? Number(foodDetails.servings) : 4;
   document.getElementById("servings-input").value = defaultServings;
 
+  // Show/hide servings control based on category
+  const servingsControl = document.getElementById("servings-control");
+  if (foodDetails && foodDetails._category === "home") {
+    if (servingsControl) servingsControl.style.display = "flex";
+  } else {
+    if (servingsControl) servingsControl.style.display = "none";
+  }
+
   if (foodDetails) {
     document.getElementById("food-name").textContent = foodDetails.name;
     document.getElementById("food-budget").textContent = `Estimated budget: ₱${foodDetails.budget || "N/A"}`;
