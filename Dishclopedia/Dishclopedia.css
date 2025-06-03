@@ -227,6 +227,11 @@ main {
     font-size: 20px;
 }
 
+/* Remove extra gap if present */
+.dropdown-toggle > span {
+    flex-grow: 1;
+}
+
 /* Adjust the arrow positioning */
 .dropdown-toggle::after {
     content: "❯";
@@ -280,6 +285,7 @@ main {
     border-radius: 5px;
     transition: background-color 0.2s;
     font-family: "Roboto Slab", serif;
+    padding-left: 2em !important; /* Add !important to override the conflicting rule */
 }
 
 .dropdown-menu li a:hover {
@@ -355,7 +361,7 @@ box-sizing: border-box;
   flex-wrap: wrap;
   gap: 24px;           /* space between cards */
   justify-content: center;
-  /* space above and below the cards */
+  padding: 32px 0;     /* space above and below the cards */
 }
 
 #search-container {
@@ -503,13 +509,8 @@ box-sizing: border-box;
   border-radius: 5px;
 }
 
-.dropdown-toggle.selected svg {
-  fill: white; /* Change icon color when selected */
-}
 
-.dropdown-toggle.selected span {
-  color: white;
-}
+
 
 #category-title {
     font-family: "Roboto Slab", serif;
@@ -539,54 +540,82 @@ box-sizing: border-box;
     font-size: 1.2em;
     color: #c78456;
     font-family: "Roboto Slab", serif;
-    box-shadow: 0 2px 12px rgba(199,132,86,0.08);
     display: none;
     pointer-events: none; /* allow clicks through */
 }
 
-@media only screen and (max-width: 414px) {
+/* Fix sidebar menu alignment and spacing for dropdown-toggle */
+#sidebar ul > li {
+    margin-bottom: 7px;
+}
 
-    #app-title {
-        font-size: 100%; /* Smaller title on small screens */
-        left:-6vh;
-    }
-    #intro-text {
-        width: 70%; /* Wider intro text on small screens */
-        left: -6vh; /* Center it */
-        font-size: 90%;
-    }
-    #search-container {
-        width: 60%;
-        left: -4vh;
-        top: 78vh;
-        margin-top: 24px;
-        margin-bottom: 10px;
-        position: relative; /* Allow top/left to work if needed */
-    }
-    .card {
-        width: 68%;
-        margin: 10px 0 5px -63px;
-        left: 0;
-    }
-    main {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
 
-    #category-title {
+
+.dropdown-toggle {
+    width: 100%;
+    box-sizing: border-box;
+    padding: .40em;
+    gap: 1em;
+    border-radius: .5em;
+    background: transparent;
+    border: none;
     font-family: "Roboto Slab", serif;
-    font-size: 2.2rem;
-    font-weight: bold;
-    color: #ffffff;
-    text-align: center;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-    letter-spacing: 2px;
-    background: #c78456;
-    border-radius: 8px;
-    padding: 8px 0;
-    display: none; /* will be set to block by JS */
+    font-size: 20px;
+    color: #e9a96b;
+    display: flex;
+    align-items: center;
+    position: relative;
+    text-align: left;
+    margin-left: 0;
 }
 
+/* Sidebar menu item unified styling for alignment */
+#sidebar ul > li,
+#sidebar ul > li > a,
+#sidebar ul > .dropdown-toggle {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    padding-left: 0.10em;   /* Consistent left indent */
+    padding-right: 0.5em;
+    box-sizing: border-box;
+    min-height: 48px;
 }
+
+#sidebar ul > li > a,
+#sidebar ul > .dropdown-toggle {
+    width: 100%;
+    font-family: "Roboto Slab", serif;
+    font-size: 20px;
+    color: #e9a96b !important; /* Ensure all sidebar text is the same color */
+    border-radius: .5em;
+    background: transparent !important; /* Remove any background */
+    transition: background 0.2s, color 0.2s;
+}
+
+#sidebar ul > li > a svg,
+#sidebar ul > .dropdown-toggle > svg {
+    flex-shrink: 0;
+    margin-right: 1em;
+    min-width: 24px;
+    min-height: 24px;
+}
+
+/*recipe and rsto sidebar items */
+#sidebar ul > li > a span,
+#sidebar ul > .dropdown-toggle > span {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    color: #e9a96b !important; 
+ 
+}
+
+
+/* sidebar hover menu background */
+#sidebar ul > li > a:hover,
+#sidebar ul > .dropdown-toggle:hover {
+    background-color: var(--hover-clr) !important;
+
+}
+
