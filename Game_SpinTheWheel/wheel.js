@@ -330,21 +330,34 @@ const imageBackgroundPlugin = {
       ctx.closePath();
       ctx.clip();
 
-      if (image) {
+            if (image) {
+        // Draw background color first
+        ctx.fillStyle = fallbackColor || "#FFFFFF";
+        ctx.fill();
+      
+        // Draw circular clipped image, smaller and centered
+        ctx.save();
         ctx.translate(centerX, centerY);
         ctx.rotate(startAngle + segmentAngle / 2);
         ctx.rotate(Math.PI / 2);
-
-        const imgWidth = radius * 2;
-        const imgHeight = radius * 2;
+      
+        const imgScale = 0.22; // 60% of diameter
+        const imgRadius = radius * imgScale;
+        const imgDistance = 0.72; // 75% out from center (adjust as needed)
+        ctx.beginPath();
+       ctx.arc(0, -radius * imgDistance, imgRadius, 0, 2 * Math.PI); // farther from center
+ // position image halfway between center and edge     ctx.closePath();
+        ctx.clip();
+      
         ctx.drawImage(
           image,
-          -radius,
-          -radius,
-          imgWidth,
-          imgHeight
+          -imgRadius,
+          -radius * imgDistance - imgRadius,
+          imgRadius * 2,
+          imgRadius * 2
         );
-
+      
+        ctx.restore();
         ctx.rotate(-Math.PI / 2);
         ctx.rotate(-(startAngle + segmentAngle / 2));
         ctx.translate(-centerX, -centerY);
@@ -431,7 +444,9 @@ async function initializeWheel() {
           backgroundColor: backgroundColors,
           backgroundImages: foodImages,
           data: data,
-          borderColor: "#000",
+          borderColor: "rgb(76, 40, 23)",
+          borderWidth: 2.5,
+
         },
       ],
     },
@@ -443,7 +458,7 @@ async function initializeWheel() {
         tooltip: false,
         legend: { display: false },
         datalabels: {
-          color: "#FFF",
+          color: "black",
           formatter: (_, context) => context.chart.data.labels[context.dataIndex],
           font: (context) => {
             const label = context.chart.data.labels[context.dataIndex];

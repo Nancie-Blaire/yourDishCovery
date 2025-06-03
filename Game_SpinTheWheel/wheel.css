@@ -37,18 +37,18 @@ html, body {
 }
 
 .wrapper {
-  width: 90%;
-  max-width: 34.37em;
-  max-height: 90vh;
-  background-color: #fff;
-  position: absolute;
-  transform: translate(-50%, -50%);
-  top: 50%;
-  left: 50%;
-  padding: 3em;
-  border-radius: 1em;
+     width: 90%;
+    max-width: 34.37em;
+    max-height: 90vh;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    padding: 3em;
+    padding-top: 2em;
+  /*border-radius: em;
   box-shadow: 0 4em 5em rgba(27, 8, 53, 0.2);
-  border: 2px solid black;
+  */
 }
 
 .container {
@@ -57,17 +57,24 @@ html, body {
   height: 100%;
 }
 
-#wheel {
-  max-height: inherit;
-  width: 100%; /* Ensure the canvas takes full width */
-  height: 100%; /* Ensure the canvas takes full height */
-  display: block; /* Ensure the canvas is visible */
-  margin: 0 auto; /* Center the canvas horizontally */
-  background-color: transparent; /* Ensure no background color hides the wheel */
+ #wheel{
+
+    background-color: rgb(186, 97, 56);
+    border-radius: 1000px;
 }
+ 
+/* #wheel {
+  max-height: inherit;
+  width: 100%; /* Ensure the canvas takes full width 
+  height: 100%; /* Ensure the canvas takes full height
+  display: block; /* Ensure the canvas is visible 
+  margin: 0 auto; /* Center the canvas horizontally 
+  background-color: transparent; /* Ensure no background color hides the wheel 
+} */
 @keyframes rotate {
   100% {
     transform: rotate(360deg);
+    
   }
 }
 
@@ -82,7 +89,7 @@ html, body {
   cursor: pointer;
   border: 0;
   background: radial-gradient(#fdcf3b 50%, #d88a40 85%);
-  color: #1b1606;
+  color: #000000;
   text-transform: upppercase;
   font-size: 1.8em;
   letter-spacing: 0.1em;
@@ -97,7 +104,7 @@ img {
 #final-value {
   font-size: 1.5em;
   text-align: center;
-  margin-top: 1.5em;
+  margin-top: 1em;
   color: #202020;
   font-weight: 500;
 }
