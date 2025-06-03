@@ -54,6 +54,8 @@ let paused = false; // Add paused state
 // Ensure waitingToStart is accessible globally
 window.waitingToStart = waitingToStart;
 
+const bgImage = new Image();
+bgImage.src = "images/sinigang.jpg";
 // Global mapping of placeholder IDs to food details
 const foodMapping = {};
 
@@ -244,8 +246,8 @@ function updateGameSpeed(frameTimeDelta) {
 }
 
 function clearScreen() {
-  ctx.fillStyle = "white";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
 }
 
 function gameLoop(currentTime) {

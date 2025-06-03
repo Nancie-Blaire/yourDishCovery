@@ -5,6 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dino Dine</title>
+      <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
     <style>
       * {
         padding: 0px;
@@ -27,9 +31,12 @@
         user-select: none;
         outline: none;
         -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+          background: url('images/sinigang.jpg') no-repeat center center fixed;
+  background-size: cover;
       }
       canvas {
-        border: 0.1px solid grey;
+         background: transparent !important;
+        border: 0.1px solid rgba(128, 128, 128, 0.733);
       }
       h1 {
         font-size: 7vh;
@@ -40,6 +47,7 @@
         text-align: center;
         margin-top: 20px;
         letter-spacing: 2vh;
+        font-family: "Poppins", sans-serif;;
       }
       h2.got-food {
         letter-spacing: 0vh;
@@ -124,6 +132,40 @@
       #menu-resume-btn { color: #614225; }
       #menu-restart-btn { color: #614225; }
       #menu-exit-btn { color: #d32f2f; }
+
+            h2 {
+        font-size: 5vw;           /* Responsive font size */
+        color: #000000;
+        text-align: center;
+        margin-top: 2vw;
+        letter-spacing: 0.5vw;
+        word-break: break-word;
+        max-width: 90vw;
+        margin-left: auto;
+        margin-right: auto;
+         font-family: "Poppins", sans-serif;
+      }
+      
+      @media (max-width: 300px) {
+        h2 {
+          font-size: 7vw;
+          margin-top: 4vw;
+          letter-spacing: 0.2vw;
+          max-width: 98vw;
+          font-family: "Poppins", sans-serif;
+        }
+      }
+      @media (max-width: 480px) {
+        h2 {
+          font-size: 7vw;
+          margin-top: 4vw;
+          letter-spacing: 0.2vw;
+          max-width: 98vw;
+          font-family: "Poppins", sans-serif;
+        }
+      }
+
+
     </style>
     <script src="game_DinoDine.js" defer type="module"></script>
   </head>
