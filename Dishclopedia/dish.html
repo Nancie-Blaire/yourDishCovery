@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dishclopedia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="Dishclopedia.css">
+  <script type="text/javascript" src="dishclopedia.js" defer></script>
+</head>
+    <body>
+   <header id="top-navbar">
+    <div class="navbar-brand">
+        <img src="dishcovery.png" alt="Logo" class="logo-gif">
+        Dishclopedia
+    </div>
+</header>
+
+
+  <nav id="sidebar">
+    <ul>
+    <div id="search-container">
+        <input type="text" id="search-input" placeholder="Search dishes...">
+        <button id="search-btn">Search</button>
+    </div>
+        <button onclick="toggleSidebar()" id="toggle-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m313-480 155 156q11 11 11.5 27.5T468-268q-11 11-28 11t-28-11L228-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l184-184q11-11 27.5-11.5T468-692q11 11 11 28t-11 28L313-480Zm264 0 155 156q11 11 11.5 27.5T732-268q-11 11-28 11t-28-11L492-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l184-184q11-11 27.5-11.5T732-692q11 11 11 28t-11 28L577-480Z"/></svg>
+        </button>
+      </span>
+    </li>
+      <li class="active">
+        <a href="#" data-category="static-home">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M240-200h120v-200q0-17 11.5-28.5T400-440h160q17 0 28.5 11.5T600-400v200h120v-360L480-740 240-560v360Zm-80 0v-360q0-19 8.5-36t23.5-28l240-180q21-16 48-16t48 16l240 180q15 11 23.5 28t8.5 36v360q0 33-23.5 56.5T720-120H560q-17 0-28.5-11.5T520-160v-200h-80v200q0 17-11.5 28.5T400-120H240q-33 0-56.5-23.5T160-200Zm320-270Z"/></svg>
+          <span>Home</span>
+        </a>
+      </li>
+
+
+
+<li class="dropdown-toggle">
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m160-120-80-80h800l-80 80H160Zm-40-120q6-18 16-34t24-30v-296h-40v-60h40v-30h-40v-60h40v-30h-40v-60h280q33 0 56.5 23.5T480-760v10h360v60H480v10q0 33-23.5 56.5T400-600h-80v244q14 2 28 6t26 12q26-65 83-103.5T583-480q90 0 153.5 61.5T800-268v28H120Zm334-80h252q-17-36-50-58t-73-22q-42 0-77 21t-52 59ZM320-750h80v-30h-80v30Zm0 90h80v-30h-80v30Zm-100-90h40v-30h-40v30Zm0 90h40v-30h-40v30Zm0 314q10-5 19.5-7.5T260-358v-242h-40v254Zm360 26Z" /></svg>
+  <a href="#" id="home-link" data-category="home" class="nopadding">
+    <span>Recipe</span></a>
+   <a href="#" id="home-link" data-category="home" class="nopadding"></a>
+  <ul class="dropdown-menu">
+    <li><a href="#" data-category="home">Heavy Meal</a></li>
+    <li><a href="#" data-category="home">Light Meal</a></li>
+    <li><a href="#" data-category="home">Dessert</a></li>
+  </ul>
+</li>
+
+<li class="ayaw">
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M533-440q-32-45-84.5-62.5T340-520q-56 0-108.5 17.5T147-440h386ZM40-360q0-109 91-174.5T340-600q118 0 209 65.5T640-360H40Zm0 160v-80h600v80H40ZM720-40v-80h56l56-560H450l-10-80h200v-160h80v160h200L854-98q-3 25-22 41.5T788-40h-68Zm0-80h56-56ZM80-40q-17 0-28.5-11.5T40-80v-40h600v40q0 17-11.5 28.5T600-40H80Zm260-400Z"/></svg>
+  <span>Resto</span>
+  <ul class="dropdown-menu">
+    <li><a href="#" data-category="mcdo">McDonalds</a></li>
+    <li><a href="#" data-category="jollibee">Jolibee</a></li>
+    <li><a href="#" data-category="kfc">KFC</a></li>
+  </ul>
+</li>
+
+  </nav>
+<!-- Add this where you want the cards to appear -->
+<main>
+  <main>
+  <div class="static-card-container" id="home-static-cards">
+    <div class="card">
+      <a href="#" class="card-link" data-category="home">
+        <img src="dishcovery.png" alt="Home Recipes">
+        <div class="card-content">
+          <p class="recipe-name">Home Recipes</p>
+        </div>
+      </a>
+    </div>
+    <div class="card">
+      <a href="#" class="card-link" data-category="jollibee">
+        <img src="images/jabee.png" alt="Jollibee">
+        <div class="card-content">
+          <p class="recipe-name">Jollibee</p>
+        </div>
+      </a>
+    </div>
+    <div class="card">
+      <a href="#" class="card-link" data-category="mcdo">
+        <img src="images/mcdo.jpg" alt="McDonalds">
+        <div class="card-content">
+          <p class="recipe-name">McDonalds</p>
+        </div>
+      </a>
+    </div>
+    <div class="card">
+      <a href="#" class="card-link" data-category="kfc">
+        <img src="images/kfc.jpg" alt="KFC">
+        <div class="card-content">
+          <p class="recipe-name">KFC</p>
+        </div>
+      </a>
+    </div>
+  </div>
+  <div class="card-container">
+    <!-- Cards will be rendered here -->
+  </div>
+</main>
+
+
+
+<!-- Firebase REALTIME -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+<script>
+  // Your Firebase config here
+  const firebaseConfig = {
+    apiKey: "AIzaSyCA2KS4aKwM5P4_et3wifB4sRg23tvaK04",
+    authDomain: "dish-4be2b.firebaseapp.com",
+    projectId: "dish-4be2b",
+    storageBucket: "dish-4be2b.appspot.com",
+    messagingSenderId: "479066048512",
+    appId: "1:479066048512:web:7489944044adddc4c570e5",
+    measurementId: "G-8D2QSMQWT2",
+    databaseURL: "https://dish-4be2b-default-rtdb.firebaseio.com",
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  // Helper to render cards for a given category
+    function renderCardsForCategory(category) {
+        const cardContainer = document.querySelector('.card-container');
+        const staticCards = document.getElementById('home-static-cards');
+        if (staticCards) {
+            staticCards.style.display = (category === 'static-home') ? 'flex' : 'none';
+        }
+        cardContainer.innerHTML = "";
+        const allowedCategories = ['home', 'jollibee', 'mcdo', 'kfc'];
+        if (category !== 'static-home' && allowedCategories.includes(category)) {
+            db.ref('recipes/' + category).once('value').then(snapshot => {
+                let found = false;
+                const shownRecipes = new Set();
+                snapshot.forEach(childSnapshot => {
+                    const recipe = childSnapshot.val();
+                    const recipeName = recipe.name && recipe.name.toLowerCase();
+                    if (recipe.name && recipe.image && !shownRecipes.has(recipeName)) {
+                        found = true;
+                        shownRecipes.add(recipeName);
+                        const card = document.createElement('div');
+                        card.className = 'card';
+                        card.innerHTML = `
+                            <a href="/food_info.html?food=${encodeURIComponent(recipe.name)}" class="card-link">
+                                <img src="${recipe.image}" alt="${recipe.name}">
+                                <div class="card-content">
+                                    <p class="recipe-name">${recipe.name}</p>
+                                </div>
+                            </a>
+                        `;
+                        cardContainer.appendChild(card);
+                    }
+                });
+                if (!found) {
+                    cardContainer.innerHTML = "<p style='color:#333;text-align:center;'>No recipes found for this category.</p>";
+                }
+            });
+        }
+    }
+    // Default: show static cards
+    renderCardsForCategory('static-home');
+
+  // Attach click handlers to sidebar links for categories
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('a[data-category]').forEach(link => {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        const category = this.getAttribute('data-category');
+        renderCardsForCategory(category);
+      });
+    });
+  });
+</script>
+</body>
+</html>
