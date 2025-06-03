@@ -46,7 +46,7 @@
       font-size: 4rem;
       color: #000;
       padding-right: 20rem;
-      padding-bottom: 60%;
+      padding-bottom: 50%;
       position: relative;
       display: inline-block;
       background: linear-gradient(90deg, #000000 0%, #fff59b 50%, #000000 100%);
@@ -63,7 +63,6 @@
 
     .randomizer-link a,
     .dishclopedia-link a,
-    .search-link a,
     .about-link a,
     .help-link a {
       color: #ffffff;
@@ -83,7 +82,6 @@
 
     .randomizer-link a:hover,
     .dishclopedia-link a:hover,
-    .search-link a:hover,
     .about-link a:hover,
     .help-link a:hover {
       background-color: #fff59b;
@@ -101,8 +99,6 @@
       }
     }
 
-    
-
     .container {
       display: flex;
       justify-content: flex-end;
@@ -113,9 +109,8 @@
     .dishcoverypic {
       max-width: 300px;
       border-radius: 100px;
-      margin-right: 2%;
-      margin-bottom: 5%;
-      margin-top: 5%;
+      padding-right: 2%;
+      padding-bottom: 9%;
     }
 
     .about {
@@ -151,7 +146,6 @@
 
     .randomizer-link,
     .dishclopedia-link,
-    .search-link,
     .about-link,
     .help-link {
       position: absolute;
@@ -160,9 +154,8 @@
 
     .randomizer-link { padding-top: 55px; left: 30px; }
     .dishclopedia-link { padding-top: 55px; left: 250px; }
-    .search-link { padding-top: 55px; left: 485px; }
-    .about-link { padding-top: 55px; left: 650px; }
-    .help-link { padding-top: 55px; left: 803px; }
+    .about-link { padding-top: 55px; left: 486px; }
+    .help-link { padding-top: 55px; left: 643px; }
 
     #secret-logo {
       width: 80px;
@@ -189,8 +182,6 @@
         text-align: center;
       }
 
-    
-
       .hero-section {
         margin-bottom: 2rem;
       }
@@ -213,7 +204,7 @@
         margin: 1rem auto;
       }
 
-      .randomizer-link, .dishclopedia-link, .search-link, .about-link, .help-link {
+      .randomizer-link, .dishclopedia-link, .about-link, .help-link {
         top: 10px;
       }
 
@@ -268,6 +259,9 @@
       z-index: 2000;
       font-family: 'Times New Roman', Times, serif;
       color: #000;
+      overflow-y: auto;
+      max-height: 80vh; /* or any suitable height */
+
     }
 
     .faq-popup h2 {
@@ -326,7 +320,6 @@
   <!-- Navigation Buttons -->
   <div class="randomizer-link"><a href="categories.html">RANDOMIZER</a></div>
   <div class="dishclopedia-link"><a href="Dishclopedia/dishclopedia.html">DISHCLOPEDIA</a></div>
-  <div class="search-link"><a href="Dishclopedia/dishclopedia.html">SEARCH</a></div>
   <div class="about-link"><a href="#about-section" id="about-btn">ABOUT</a></div>
   <div class="help-link"><a href="#" id="help-btn">HELP</a></div>
 

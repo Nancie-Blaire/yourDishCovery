@@ -92,6 +92,13 @@
       cursor: pointer;
     }
 
+    .img-pick {
+      animation: none !important;
+      padding-top: 16%;
+      width: 10%;
+    }
+
+
     @keyframes pulseGlow {
       0% {
         box-shadow: 0 0 10px -10px rgb(255, 185, 35);
@@ -119,6 +126,23 @@
         width: 100px;
       }
     }
+
+      .nav-button {
+        position: fixed;
+        z-index: 999;
+    }
+
+      .back-btn {
+        top: 20px;
+        left: 20px;
+    }
+
+      .nav-button img {
+        width: 27%;
+        height: auto;
+        cursor: pointer;
+    }
+
   </style>
 </head>
 <body>
@@ -135,6 +159,17 @@
       class="img-random"
       onclick="location.href='listofgames.html?category=random'"
     />
+
+    <img
+      src="images/pick.png"
+      alt="Pick a Category?"
+      class="img-random img-pick"
+    />
+
+    <!-- Navigation Buttons -->
+      <a href="index.html" class="nav-button back-btn">
+        <img src="images/back.png" alt="Back Button" />
+    </a>
 
     <!-- Resto board -->
       <!-- Should go to user_preference.html -->
