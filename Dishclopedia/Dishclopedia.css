@@ -227,6 +227,11 @@ main {
     font-size: 20px;
 }
 
+/* Remove extra gap if present */
+.dropdown-toggle > span {
+    flex-grow: 1;
+}
+
 /* Adjust the arrow positioning */
 .dropdown-toggle::after {
     content: "❯";
@@ -544,49 +549,24 @@ box-sizing: border-box;
     pointer-events: none; /* allow clicks through */
 }
 
-@media only screen and (max-width: 414px) {
-
-    #app-title {
-        font-size: 100%; /* Smaller title on small screens */
-        left:-6vh;
-    }
-    #intro-text {
-        width: 70%; /* Wider intro text on small screens */
-        left: -6vh; /* Center it */
-        font-size: 90%;
-    }
-    #search-container {
-        width: 60%;
-        left: -4vh;
-        top: 78vh;
-        margin-top: 24px;
-        margin-bottom: 10px;
-        position: relative; /* Allow top/left to work if needed */
-    }
-    .card {
-        width: 68%;
-        margin: 10px 0 5px -63px;
-        left: 0;
-    }
-    main {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    #category-title {
-    font-family: "Roboto Slab", serif;
-    font-size: 2.2rem;
-    font-weight: bold;
-    color: #ffffff;
-    text-align: center;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-    letter-spacing: 2px;
-    background: #c78456;
-    border-radius: 8px;
-    padding: 8px 0;
-    display: none; /* will be set to block by JS */
+/* Fix sidebar menu alignment and spacing for dropdown-toggle */
+#sidebar ul > li {
+    margin-bottom: 8px;
 }
 
+.dropdown-toggle {
+    width: 100%;
+    box-sizing: border-box;
+    padding: .85em; /* Match the padding of #sidebar a */
+    gap: 1em;       /* Match the gap of #sidebar a */
+    border-radius: .5em;
+    background: transparent;
+    border: none;
+    font-family: "Roboto Slab", serif;
+    font-size: 20px;
+    color: #e9a96b;
+    display: flex;
+    align-items: center;
+    position: relative;
+    text-align: left;
 }
