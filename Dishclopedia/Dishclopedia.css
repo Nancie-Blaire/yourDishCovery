@@ -260,7 +260,7 @@ main {
 }
 
 .dropdown-menu.show {
-    max-height: 200px; /* Adjust based on the content height */
+    max-height: 250px; /* Adjust based on the content height */
 
 }
 
