@@ -582,6 +582,79 @@
 </div>
 
 
+<!-- Add Firebase scripts before your custom scripts -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+<script>
+  // Firebase config (reuse from your other files)
+  const firebaseConfig = {
+    apiKey: "AIzaSyCA2KS4aKwM5P4_et3wifB4sRg23tvaK04",
+    authDomain: "dish-4be2b.firebaseapp.com",
+    projectId: "dish-4be2b",
+    storageBucket: "dish-4be2b.appspot.com",
+    messagingSenderId: "479066048512",
+    appId: "1:479066048512:web:7489944044adddc4c570e5",
+    measurementId: "G-8D2QSMQWT2",
+    databaseURL: "https://dish-4be2b-default-rtdb.firebaseio.com",
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  // --- Featured Food Rotator ---
+  let allRecipes = [];
+  let featuredInterval = null;
+
+  function setFeaturedFood(recipe) {
+    const img = document.getElementById("meal-image");
+    const name = document.getElementById("meal-name");
+    if (img && name && recipe) {
+      img.onload = function() {
+        console.log(`[Featured] Successfully loaded image for: ${recipe.name}`);
+      };
+      img.onerror = function() {
+        console.warn(`[Featured] Failed to load image for: ${recipe.name} (${recipe.image})`);
+      };
+      img.src = recipe.image;
+      img.alt = recipe.name;
+      img.style.width = "250px";
+      img.style.height = "180px";
+      img.style.objectFit = "cover";
+      img.style.borderRadius = "10px";
+      name.textContent = recipe.name;
+      console.log(`[Featured] Now featuring: ${recipe.name} (${recipe.image})`);
+    }
+  }
+
+  function startFeaturedRotation() {
+    if (featuredInterval) clearInterval(featuredInterval);
+    if (allRecipes.length === 0) return;
+    setFeaturedFood(allRecipes[Math.floor(Math.random() * allRecipes.length)]);
+    featuredInterval = setInterval(() => {
+      setFeaturedFood(allRecipes[Math.floor(Math.random() * allRecipes.length)]);
+    }, 5000);
+  }
+
+  function fetchAllRecipesForFeatured() {
+    db.ref('recipes').once('value').then(snapshot => {
+      const recipes = [];
+      snapshot.forEach(categorySnap => {
+        categorySnap.forEach(recipeSnap => {
+          const recipe = recipeSnap.val();
+          if (recipe && recipe.image && recipe.name) {
+            recipes.push({ name: recipe.name, image: recipe.image });
+          }
+        });
+      });
+      allRecipes = recipes;
+      startFeaturedRotation();
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    fetchAllRecipesForFeatured();
+  });
+</script>
+
 <script>
   function redirectToAdmin() {
     window.location.href = "../admin-login/login.html";
@@ -622,24 +695,5 @@
     }
   }
 </script>
-  <script>
-  const meals = [
-    { name: "Pork Sinigang", image: "images/sinigang.jpg" },
-    { name: "Chicken Teriyaki", image: "images/chickenteri.jpg" },
-    { name: "Menudo", image: "images/menudo.jpg" },
-    { name: "Chicken Adobo", image: "images/adobo.jpeg" },
-    { name: "Chop Seuy", image: "images/chopseuy.jpg" },
-    { name: "Creamy Laing", image: "images/laing.jpg" },
-    { name: "Pork Sisig", image: "images/porksisig.png" },
-  ];
-
-  // Get day of week (0 = Sunday, 6 = Saturday)
-  const dayIndex = new Date().getDay();
-  const meal = meals[dayIndex % meals.length];
-
-  document.getElementById("meal-image").src = meal.image;
-  document.getElementById("meal-name").textContent = meal.name;
-</script>
-
-</body>
+  </body>
 </html>

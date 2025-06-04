@@ -182,6 +182,22 @@ function splitIntoSentences(text) {
   return text.match(/[^.!?]+[.!?]+|[^.!?]+$/g)?.map(s => s.trim()).filter(Boolean) || [];
 }
 
+// --- Add this helper function ---
+function extractYouTubeVideoId(url) {
+  try {
+    const u = new URL(url);
+    if (u.hostname.includes("youtube.com")) {
+      return u.searchParams.get("v");
+    }
+    if (u.hostname.includes("youtu.be")) {
+      return u.pathname.slice(1);
+    }
+  } catch {
+    return null;
+  }
+  return null;
+}
+
 // Update UI for servings
 function updateServingsUI(servings) {
   if (!currentFoodDetails) return;
@@ -190,11 +206,22 @@ function updateServingsUI(servings) {
   const budget = currentFoodDetails.budget || 0;
   document.getElementById("food-budget").textContent =
     `Estimated budget: ₱${Math.round(budget * scale)}`;
-  // Update ingredients
+  // Update ingredients ONLY for home recipes
   if (currentFoodDetails._category === "home") {
     const ingredientsList = document.getElementById("food-ingredients");
     ingredientsList.innerHTML = "";
-    (currentFoodDetails.ingredients || []).forEach(ingredient => {
+    let ingredients = currentFoodDetails.ingredients;
+    if (typeof ingredients === "string") {
+      if (ingredients.includes("\n")) {
+        ingredients = ingredients.split("\n").map(i => i.trim()).filter(Boolean);
+      } else if (ingredients.includes(",")) {
+        ingredients = ingredients.split(",").map(i => i.trim()).filter(Boolean);
+      } else {
+        ingredients = [ingredients];
+      }
+    }
+    console.log("updateServingsUI: Rendering ingredients:", ingredients);
+    (ingredients || []).forEach(ingredient => {
       const li = document.createElement("li");
       const checkbox = document.createElement("input");
       checkbox.type = "checkbox";
@@ -278,27 +305,59 @@ async function displayFoodDetails() {
       foodLinkDiv.innerHTML = "";
     }
 
-    // Show or hide ingredients/instructions based on category
+    // --- FIX: Always show detailsContent and handle both array and string for ingredients/instructions ---
     const detailsContent = document.getElementById("detailsContent");
-    if (foodDetails._category === "home") {
-      detailsContent.style.display = "";
-      const ingredientsList = document.getElementById("food-ingredients");
-      ingredientsList.innerHTML = "";
-      (foodDetails.ingredients || []).forEach(ingredient => {
-        const li = document.createElement("li");
-        const checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
-        checkbox.addEventListener("change", () => {
-          li.classList.toggle("checked", checkbox.checked);
-        });
-        li.appendChild(checkbox);
-        li.appendChild(document.createTextNode(ingredient));
-        ingredientsList.appendChild(li);
-      });
+    detailsContent.style.display = "";
+    console.log("displayFoodDetails: Showing detailsContent for", foodDetails.name);
 
-      const instructionsList = document.getElementById("food-instructions");
-      instructionsList.innerHTML = "";
-      (foodDetails.instructions || []).forEach(instruction => {
+    // Ingredients
+    const ingredientsList = document.getElementById("food-ingredients");
+    ingredientsList.innerHTML = "";
+    let ingredients = foodDetails.ingredients;
+    if (foodDetails._category !== "home") {
+      if (typeof ingredients === "string") {
+        if (ingredients.includes("\n")) {
+          ingredients = ingredients.split("\n").map(i => i.trim()).filter(Boolean);
+        } else if (ingredients.includes(",")) {
+          ingredients = ingredients.split(",").map(i => i.trim()).filter(Boolean);
+        } else {
+          ingredients = [ingredients];
+        }
+      }
+      console.log("displayFoodDetails: Rendering ingredients:", ingredients);
+      if (Array.isArray(ingredients)) {
+        ingredients.forEach(ingredient => {
+          const li = document.createElement("li");
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.addEventListener("change", () => {
+            li.classList.toggle("checked", checkbox.checked);
+          });
+          li.appendChild(checkbox);
+          li.appendChild(document.createTextNode(ingredient));
+          ingredientsList.appendChild(li);
+        });
+      }
+    } else {
+      console.log("displayFoodDetails: Home recipe, ingredients will be rendered by updateServingsUI");
+    }
+
+    // Instructions
+    const instructionsList = document.getElementById("food-instructions");
+    instructionsList.innerHTML = "";
+    let instructions = foodDetails.instructions;
+    if (typeof instructions === "string") {
+      if (instructions.includes("\n")) {
+        instructions = instructions.split("\n").map(i => i.trim()).filter(Boolean);
+      } else if (instructions.includes(".")) {
+        instructions = instructions.split(".").map(i => i.trim()).filter(Boolean);
+      } else {
+        instructions = [instructions];
+      }
+    }
+    console.log("displayFoodDetails: Rendering instructions:", instructions);
+    if (Array.isArray(instructions)) {
+      instructions.forEach(instruction => {
         const li = document.createElement("li");
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
@@ -309,8 +368,6 @@ async function displayFoodDetails() {
         li.appendChild(document.createTextNode(instruction));
         instructionsList.appendChild(li);
       });
-    } else {
-      detailsContent.style.display = "none";
     }
   } else {
     document.getElementById("food-name").textContent = "Food not found";
@@ -325,8 +382,10 @@ async function displayFoodDetails() {
     document.getElementById("food-allergens").textContent = "";
   }
 
-  // After rendering, update for current servings
-  updateServingsUI(Number(document.getElementById("servings-input").value));
+  // After rendering, update for current servings (only for home recipes)
+  if (foodDetails && foodDetails._category === "home") {
+    updateServingsUI(Number(document.getElementById("servings-input").value));
+  }
 }
 
 // Listen for servings change (arrows and input)
