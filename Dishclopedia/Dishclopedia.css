@@ -22,8 +22,8 @@ html {
 /* Add styles for the top navbar */
 #top-navbar {
     grid-column: 1 / -1; /* Span the navbar across all columns */
-    background-color: white; /* Matches sidebar background */
-    color: #d8724c; /* Accent color for text */
+    background-color: #6a7964; /* Matches sidebar background */
+    color: #ffffff; /* Accent color for text */
     height: 60px;
     display: flex;
     align-items: center;
@@ -66,7 +66,7 @@ main {
 body {
     min-height: 100vh;
     min-height: 100dvh;
-    background-color: wheat;
+    background-color: #d8d5c4;
     color: black;
     display: grid;
     grid-template-columns: auto 1fr;
@@ -77,7 +77,7 @@ body {
     height: 100%;
     width: 250px;
     padding: 5px 1em;
-    background-color: #584237;
+    background-color: #6f574b;
     border-right: 1px solid var(--line-clr);
     position: sticky;
     top: 0;
@@ -107,7 +107,7 @@ body {
 }
 
 #sidebar ul li.active a {
-    color: #e9a96b;
+    color: #ffffff;
     fill: var(--accent-clr);
 }
 
@@ -115,7 +115,7 @@ body {
     border-radius: .5em;
     padding: .80em;
     text-decoration: none;
-    color: #e9a96b;
+    color: #ffffff;
     display: flex;
     align-items: center;
     gap: 1em;
@@ -220,7 +220,7 @@ main {
     gap: 21px; /* Add spacing between the SVG and the text */
     position: relative;
     padding: 15px; /* Match the padding of other sidebar items */
-    color: #e9a96b;
+    color: #ffffff;
     text-decoration: none;
     font-family: "Roboto Slab", serif;
     font-size: 20px;
@@ -235,7 +235,7 @@ main {
     transform: translateY(-50%);
     transition: transform 0.3s ease;
     font-size: 14px;
-    color: #df9144;
+    color: #ffffff;
 }
 
 /* Rotate the arrow when the dropdown is open */
@@ -354,7 +354,7 @@ box-sizing: border-box;
   flex-wrap: wrap;
   gap: 24px;           /* space between cards */
   justify-content: center;
-  padding: 32px 0;     /* space above and below the cards */
+  padding: 1vh 0;  /* space above and below the cards */
 }
 
 #search-container {
@@ -404,13 +404,14 @@ box-sizing: border-box;
 
 #search-btn {
     padding: 8px 16px;
-    background-color: #c78456;
+    background-color: #6f574b;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-family: inherit;
     font-size: 16px;
+    
 }
 
 #search-btn:hover {
@@ -418,22 +419,28 @@ box-sizing: border-box;
 }
 
 #app-title {
-    font-family: "Roboto Slab", serif; /* Stylish font */
-    font-size: 300%;         /* Adjust as needed */
+    font-family: "Roboto Slab", serif;
+    font-size: 300%;
     font-weight: bold;
-    color: #ffffff;         /* Dark, elegant */
-    text-align: center;      /* Center it */
+    color: #ffffff;
+    text-align: center;
     margin-top: 20px;
     margin-bottom: 10px;
-    position: relative;      /* Allows you to move it with top/left */
-    top: -15vh;              /* Move it up slightly if needed */
-    border: 2px solid #ffffff;     /* Border width, style, color */
-    padding: 10px 20px;            /* Space inside the border */
-    border-radius: 8px;            /* Rounded corners (optional) */
-    display: inline-block;         /* Keeps width to content size */
-    background-color: #584237;     /* Optional background inside the border */
+    position: relative;
+    top: -15vh;
+    border: 2px solid #a66230;
+    padding: 20px 40px;
+    border-radius: 8px;
+    display: inline-block;
+    background-color: #d9b289;
 
+    text-shadow:
+      -1px -1px 0 black,
+       1px -1px 0 black,
+      -1px  1px 0 black,
+       1px  1px 0 black; /* Creates a black outline effect */
 }
+
 #intro-text {
     font-family: "Roboto Slab", serif;
     font-size: 18px;
@@ -447,15 +454,15 @@ box-sizing: border-box;
 
     width: 95%;             /* Adjust width as needed */     /* Center horizontally with margin */
     position: relative;     /* Makes it movable with top/left if needed */
-    top: -15vh;             /* Adjust vertical position */
-    left: 1vh
+    top: -11vh;        /* Adjust vertical position */
+    left: 0vh;
 }
 
 #intro-text .tagline {
     font-weight: bold;
     font-size: 20px;
     margin-top: 15px;
-    color: #e67e22;         /* Highlighted call-to-action */
+    color: #6f574b;   /* Highlighted call-to-action */
 }
 
 .suggestions-dropdown {
@@ -551,7 +558,6 @@ box-sizing: border-box;
     width: 100%;
     font-family: "Roboto Slab", serif;
     font-size: 20px;
-    color: #e9a96b !important; /* Ensure all sidebar text is the same color */
     border-radius: .5em;
     background: transparent !important; /* Remove any background */
     transition: background 0.2s, color 0.2s;
@@ -572,7 +578,7 @@ box-sizing: border-box;
     flex-grow: 1;
     display: flex;
     align-items: center;
-    color: #e9a96b !important; 
+    color: #fafafa !important; 
  
 }
 
