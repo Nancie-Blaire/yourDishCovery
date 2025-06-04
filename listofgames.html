@@ -263,7 +263,74 @@
   box-shadow: 0 4px 16px rgba(255, 152, 0, 0.15);
 }
 
-  </style>
+  /* Improved Loading overlay indicator (move to end of body, display:none by default) */
+  #preference-loading-overlay {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(59,36,11,0.65); /* matches .container bg with opacity */
+    backdrop-filter: blur(2px);
+    pointer-events: none;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+  #preference-loading-overlay.active {
+    display: flex !important;
+    pointer-events: auto;
+  }
+  .preference-loading-box {
+    background: linear-gradient(135deg, #ecd8a7 60%, #fff8e1 100%);
+    border-radius: 18px;
+    box-shadow: 0 4px 32px rgba(59,36,11,0.18), 0 1.5px 8px #c78456;
+    padding: 2.2em 2.5em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Poppins', Arial, sans-serif;
+    color: #3b240b;
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    text-align: center;
+    max-width: 90vw;
+    min-width: 180px;
+    min-height: 60px;
+    animation: popin 0.3s cubic-bezier(.34,1.56,.64,1);
+  }
+  @keyframes popin {
+    0% { transform: scale(0.85); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .preference-loading-spinner {
+    border: 4px solid #ecd8a7;
+    border-top: 4px solid #c78456;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    margin-bottom: 18px;
+    animation: spin 1s linear infinite;
+    box-shadow: 0 0 0 2px #fff8e1;
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg);}
+    100% { transform: rotate(360deg);}
+  }
+  @media (max-width: 600px) {
+    .preference-loading-box {
+      padding: 1.2em 0.7em;
+      font-size: 1rem;
+      min-width: 120px;
+    }
+    .preference-loading-spinner {
+      width: 28px;
+      height: 28px;
+      margin-bottom: 12px;
+    }
+  }
+</style>
 </head>
 <body>
   <div class="background">
@@ -307,6 +374,14 @@
     </div>
   </div>
 
+  <!-- Improved Loading overlay indicator (move to end of body, display:none by default) -->
+  <div id="preference-loading-overlay">
+    <div class="preference-loading-box">
+      <div class="preference-loading-spinner"></div>
+      User preference loading...
+    </div>
+  </div>
+
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
     import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
@@ -335,6 +410,12 @@
       const allergenCheckboxList = document.getElementById("allergenCheckboxList");
       const applyButton = document.getElementById("applyButton");
       const closeModalButton = document.getElementById("closeModalButton");
+      const loadingOverlay = document.getElementById("preference-loading-overlay");
+
+      // Ensure overlay is hidden and not blocking on load
+      loadingOverlay.classList.remove("active");
+      loadingOverlay.style.display = "none";
+      loadingOverlay.style.pointerEvents = "none";
 
       // Get the selected category from the URL
       const urlParams = new URLSearchParams(window.location.search);
@@ -345,11 +426,24 @@
       document.querySelectorAll(".image-dinodine-button, .image-forkspoonknife-button, .image-wheelnmeal-button").forEach(button => {
         button.addEventListener("click", async (event) => {
           event.preventDefault();
-          const selectedGame = event.currentTarget.querySelector("img").id.replace("btn-game-", "").replace("btn-", "");
-          modal.dataset.selectedGame = selectedGame; // Store the selected game in the modal
-          console.log(`Game clicked: ${selectedGame}`);
-          await populateFilterDropdown();
-          modal.style.display = "block";
+          // Show loading overlay and block pointer events
+          loadingOverlay.classList.add("active");
+          loadingOverlay.style.display = "flex";
+          loadingOverlay.style.pointerEvents = "auto";
+          document.body.style.pointerEvents = "none";
+          try {
+            const selectedGame = event.currentTarget.querySelector("img").id.replace("btn-game-", "").replace("btn-", "");
+            modal.dataset.selectedGame = selectedGame;
+            console.log(`Game clicked: ${selectedGame}`);
+            await populateFilterDropdown();
+            modal.style.display = "block";
+          } finally {
+            // Hide loading overlay and re-enable pointer events
+            loadingOverlay.classList.remove("active");
+            loadingOverlay.style.display = "none";
+            loadingOverlay.style.pointerEvents = "none";
+            document.body.style.pointerEvents = "";
+          }
         });
       });
 

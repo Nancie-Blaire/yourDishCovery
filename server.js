@@ -1,8 +1,11 @@
 const express = require("express");
+// Use this import for node-fetch v2:
 const fetch = require("node-fetch");
+const cors = require("cors"); // <-- Add this line
 require("dotenv").config();
 
 const app = express();
+app.use(cors()); // <-- Add this line to allow all origins
 app.use(express.json());
 
 // Proxy for YouTube video title
@@ -13,10 +16,16 @@ app.get("/api/youtube-title", async (req, res) => {
   try {
     const ytRes = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${apiKey}`);
     const ytData = await ytRes.json();
+    if (!ytRes.ok) {
+      // Log the error response from YouTube
+      console.error("YouTube API error:", ytData);
+      return res.status(500).json({ error: "YouTube API error", details: ytData });
+    }
     const title = ytData.items && ytData.items[0]?.snippet?.title;
     res.json({ title: title || null });
   } catch (e) {
-    res.status(500).json({ error: "Failed to fetch YouTube title" });
+    console.error("Server error fetching YouTube title:", e);
+    res.status(500).json({ error: "Failed to fetch YouTube title", details: e.message });
   }
 });
 

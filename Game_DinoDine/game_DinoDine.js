@@ -172,24 +172,75 @@ function handleResetKey(event) {
 
 let modalOpen = false; // Track if modal is open
 
+// --- Add loading overlay to body ---
+function ensureLoadingOverlay() {
+  if (document.getElementById("food-loading-overlay")) return;
+  const overlay = document.createElement("div");
+  overlay.id = "food-loading-overlay";
+  overlay.style.display = "none";
+  overlay.style.position = "fixed";
+  overlay.style.zIndex = "3000";
+  overlay.style.top = "0";
+  overlay.style.left = "0";
+  overlay.style.width = "100vw";
+  overlay.style.height = "100vh";
+  overlay.style.background = "rgba(59,36,11,0.65)";
+  overlay.style.backdropFilter = "blur(2px)";
+  overlay.style.pointerEvents = "auto";
+  overlay.style.alignItems = "center";
+  overlay.style.justifyContent = "center";
+  overlay.innerHTML = `
+    <div style="background:linear-gradient(135deg,#ecd8a7 60%,#fff8e1 100%);border-radius:18px;box-shadow:0 4px 32px rgba(59,36,11,0.18),0 1.5px 8px #c78456;padding:2.2em 2.5em;display:flex;flex-direction:column;align-items:center;font-family:'Poppins',Arial,sans-serif;color:#3b240b;font-size:1.25rem;font-weight:600;letter-spacing:0.01em;text-align:center;max-width:90vw;min-width:180px;min-height:60px;">
+      <div style="border:4px solid #ecd8a7;border-top:4px solid #c78456;border-radius:50%;width:38px;height:38px;margin-bottom:18px;animation:spin 1s linear infinite;box-shadow:0 0 0 2px #fff8e1;"></div>
+      Loading food...
+    </div>
+    <style>
+      @keyframes spin {0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+      @media (max-width:600px){
+        #food-loading-overlay div{padding:1.2em 0.7em;font-size:1rem;min-width:120px;}
+        #food-loading-overlay div>div{width:28px;height:28px;margin-bottom:12px;}
+      }
+    </style>
+  `;
+  document.body.appendChild(overlay);
+}
+ensureLoadingOverlay();
+
+function showLoadingOverlay() {
+  const overlay = document.getElementById("food-loading-overlay");
+  if (overlay) overlay.style.display = "flex";
+}
+function hideLoadingOverlay() {
+  const overlay = document.getElementById("food-loading-overlay");
+  if (overlay) overlay.style.display = "none";
+}
+
 function showFoodInfoModal(foodName, foodImage) {
+  // Show loading overlay
+  showLoadingOverlay();
+
   const modal = document.getElementById("food-info-modal");
   if (!modal) return;
   modalOpen = true;
-  document.getElementById("modal-food-image").style.backgroundImage = `url(${foodImage.src})`;
-  document.getElementById("modal-food-name").textContent = foodName;
-  modal.style.display = "flex";
-  document.getElementById("yes-button").onclick = () => {
-    modalOpen = false;
-    modal.style.display = "none";
-    window.location.href = `../Food_info/food_info.html?food=${encodeURIComponent(foodName)}`;
-  };
-  document.getElementById("no-button").onclick = () => {
-    modalOpen = false;
-    modal.style.display = "none";
-    // Now allow reset after modal is closed
-    setupGameReset();
-  };
+
+  // Simulate async loading for consistency (in case foodImage is already loaded)
+  setTimeout(() => {
+    document.getElementById("modal-food-image").style.backgroundImage = `url(${foodImage.src})`;
+    document.getElementById("modal-food-name").textContent = foodName;
+    hideLoadingOverlay();
+    modal.style.display = "flex";
+    document.getElementById("yes-button").onclick = () => {
+      modalOpen = false;
+      modal.style.display = "none";
+      window.location.href = `../Food_info/food_info.html?food=${encodeURIComponent(foodName)}`;
+    };
+    document.getElementById("no-button").onclick = () => {
+      modalOpen = false;
+      modal.style.display = "none";
+      // Now allow reset after modal is closed
+      setupGameReset();
+    };
+  }, 400); // Short delay for effect; remove if you want instant
 }
 
 function reset(event) {
