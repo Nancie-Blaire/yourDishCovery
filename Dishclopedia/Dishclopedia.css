@@ -599,4 +599,42 @@ box-sizing: border-box;
       flex-shrink: 0;
     }
     
- 
+ @media only screen and (max-width: 414px) {
+
+    #app-title {
+        font-size: 100%; /* Smaller title on small screens */
+        left:-5vh;
+        top:-3vh;
+    }
+    #intro-text {
+        width: 60%; /* Wider intro text on small screens */
+        left: -5vh; /* Center it */
+        font-size: 80%;
+        top:-1vh;
+    }
+    #search-container {
+        width: 60%;
+        left: -4vh;
+        top: -5vh;
+        margin-top: 24px;
+        margin-bottom: 10px;
+        position: relative; /* Allow top/left to work if needed */
+    }
+    .card {
+        width: 68%;
+        margin: 10px 0 5px -63px;
+        left: 0;
+    }
+    main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    #category-title {
+        font-size: 4vh;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        width: 50%;
+        transform: translateX(-4vh); /* Adjust the value as needed */
+    }
+ }
