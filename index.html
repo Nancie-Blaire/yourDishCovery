@@ -15,41 +15,43 @@
     body {
       font-family: 'Mansalva', cursive;
       scroll-behavior: smooth;
+      overflow-x: hidden;
+      background-image: url('images/mainbgmobile.png');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center top -125px;
+      min-height: 200vh;
+      
     }
 
-    .main-section {
-      background: url('images/mainbg.png') no-repeat center center/cover;
+    /*.main-section {
+      background: linear-gradient(135deg, #fff9c4 0%, #f7dc6f 50%, #f4d03f 100%);
       color: #fff;
       width: 100%;
-      min-height: 200vh;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
-      padding-top: 28%;
-    }
-
-    .hero-section {
-      margin-bottom: 5%;
-      text-align: center;
-    }
-
-    .tagline {
-      font-size: 4rem;
-      color: #000;
-      padding-right: 20rem;
-      padding-bottom: 50%;
+      padding: 20px;
       position: relative;
-      display: inline-block;
-      background: linear-gradient(90deg, #000000 0%, #fff59b 50%, #000000 100%);
-      background-size: 200% auto;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: goldShine 18s linear infinite;
-    }
+    }*/
 
-    @keyframes goldShine {
+    /* Navigation buttons at the top left */
+    .buttons-container {
+      display: flex;
+      align-items: center;      /* Vertically center items */
+      gap: 30px;                /* Space between buttons and logo */
+      justify-content: flex-start;
+      position: relative;       /* Not absolute */
+      width: 100%;
+      margin-bottom: 40px;      /* Space below the nav bar */
+      z-index: 1000;
+      flex-wrap: wrap;
+      margin-left: 30px;
+    }
+   @keyframes goldShine {
       0% { background-position: 200% center; }
       100% { background-position: -200% center; }
     }
@@ -91,45 +93,59 @@
         box-shadow: 0 0 10px #000000, 0 0 40px #fff59b;
       }
     }
+    /* Button styles */
 
-    .container {
-      display: flex;
-      justify-content: flex-end;
-      width: 100%;
-      margin-top: -30%;
-    }
-
-    .dishcoverypic {
-      max-width: 300px;
-      border-radius: 100px;
-      padding-right: 2%;
-      padding-bottom: 9%;
-    }
-
-    .about {
-      max-width: 500px;
-      border-radius: 100px;
-      margin-right: 72%;
-      margin-bottom: 3%;
-      margin-top: -13%;
-    }
-
-    .aboutdish, .aboutdish2, .aboutdish3 {
+    #return-to-top {
+      color: #ffffff;
+      text-decoration: none;
       font-size: 1rem;
-      max-width: 900px;
-      color: black;
-      letter-spacing: 2px;
-      line-height: 1.5;
       font-family: 'Times New Roman', Times, serif;
-      text-align: left;
-      margin-left: 20%;
-      margin-top: 1.5%;
+      letter-spacing: 2px;
+      padding: 12px 24px;
+      border: 2px solid #fff59b;
+      border-radius: 30px;
+      background-color: rgba(221, 165, 96, 0.8);
+      box-shadow: 0 4px 15px rgba(255, 245, 155, 0.3);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      display: inline-block;
     }
 
-    .aboutdish3 {
-      font-size: 1.3rem;
-      margin-top: 3%;
-      font-style: italic;
+    .randomizer-link a:hover,
+    .dishclopedia-link a:hover,
+    .about-link a:hover,
+    .help-link a:hover,
+    #return-to-top:hover {
+      background-color: #fff59b;
+      color: #000;
+      box-shadow: 0 6px 25px rgba(255, 245, 155, 0.6);
+      transform: translateY(-2px);
+    }
+
+    /* Main content container */
+    .content-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      max-width: 1300px;
+      margin-top: 100px;
+      gap: 40px;
+       margin-left: 30px;
+       padding-bottom: 50px; 
+    }
+
+    .hero-section {
+      flex: 1;
+      text-align: left;
+    }
+
+    .tagline {
+      font-size: 4rem;
+      color: #000;
+     margin-left: 30px;
+      position: relative;
+      display: inline-block;
       background: linear-gradient(90deg, #000000 0%, #fff59b 50%, #000000 100%);
       background-size: 200% auto;
       -webkit-background-clip: text;
@@ -137,67 +153,156 @@
       animation: goldShine 18s linear infinite;
     }
 
-    .randomizer-link,
-    .dishclopedia-link,
-    .about-link,
-    .help-link {
-      position: absolute;
-      z-index: 1000;
+    @keyframes goldShine {
+      0% { background-position: 200% center; }
+      100% { background-position: -200% center; }
     }
 
-    .randomizer-link { padding-top: 55px; left: 30px; }
-    .dishclopedia-link { padding-top: 55px; left: 250px; }
-    .about-link { padding-top: 55px; left: 486px; }
-    .help-link { padding-top: 55px; left: 643px; }
+    .dishcoverypic {
+      max-width: 200px;
+      transition: transform 0.3s ease;
+      margin-left: auto;   /* Add this to push the logo to the right */
+      margin-right: 40px;
+      display: block;
+    }
 
+    .dishcoverypic:hover {
+      transform: scale(1.05);
+    }
+
+    /* Meal of the day section */
+    .meal-section {
+      flex: 0 0 auto;
+      text-align: center;
+      max-width: 300px;
+
+
+      border-radius: 20px;
+
+    }
+
+    .meal-section h2 {
+      color: #2c3e50;
+      letter-spacing: 2px;
+      font-family: 'Times New Roman', Times, serif;
+      margin-bottom: 15px;
+      font-size: 1.5rem;
+    }
+
+    .meal-section img {
+      width: 250px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 15px;
+      margin-bottom: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .meal-section p {
+      color: #2c3e50;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    /* About section */
+
+
+    .about-content {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .about img {
+      max-width: 400px;
+      border-radius: 20px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .aboutdish, .aboutdish2, .aboutdish3 {
+      font-size: 1.1rem;
+      color: #2c3e50;
+      letter-spacing: 1px;
+      line-height: 1.6;
+      font-family: 'Times New Roman', Times, serif;
+      margin-bottom: 20px;
+      text-align: justify;
+    }
+
+    .aboutdish3 {
+      font-size: 1.3rem;
+      font-style: italic;
+      background: linear-gradient(45deg, #f39c12, #e74c3c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    /* Return to top button */
+    #return-to-top {
+      position: static;         /* Not fixed, just in normal flow */
+      margin-left: auto;        /* Push to the right in flex/column container */
+      margin-right: 0;
+      margin-top: 30px;         /* Space above */
+      margin-bottom: 0;
+      opacity: 0.8;
+      z-index: 1;               /* Lower z-index, not floating */
+      display: block;
+    }
+
+    #return-to-top:hover {
+      opacity: 1;
+    }
+
+    /* Secret logo */
     #secret-logo {
-      width: 80px;
+      width: 60px;
       position: absolute;
       bottom: 30px;
       right: 30px;
       cursor: pointer;
       opacity: 0.5;
       transition: opacity 0.3s ease;
+      border-radius: 50%;
     }
 
     #secret-logo:hover {
       opacity: 1;
     }
 
-    .about-mobile {
-      display: none;
-    }
-
     /* FAQ Popup Styles */
     .faq-popup {
-      position: absolute;
-      top: 10%;
+      position: fixed;
+      top: 50%;
       left: 50%;
-      transform: translateX(-50%);
-      width:600%;
+      transform: translate(-50%, -50%);
+      width: 90%;
       max-width: 600px;
-      background: #fffef5;
+      max-height: 80vh;
+      background: #ffffff;
       border-radius: 20px;
-      padding: 20px;
-      box-shadow: 0 0 20px #ffd77a;
+      padding: 30px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
       display: none;
       z-index: 2000;
       font-family: 'Times New Roman', Times, serif;
-      color: #000;
+      color: #2c3e50;
       overflow-y: auto;
-      max-height: 80vh;
     }
 
     .faq-popup h2 {
       text-align: center;
-      margin-bottom: 5rem;
-      margin-top: 2rem;
+      margin-bottom: 30px;
       letter-spacing: 2px;
+      color: #f39c12;
     }
 
     .faq-item {
-      margin-bottom: 2rem;
-      border-bottom: 1px solid #ccc;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #ecf0f1;
+      padding-bottom: 15px;
     }
 
     .faq-question {
@@ -205,8 +310,15 @@
       font-weight: bold;
       display: flex;
       justify-content: space-between;
-      font-size: 110%;
+      align-items: center;
+      font-size: 1.1rem;
       letter-spacing: 1px;
+      padding: 10px 0;
+      transition: color 0.3s ease;
+    }
+
+    .faq-question:hover {
+      color: #f39c12;
     }
 
     .faq-answer {
@@ -215,372 +327,685 @@
       transition: max-height 0.4s ease, opacity 0.4s ease;
       opacity: 0;
       margin-top: 0;
-      font-size: 0.9rem;
-      letter-spacing: 1px;
+      font-size: 1rem;
+      letter-spacing: 0.5px;
+      line-height: 1.5;
     }
 
     .faq-answer.open {
       max-height: 200px;
       opacity: 1;
-      margin-top: 0.5rem;
+      margin-top: 10px;
     }
 
     .close-faq {
-      float: right;
+      position: absolute;
+      top: 15px;
+      right: 20px;
       cursor: pointer;
       font-weight: bold;
-      background: #ff9b9b;
+      background: #e74c3c;
+      color: white;
       border: none;
-      padding: 5px 10px;
-      border-radius: 10px;
-      margin-bottom: 1rem;
-      margin-top: -0.5%;
+      padding: 8px 12px;
+      border-radius: 50%;
       font-size: 1rem;
-    }
-
-     #return-to-top {
-      position: absolute;
-      bottom: -590px;
-      right: 70px;
-      background-color: rgba(221, 165, 96, 0.503);
-      border: 2px solid #fff59b;
-      border-radius: 30px;
-      padding: 10px 20px;
-      font-family: 'Times New Roman', Times, serif;
-      font-size: 1rem;
-      letter-spacing: 3px;
-      cursor: pointer;
-      box-shadow: 0 0 10px #fff59b, 0 0 20px #fff59b;
-      animation: pulseGlow 3s infinite ease-in-out;
-      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-      z-index: 1000;
-    }
-
-    #return-to-top:hover {
-      background-color: #fff59b;
-      box-shadow: 0 0 20px #fff59b, 0 0 40px #fff59b;
-      transform: scale(1.05);
-      opacity: 1;
-    }
-
-@media only screen and (max-width: 414px) {
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      width: 100%;
-      overflow-x: hidden; /* Prevent horizontal scrolling */
-    }
-
-    .main-section {
-      background-image: url('images/mainbgmobile.png'); /* Confirmed .jpg */
-      background-size: cover; /* Ensures the image covers the area */
-      background-repeat: no-repeat;
-      background-position: center top; /* Prioritize the top of the longer image */
-      width: 100vw;
-      min-height: 100vh; /* Allows content to expand if needed */
+      width: 35px;
+      height: 35px;
       display: flex;
-      flex-direction: column;
-      justify-content: flex-start; /* Align content to the top */
-      align-items: center; /* Center items horizontally */
-      text-align: center;
-      padding-top: 10px; /* Adjusted padding-top */
-      padding-bottom: 20px;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s ease;
     }
 
-    .tagline {
-      font-size: 1.5rem; /* Further reduce font size for smaller screens */
-      padding-right: 0; /* Remove specific right padding */
-      padding-bottom: 0; /* Remove specific bottom padding */
-      margin-top: 20px; /* Add some top margin to separate from buttons */
-      margin-bottom: 0.5rem; /* Reduced margin-bottom for tighter fit */
-      white-space: normal; /* Allow text to wrap naturally */
-      box-sizing: border-box; /* Ensure padding is included in element's total width/height */
-      width: 90%; /* Limit width to prevent overflow */
-      line-height: 1.2; /* Added for better readability on multiple lines */
+    .close-faq:hover {
+      background: #c0392b;
     }
 
-    .hero-section {
-      margin-bottom: 0.5rem; /* Reduced margin to bring buttons closer */
-    }
+    /* Mobile Responsive */
+    @media only screen and (max-width: 768px) {
+      .main-section {
+        min-height: 100vh;
+        padding: 100px 15px 20px;
+      }
 
-    .container {
-      display: flex;
-      flex-direction: column; /* Stack items vertically */
-      align-items: center; /* Center items horizontally */
-      width: 100%;
-      margin-top: 0; /* Remove negative margin */
-      padding: 0 10px; /* Add horizontal padding */
-    }
-
-    .dishcoverypic {
-      max-width: 180px; /* Slightly smaller logo for very small screens */
-      border-radius: 50%; /* Make it perfectly circular */
-      padding: 0;
-      margin-bottom: 1rem; /* Add space below the image */
-      margin-top: 1rem; /* Add space above the image */
-    }
-
-    .about {
-      max-width: 60%; /* Smaller logo for mobile */
-      margin: 0 auto;
-      display: block;
-      margin-bottom: 0.8rem; /* Adjusted space below the image */
-      margin-top: 0.8rem; /* Adjusted top margin for the image */
-    }
-
-    .aboutdish {
-      font-size: 0.7rem; /* Smaller font size for first paragraph on mobile */
-      text-align: center;
-      padding: 0.5rem 1rem 0; /* Adjusted padding */
-      margin-left: 0; /* Remove left margin */
-      margin-right: 0; /* Ensure no right margin */
-      line-height: 1.4; /* Slightly tighter line height for smaller text */
-    }
-
-    .aboutdish3 {
-        font-size: 1rem; /* Smaller font for the italicized tagline */
-        margin-top: 1rem; /* Adjusted top margin */
-        display: block; /* Ensure it takes full width and stacks */
-        width: auto; /* Remove fixed width */
-        margin-left: auto; /* Center it */
-        margin-right: auto; /* Center it */
-        text-align: center; /* Center the text inside the paragraph */
-    }
-
-    /* Mobile button container - stack buttons vertically */
-    .buttons-container {
+      /*.buttons-container {
+        top: 10px;
+        left: 10px;
         flex-direction: column;
-        gap: 10px; /* Smaller gap on mobile */
-        margin-top: 0.5rem; /* Reduced margin-top to bring buttons closer to tagline */
-        margin-bottom: 1rem; /* Adjust mobile bottom margin */
+        gap: 10px;
+        
+      }*/
+
+      .randomizer-link a,
+      .dishclopedia-link a,
+      .about-link a,
+      .help-link a {
+        font-size: 0.9rem;
+        padding: 10px 18px;
+        letter-spacing: 1px;
+      }
+
+      .content-section {
+        flex-direction: column;
+        margin-top: 50px;
+        gap: 30px;
+      }
+
+      .hero-section {
+        text-align: center;
+      }
+
+      .tagline {
+        font-size: 2.5rem;
+        margin-bottom: 30px;
+      }
+
+      .dishcoverypic {
+        max-width: 250px;
+        margin-bottom: 30px;
+      }
+
+      .meal-section {
+        max-width: 90%;
+        margin: 0 auto;
+      }
+
+      .meal-section img {
+        width: 200px;
+        height: 160px;
+      }
+
+      .about-content {
+        padding: 0 15px;
+      }
+
+      .about img {
+        max-width: 300px;
+      }
+
+      .aboutdish, .aboutdish2, .aboutdish3 {
+        font-size: 1rem;
+        text-align: center;
+      }
+
+      .faq-popup {
+        width: 95%;
+        padding: 20px;
+        max-height: 85vh;
+      }
+
+      .faq-popup h2 {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+      }
+
+      .faq-question {
+        font-size: 1rem;
+      }
+
+      .faq-answer {
+        font-size: 0.9rem;
+      }
+
+      #return-to-top {
+        bottom: 20px;
+        right: 20px;
+        font-size: 0.9rem;
+        padding: 10px 18px;
+      }
+
+      #secret-logo {
+        width: 45px;
+        bottom: 20px;
+        left: 20px;
+      }
     }
 
-    /* Individual buttons for mobile */
-    .randomizer-link,
-    .dishclopedia-link,
-    .about-link,
-    .help-link {
-      position: relative; /* Keep relative for mobile stacking */
-      top: auto; /* Remove fixed top */
-      left: auto !important; /* Ensure no fixed left offset */
-      display: block; /* Make them block elements to stack */
-      margin: 0.5rem auto; /* Center them and add vertical space */
-      width: fit-content; /* Adjust width to content */
-      opacity: 1; /* Ensure full opacity */
+    @media only screen and (max-width: 480px) {
+      .tagline {
+        font-size: 2rem;
+      }
+
+      .dishcoverypic {
+        max-width: 200px;
+      }
+
+      .meal-section img {
+        width: 180px;
+        height: 140px;
+      }
     }
 
-    .randomizer-link a,
-    .dishclopedia-link a,
-    .about-link a,
-    .help-link a {
-      font-size: 0.85rem; /* Slightly smaller font for buttons */
-      padding: 7px 14px; /* Adjust padding for smaller buttons */
-      letter-spacing: 1px; /* Adjust letter spacing */
-      box-shadow: 0 0 5px #fff59b, 0 0 10px #fff59b; /* Reduce glow effect */
+    
+    .about {
+      max-width: 500px;
+      border-radius: 100px;
+      margin-right: 72%;
+      margin-bottom: 3%;
+      margin-top: 13%;
     }
 
-    #secret-logo {
-      width: 40px; /* Further reduce size for very small screens */
-      bottom: 10px;
-      right: 10px;
+        
+    /* Mobile Responsive - Tablet */
+    @media only screen and (max-width: 1024px) {
+      body {
+        background-size: cover;
+        background-position: center top;
+      }
+
+      .content-section {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+        padding: 0 20px;
+      }
+
+      .hero-section {
+        text-align: center;
+      }
+
+      .tagline {
+        font-size: 3rem;
+      }
+
+      .meal-section {
+        max-width: 100%;
+        width: 100%;
+        max-width: 400px;
+      }
+
+      .dishcoverypic {
+        max-width: 160px;
+      }
     }
 
-    .about-desktop {
-      display: none;
+    /* Mobile Responsive - Mobile */
+    @media only screen and (max-width: 768px) {
+      body {
+        background-image: url('images/mainbgmobile.png');
+        background-size: cover;
+        background-position: center center;
+        background-attachment: scroll;
+      }
+
+      .buttons-container {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px;
+        align-items: stretch;
+      }
+
+      .buttons-container > div {
+        display: flex;
+        justify-content: center;
+      }
+
+      .randomizer-link a,
+      .dishclopedia-link a,
+      .about-link a,
+      .help-link a {
+        font-size: 0.9rem;
+        padding: 12px 20px;
+        letter-spacing: 1px;
+        text-align: center;
+        width: 100%;
+        max-width: 200px;
+      }
+
+      .dishcoverypic {
+        max-width: 150px;
+        margin: 20px auto 0;
+      }
+
+      .content-section {
+        flex-direction: column;
+        margin-top: 20px;
+        gap: 30px;
+        padding: 0 15px;
+      }
+
+      .hero-section {
+        text-align: center;
+      }
+
+      .tagline {
+        font-size: 2.2rem;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      .meal-section {
+        max-width: 100%;
+        margin: 0;
+        padding: 15px;
+      }
+
+      .meal-section img {
+        width: 100%;
+        max-width: 250px;
+        height: 180px;
+      }
+
+      .meal-section h2 {
+        font-size: 1.3rem;
+      }
+
+      .meal-section p {
+        font-size: 1.1rem;
+      }
+
+      .about-section {
+        padding: 40px 15px;
+      }
+
+      .about {
+        max-width: 280px;
+        margin-bottom: 25px;
+      }
+
+      .aboutdish, .aboutdish2 {
+        font-size: 1rem;
+        text-align: left;
+        line-height: 1.5;
+      }
+
+      .aboutdish3 {
+        font-size: 1.1rem;
+        text-align: center;
+      }
+
+      .faq-popup {
+        width: 95%;
+        padding: 20px;
+        max-height: 85vh;
+      }
+
+      .faq-popup h2 {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+      }
+
+      .faq-question {
+        font-size: 1rem;
+      }
+
+      .faq-answer {
+        font-size: 0.9rem;
+      }
+
+      #return-to-top {
+        font-size: 0.9rem;
+        padding: 10px 18px;
+        margin: 25px auto 0;
+      }
+
+      #secret-logo {
+        width: 45px;
+        bottom: 20px;
+        right: 20px;
+      }
     }
 
-    .about-mobile {
-      display: block;
-      padding: 0 15px; /* Add some padding for the text */
+    /* Mobile Responsive - Small Mobile */
+    @media only screen and (max-width: 480px) {
+      body {
+        background-size: cover;
+        background-position: center center;
+        background-attachment: scroll;
+      }
+
+      .buttons-container {
+        padding: 10px;
+        gap: 12px;
+      }
+
+      .randomizer-link a,
+      .dishclopedia-link a,
+      .about-link a,
+      .help-link a {
+        font-size: 0.8rem;
+        padding: 10px 16px;
+        letter-spacing: 0.5px;
+      }
+
+      .dishcoverypic {
+        max-width: 120px;
+      }
+
+      .tagline {
+        font-size: 1.8rem;
+        line-height: 1.1;
+      }
+
+      .meal-section {
+        padding: 12px;
+      }
+
+      .meal-section img {
+        height: 150px;
+      }
+
+      .meal-section h2 {
+        font-size: 1.2rem;
+        margin-bottom: 12px;
+      }
+
+      .meal-section p {
+        font-size: 1rem;
+      }
+
+      .about {
+        max-width: 240px;
+      }
+
+      .aboutdish, .aboutdish2 {
+        font-size: 0.9rem;
+        margin-bottom: 15px;
+      }
+
+      .aboutdish3 {
+        font-size: 1rem;
+      }
+
+      .faq-popup {
+        padding: 15px;
+      }
+
+      .faq-question {
+        font-size: 0.9rem;
+      }
+
+      .faq-answer {
+        font-size: 0.8rem;
+      }
+
+      #return-to-top {
+        font-size: 0.8rem;
+        padding: 8px 16px;
+      }
+
+      #secret-logo {
+        width: 40px;
+        bottom: 15px;
+        right: 15px;
+      }
     }
 
-    /* Container for last paragraph and button */
-    .last-paragraph-and-button-wrapper {
-      display: flex;
-      flex-direction: column; /* Stack them vertically */
-      justify-content: center; /* Center horizontally */
-      align-items: center; /* Center items (paragraph and button) */
-      margin-top: 1rem; /* Add some space above */
-      width: 100%; /* Ensure it takes full width */
+    /* Extra small screens */
+    @media only screen and (max-width: 360px) {
+      body {
+        background-size: cover;
+        background-position: center center;
+      }
+
+      .tagline {
+        font-size: 1.6rem;
+      }
+
+      .dishcoverypic {
+        max-width: 100px;
+      }
+
+      .meal-section img {
+        height: 130px;
+      }
+
+      .about {
+        max-width: 200px;
+      }
+
+      .aboutdish, .aboutdish2 {
+        font-size: 0.85rem;
+      }
     }
 
-    #return-to-top {
-  position: static; /* Ensure it flows within the flex container */
-  margin: 10px auto; /* Add top margin and center it */
-  display: block; /* Make it a block element to take its own line and center */
-  width: fit-content; /* Adjust width to content */
-  font-size: 0.85rem; /* Existing mobile font size */
-  padding: 7px 14px; /* Existing mobile padding */
-  border: 2px solid #fff59b; /* Ensure border is present */
-  border-radius: 30px; /* Ensure border-radius is present */
-  background-color: rgba(221, 165, 96, 0.503); /* Ensure background color is present */
-  box-shadow: 0 0 5px #fff59b, 0 0 10px #fff59b; /* Re-apply the glow effect */
-  animation: pulseGlow 3s infinite ease-in-out; /* Re-apply the pulse animation */
-  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease; /* Re-apply transitions */
-  cursor: pointer; /* Ensure cursor is a pointer */
-  font-family: 'Times New Roman', Times, serif;
-  color: #fff;
-}
-
-#return-to-top:hover {
-  background-color: #fff59b; /* Re-apply hover background */
-  box-shadow: 0 0 10px #fff59b, 0 0 20px #fff59b; /* Re-apply stronger hover glow */
-  transform: scale(1.05); /* Re-apply hover scale */
-  opacity: 1; /* Ensure full opacity on hover */
-}
-
-    #meal-of-the-day {
-      display: none; /* Hide meal of the day on mobile */
+     @media only screen and (max-width: 768px) {
+      .buttons-container {
+        flex-direction: row;      /* Keep horizontal */
+        align-items: center;      /* Center vertically */
+        gap: 8px;                 /* Smaller gap for mobile */
+        padding: 8px;
+        flex-wrap: wrap;          /* Allow wrapping if needed */
+        justify-content: flex-start;
+      }
+      .buttons-container > div {
+        width: auto;              /* Don't force 50% width */
+        display: flex;
+        justify-content: center;
+      }
+      .randomizer-link a,
+      .dishclopedia-link a,
+      .about-link a,
+      .help-link a {
+        width: auto;
+        max-width: 120px;
+        font-size: 0.60rem;
+        padding: 7px 10px;
+        text-align: center;
+      }
+      .dishcoverypic {
+        max-width: 90px;
+        margin: 0 0 0 12px;
+        display: block;
+      }
     }
-
-    #meal-image {
-      width: 120px; /* Reduce image size for smaller screens */
-      margin: 0.5rem auto; /* Adjust margin */
-    }
-
-    #meal-name {
-      font-size: 0.9rem; /* Adjust font size */
-      margin-top: 0; /* Remove negative margin */
-    }
-
-    .faq-popup {
-      width: 90%;
-      left: 5%;
-      transform: none;
-      top: 5%;
-      padding: 1rem;
-      box-sizing: border-box; /* Include padding in width */
-      max-height: 90vh; /* Allow more height for content */
-    }
-
-    .faq-popup h2 {
-      font-size: 1rem; /* Adjust heading size */
-      margin-bottom: 1rem; /* Adjust margin */
-    }
-
-    .close-faq {
-      margin-top: 0;
-      font-size: 0.8rem;
-      padding: 3px 8px; /* Smaller close button */
-    }
-
-    .faq-question {
-      font-size: 95%; /* Adjust font size */
-    }
-
-    .faq-answer {
-      font-size: 0.8rem; /* Adjust font size */
-    }
-  }
-</style>
 
   </style>
 </head>
 <body>
 
   <section class="main-section" id="top">
-    <div class="container">
-      <img src="images/dishcovery.png" class="dishcoverypic" />
-    </div>
-    <div class="hero-section">
-      <h1 class="tagline">Your Interactive Food Discovery Helper</h1>
-    </div>
-
+    <!-- Navigation buttons -->
     <div class="buttons-container">
       <div class="randomizer-link"><a href="categories.html">RANDOMIZER</a></div>
       <div class="dishclopedia-link"><a href="Dishclopedia/dishclopedia.html">DISHCLOPEDIA</a></div>
       <div class="about-link"><a href="#about-section" id="about-btn">ABOUT</a></div>
       <div class="help-link"><a href="#" id="help-btn">HELP</a></div>
+       <img src="images/dishcovery.png" class="dishcoverypic" alt="DishCovery Logo" />
     </div>
 
-    <div class="about-mobile">
-      <div class="container">
-        <img src="images/aboutmain.png" class="about" />
+    <!-- Main content -->
+    <div class="content-section">
+      <div class="hero-section">
+        <h1 class="tagline">Your Interactive Food Discovery Helper</h1>
+       
       </div>
-      <p class="aboutdish">DishCovery is an interactive food decision helper designed to make choosing what to eat quick, fun, and stress-free. Whether you’re stuck between cravings or just looking for inspiration, DishCovery guides you through a simple process to help you discover the perfect meal tailored to your mood, preferences, and available time.</p>
-      <div class="last-paragraph-and-button-wrapper"> <p class="aboutdish3"><b>Start your food journey with DishCovery! Because great meals begin with great decisions.</b></p>
-        <button id="return-to-top" title="Return to Top">RETURN</button> </div>
-    </div>
+
+      <!-- Meal of the day section -->
+<div id="meal-of-the-day" class="meal-section">
+  <h2>Meal of the Day</h2>
+  <img id="meal-image" src="" alt="Meal of the Day" />
+  <p id="meal-name"></p>
+</div>
+
   </section>
 
-   <section id="about-section" class="about-desktop">
-    <div class="container">
-      <img src="images/aboutmain.png" class="about" />
-    </div>
-    <div class="about1">
+  <!-- About section -->
+  <section id="about-section" class="about-section">
+    <div class="about-content">
+   
+      <img src="images/aboutmain.png" class="about" alt="About DishCovery" />
+      
       <p class="aboutdish">
-        DishCovery is an interactive food decision helper designed to make choosing what to eat quick, fun, and stress-free. Whether you’re stuck between cravings or just looking for inspiration, DishCovery guides you through a simple process to help you discover the perfect meal tailored to your mood, preferences, and available time.
+        DishCovery is an interactive food decision helper designed to make choosing what to eat quick, fun, and stress-free. Whether you're stuck between cravings or just looking for inspiration, DishCovery guides you through a simple process to help you discover the perfect meal tailored to your mood, preferences, and available time.
       </p>
-    </div>
-    <div class="about2">
+      
       <p class="aboutdish2">
-        Don’t know what to cook? We’ve got recipe suggestions. Want to grab something fast? We’ll help you decide. DishCovery takes the guesswork out of mealtime and turns decision-making into a delightful experience.
+        Don't know what to cook? We've got recipe suggestions. Want to grab something fast? We'll help you decide. DishCovery takes the guesswork out of mealtime and turns decision-making into a delightful experience.
       </p>
-    </div>
-    <div class="about3">
-      <p class="aboutdish3"><b>Start your food journey with DishCovery! Because great meals begin with great decisions.</b></p>
+      
+      <p class="aboutdish3">
+        <strong>Start your food journey with DishCovery! Because great meals begin with great decisions.</strong>
+      </p>
+       <button id="return-to-top" title="Return to Top">RETURN</button>
     </div>
   </section>
 
-  <img src="images/dishcovery.png" alt="Secret Logo" id="secret-logo" onclick="redirectToAdmin()" />
+  
 
-<div class="faq-popup" id="faq-popup">
-  <button class="close-faq" onclick="toggleFAQ()">X</button>
-  <h2>FREQUENTLY ASKED QUESTIONS</h2>
+  <!-- Secret logo -->
+  <img src="images/dishcovery.png"alt="Secret Logo" id="secret-logo" />
 
-  <div class="faq-item">
-    <div class="faq-question" onclick="toggleAnswer(this)">What is DishCovery? <span>▼</span></div>
-    <div class="faq-answer">DishCovery is an interactive guide that helps you decide what to eat, whether you're cooking at home or choosing where to eat out.</div>
+  <!-- FAQ Popup -->
+  <div class="faq-popup" id="faq-popup">
+    <button class="close-faq" onclick="toggleFAQ()">×</button>
+    <h2>FREQUENTLY ASKED QUESTIONS</h2>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleAnswer(this)">
+        What is DishCovery? <span>▼</span>
+      </div>
+      <div class="faq-answer">
+        DishCovery is an interactive guide that helps you decide what to eat, whether you're cooking at home or choosing where to eat out.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleAnswer(this)">
+        Is it free to use? <span>▼</span>
+      </div>
+      <div class="faq-answer">
+        Yes, DishCovery is completely free to use.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleAnswer(this)">
+        How does DishCovery help me decide what to eat? <span>▼</span>
+      </div>
+      <div class="faq-answer">
+        It uses a food randomizer, filters, and recipe suggestions to help you explore options based on your cravings or preferences.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleAnswer(this)">
+        Do I need to create an account to use DishCovery? <span>▼</span>
+      </div>
+      <div class="faq-answer">
+        No account is required to use the basic features.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleAnswer(this)">
+        How does the food randomizer work? <span>▼</span>
+      </div>
+      <div class="faq-answer">
+        The randomizer selects a food or cuisine option based on your selected filters like type (home-cooked or fast food) and category.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleAnswer(this)">
+        Does DishCovery provide recipes? <span>▼</span>
+      </div>
+      <div class="faq-answer">
+        Yes, if you choose to cook, the system suggests a recipe complete with ingredients and preparation steps.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleAnswer(this)">
+        Is my data safe and private? <span>▼</span>
+      </div>
+      <div class="faq-answer">
+        Yes. We prioritize privacy and do not share user data with third parties.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleAnswer(this)">
+        What personal information does DishCovery collect? <span>▼</span>
+      </div>
+      <div class="faq-answer">
+        DishCovery only collects minimal usage data to improve the app. No personal info is required to use it.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleAnswer(this)">
+        Can I tell DishCovery to avoid certain foods? <span>▼</span>
+      </div>
+      <div class="faq-answer">
+        Yes! You can specify if you want to avoid fried food, sugar, dairy, red meat, seafood, or anything else you prefer not to eat.
+      </div>
+    </div>
   </div>
 
-  <div class="faq-item">
-    <div class="faq-question" onclick="toggleAnswer(this)">Is it free to use? <span>▼</span></div>
-    <div class="faq-answer">Yes, DishCovery is completely free to use.</div>
-  </div>
+ <!-- Add Firebase scripts before your custom scripts -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+<script>
+  // Firebase config (reuse from your other files)
+  const firebaseConfig = {
+    apiKey: "AIzaSyCA2KS4aKwM5P4_et3wifB4sRg23tvaK04",
+    authDomain: "dish-4be2b.firebaseapp.com",
+    projectId: "dish-4be2b",
+    storageBucket: "dish-4be2b.appspot.com",
+    messagingSenderId: "479066048512",
+    appId: "1:479066048512:web:7489944044adddc4c570e5",
+    measurementId: "G-8D2QSMQWT2",
+    databaseURL: "https://dish-4be2b-default-rtdb.firebaseio.com",
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
 
-  <div class="faq-item">
-    <div class="faq-question" onclick="toggleAnswer(this)">How does DishCovery help me decide what to eat? <span>▼</span></div>
-    <div class="faq-answer">It uses a food randomizer, filters, and recipe suggestions to help you explore options based on your cravings or preferences.</div>
-  </div>
+  // --- Featured Food Rotator ---
+  let allRecipes = [];
+  let featuredInterval = null;
 
-  <div class="faq-item">
-    <div class="faq-question" onclick="toggleAnswer(this)">Do I need to create an account to use DishCovery? <span>▼</span></div>
-    <div class="faq-answer">No account is required to use the basic features.</div>
-  </div>
+  function setFeaturedFood(recipe) {
+    const img = document.getElementById("meal-image");
+    const name = document.getElementById("meal-name");
+    if (img && name && recipe) {
+      img.onload = function() {
+        console.log(`[Featured] Successfully loaded image for: ${recipe.name}`);
+      };
+      img.onerror = function() {
+        console.warn(`[Featured] Failed to load image for: ${recipe.name} (${recipe.image})`);
+      };
+      img.src = recipe.image;
+      img.alt = recipe.name;
+      img.style.width = "250px";
+      img.style.height = "180px";
+      img.style.objectFit = "cover";
+      img.style.borderRadius = "10px";
+      name.textContent = recipe.name;
+      console.log(`[Featured] Now featuring: ${recipe.name} (${recipe.image})`);
+    }
+  }
 
-  <div class="faq-item">
-    <div class="faq-question" onclick="toggleAnswer(this)">How does the food randomizer work? <span>▼</span></div>
-    <div class="faq-answer">The randomizer selects a food or cuisine option based on your selected filters like type (home-cooked or fast food) and category.</div>
-  </div>
+  function startFeaturedRotation() {
+    if (featuredInterval) clearInterval(featuredInterval);
+    if (allRecipes.length === 0) return;
+    setFeaturedFood(allRecipes[Math.floor(Math.random() * allRecipes.length)]);
+    featuredInterval = setInterval(() => {
+      setFeaturedFood(allRecipes[Math.floor(Math.random() * allRecipes.length)]);
+    }, 5000);
+  }
 
-  <div class="faq-item">
-    <div class="faq-question" onclick="toggleAnswer(this)">Does DishCovery provide recipes? <span>▼</span></div>
-    <div class="faq-answer">Yes, if you choose to cook, the system suggests a recipe complete with ingredients and preparation steps.</div>
-  </div>
+  function fetchAllRecipesForFeatured() {
+    db.ref('recipes').once('value').then(snapshot => {
+      const recipes = [];
+      snapshot.forEach(categorySnap => {
+        categorySnap.forEach(recipeSnap => {
+          const recipe = recipeSnap.val();
+          if (recipe && recipe.image && recipe.name) {
+            recipes.push({ name: recipe.name, image: recipe.image });
+          }
+        });
+      });
+      allRecipes = recipes;
+      startFeaturedRotation();
+    });
+  }
 
-  <div class="faq-item">
-    <div class="faq-question" onclick="toggleAnswer(this)">Is my data safe and private? <span>▼</span></div>
-    <div class="faq-answer">Yes. We prioritize privacy and do not share user data with third parties.</div>
-  </div>
-
-  <div class="faq-item">
-    <div class="faq-question" onclick="toggleAnswer(this)">What personal information does DishCovery collect? <span>▼</span></div>
-    <div class="faq-answer">DishCovery only collects minimal usage data to improve the app. No personal info is required to use it.</div>
-  </div>
-
-  <div class="faq-item">
-    <div class="faq-question" onclick="toggleAnswer(this)">Can I tell DishCovery to avoid certain foods?  <span>▼</span></div>
-    <div class="faq-answer">Yes! You can specify if you want to avoid fried food, sugar, dairy, red meat, seafood, or anything else you prefer not to eat.</div>
-  </div>
-</div>
-
-<div id="meal-of-the-day" style="margin-top: -68%; padding-left: 76%; text-align: center; font-size: 100%;">
-  <h2 style="color: #000000; letter-spacing: 2px; font-family: 'Times New Roman', Times, serif;">Meal of the Day</h2>
-  <img id="meal-image" src="" alt="Meal of the Day" style="width: 250px; border-radius: 10px; margin-top: 1rem;" />
-  <p id="meal-name" style="color: rgb(0, 0, 0); font-size: 1.2rem; margin-top: -0.2%;"></p>
-</div>
-
+  document.addEventListener('DOMContentLoaded', function () {
+    fetchAllRecipesForFeatured();
+  });
+</script>
 
 <script>
   function redirectToAdmin() {
@@ -622,24 +1047,5 @@
     }
   }
 </script>
-  <script>
-  const meals = [
-    { name: "Pork Sinigang", image: "images/sinigang.jpg" },
-    { name: "Chicken Teriyaki", image: "images/chickenteri.jpg" },
-    { name: "Menudo", image: "images/menudo.jpg" },
-    { name: "Chicken Adobo", image: "images/adobo.jpeg" },
-    { name: "Chop Seuy", image: "images/chopseuy.jpg" },
-    { name: "Creamy Laing", image: "images/laing.jpg" },
-    { name: "Pork Sisig", image: "images/porksisig.png" },
-  ];
-
-  // Get day of week (0 = Sunday, 6 = Saturday)
-  const dayIndex = new Date().getDay();
-  const meal = meals[dayIndex % meals.length];
-
-  document.getElementById("meal-image").src = meal.image;
-  document.getElementById("meal-name").textContent = meal.name;
-</script>
-
 </body>
 </html>
