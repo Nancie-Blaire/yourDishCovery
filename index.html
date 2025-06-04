@@ -27,14 +27,7 @@
       justify-content: center;
       align-items: center;
       text-align: center;
-      padding-top: 15%;
-    }
-
-    @media (max-width: 768px) {
-      .main-section {
-        background: url('images/mainbgmobile.png') no-repeat center center/cover;
-        background-attachment: scroll;
-      }
+      padding-top: 28%;
     }
 
     .hero-section {
@@ -175,52 +168,79 @@
       display: none;
     }
 
-    @media (max-width: 768px) {
-      .tagline {
-        font-size: 2rem;
-        margin-right: 0;
-        text-align: center;
-      }
-
-      .hero-section {
-        margin-bottom: 2rem;
-      }
-
-      .container {
-        flex-direction: column;
-        align-items: center;
-        margin-top: 0;
-      }
-
-      .dishcoverypic, .about {
-        max-width: 80%;
-        margin: 2rem auto;
-        display: block;
-      }
-
-      .aboutdish, .aboutdish2, .aboutdish3 {
-        font-size: 0.9rem;
-        text-align: center;
-        margin: 1rem auto;
-      }
-
-      .randomizer-link, .dishclopedia-link, .about-link, .help-link {
-        top: 10px;
-      }
-
-      #secret-logo {
-        width: 60px;
-        bottom: 15px;
-        right: 15px;
-      }
-
-      .about-desktop { display: none; }
-      .about-mobile { display: block; }
+    /* FAQ Popup Styles */
+    .faq-popup {
+      position: absolute;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      width:600%;
+      max-width: 600px;
+      background: #fffef5;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 0 20px #ffd77a;
+      display: none;
+      z-index: 2000;
+      font-family: 'Times New Roman', Times, serif;
+      color: #000;
+      overflow-y: auto;
+      max-height: 80vh;
     }
 
-    #return-to-top {
+    .faq-popup h2 {
+      text-align: center;
+      margin-bottom: 5rem;
+      margin-top: 2rem;
+      letter-spacing: 2px;
+    }
+
+    .faq-item {
+      margin-bottom: 2rem;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .faq-question {
+      cursor: pointer;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      font-size: 110%;
+      letter-spacing: 1px;
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, opacity 0.4s ease;
+      opacity: 0;
+      margin-top: 0;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+    }
+
+    .faq-answer.open {
+      max-height: 200px;
+      opacity: 1;
+      margin-top: 0.5rem;
+    }
+
+    .close-faq {
+      float: right;
+      cursor: pointer;
+      font-weight: bold;
+      background: #ff9b9b;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      margin-top: -0.5%;
+      font-size: 1rem;
+    }
+
+     #return-to-top {
       position: absolute;
-      bottom:-590px;
+      bottom: -590px;
       right: 70px;
       background-color: rgba(221, 165, 96, 0.503);
       border: 2px solid #fff59b;
@@ -243,90 +263,222 @@
       opacity: 1;
     }
 
-    /* FAQ Popup Styles */
-    .faq-popup {
-      position: absolute;
-      top: 10%;
-      left: 50%;
-      transform: translateX(-50%);
-      width:600%;
-      max-width: 600px;
-      background: #fffef5;
-      border-radius: 20px;
-      padding: 20px;
-      box-shadow: 0 0 20px #ffd77a;
-      display: none;
-      z-index: 2000;
-      font-family: 'Times New Roman', Times, serif;
-      color: #000;
-      overflow-y: auto;
-      max-height: 80vh; /* or any suitable height */
+@media only screen and (max-width: 414px) {
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      overflow-x: hidden; /* Prevent horizontal scrolling */
+    }
 
+    .main-section {
+      background-image: url('images/mainbgmobile.png'); /* Confirmed .jpg */
+      background-size: cover; /* Ensures the image covers the area */
+      background-repeat: no-repeat;
+      background-position: center top; /* Prioritize the top of the longer image */
+      width: 100vw;
+      min-height: 100vh; /* Allows content to expand if needed */
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start; /* Align content to the top */
+      align-items: center; /* Center items horizontally */
+      text-align: center;
+      padding-top: 10px; /* Adjusted padding-top */
+      padding-bottom: 20px;
+    }
+
+    .tagline {
+      font-size: 1.5rem; /* Further reduce font size for smaller screens */
+      padding-right: 0; /* Remove specific right padding */
+      padding-bottom: 0; /* Remove specific bottom padding */
+      margin-top: 20px; /* Add some top margin to separate from buttons */
+      margin-bottom: 0.5rem; /* Reduced margin-bottom for tighter fit */
+      white-space: normal; /* Allow text to wrap naturally */
+      box-sizing: border-box; /* Ensure padding is included in element's total width/height */
+      width: 90%; /* Limit width to prevent overflow */
+      line-height: 1.2; /* Added for better readability on multiple lines */
+    }
+
+    .hero-section {
+      margin-bottom: 0.5rem; /* Reduced margin to bring buttons closer */
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column; /* Stack items vertically */
+      align-items: center; /* Center items horizontally */
+      width: 100%;
+      margin-top: 0; /* Remove negative margin */
+      padding: 0 10px; /* Add horizontal padding */
+    }
+
+    .dishcoverypic {
+      max-width: 180px; /* Slightly smaller logo for very small screens */
+      border-radius: 50%; /* Make it perfectly circular */
+      padding: 0;
+      margin-bottom: 1rem; /* Add space below the image */
+      margin-top: 1rem; /* Add space above the image */
+    }
+
+    .about {
+      max-width: 60%; /* Smaller logo for mobile */
+      margin: 0 auto;
+      display: block;
+      margin-bottom: 0.8rem; /* Adjusted space below the image */
+      margin-top: 0.8rem; /* Adjusted top margin for the image */
+    }
+
+    .aboutdish {
+      font-size: 0.7rem; /* Smaller font size for first paragraph on mobile */
+      text-align: center;
+      padding: 0.5rem 1rem 0; /* Adjusted padding */
+      margin-left: 0; /* Remove left margin */
+      margin-right: 0; /* Ensure no right margin */
+      line-height: 1.4; /* Slightly tighter line height for smaller text */
+    }
+
+    .aboutdish3 {
+        font-size: 1rem; /* Smaller font for the italicized tagline */
+        margin-top: 1rem; /* Adjusted top margin */
+        display: block; /* Ensure it takes full width and stacks */
+        width: auto; /* Remove fixed width */
+        margin-left: auto; /* Center it */
+        margin-right: auto; /* Center it */
+        text-align: center; /* Center the text inside the paragraph */
+    }
+
+    /* Mobile button container - stack buttons vertically */
+    .buttons-container {
+        flex-direction: column;
+        gap: 10px; /* Smaller gap on mobile */
+        margin-top: 0.5rem; /* Reduced margin-top to bring buttons closer to tagline */
+        margin-bottom: 1rem; /* Adjust mobile bottom margin */
+    }
+
+    /* Individual buttons for mobile */
+    .randomizer-link,
+    .dishclopedia-link,
+    .about-link,
+    .help-link {
+      position: relative; /* Keep relative for mobile stacking */
+      top: auto; /* Remove fixed top */
+      left: auto !important; /* Ensure no fixed left offset */
+      display: block; /* Make them block elements to stack */
+      margin: 0.5rem auto; /* Center them and add vertical space */
+      width: fit-content; /* Adjust width to content */
+      opacity: 1; /* Ensure full opacity */
+    }
+
+    .randomizer-link a,
+    .dishclopedia-link a,
+    .about-link a,
+    .help-link a {
+      font-size: 0.85rem; /* Slightly smaller font for buttons */
+      padding: 7px 14px; /* Adjust padding for smaller buttons */
+      letter-spacing: 1px; /* Adjust letter spacing */
+      box-shadow: 0 0 5px #fff59b, 0 0 10px #fff59b; /* Reduce glow effect */
+    }
+
+    #secret-logo {
+      width: 40px; /* Further reduce size for very small screens */
+      bottom: 10px;
+      right: 10px;
+    }
+
+    .about-desktop {
+      display: none;
+    }
+
+    .about-mobile {
+      display: block;
+      padding: 0 15px; /* Add some padding for the text */
+    }
+
+    /* Container for last paragraph and button */
+    .last-paragraph-and-button-wrapper {
+      display: flex;
+      flex-direction: column; /* Stack them vertically */
+      justify-content: center; /* Center horizontally */
+      align-items: center; /* Center items (paragraph and button) */
+      margin-top: 1rem; /* Add some space above */
+      width: 100%; /* Ensure it takes full width */
+    }
+
+    #return-to-top {
+  position: static; /* Ensure it flows within the flex container */
+  margin: 10px auto; /* Add top margin and center it */
+  display: block; /* Make it a block element to take its own line and center */
+  width: fit-content; /* Adjust width to content */
+  font-size: 0.85rem; /* Existing mobile font size */
+  padding: 7px 14px; /* Existing mobile padding */
+  border: 2px solid #fff59b; /* Ensure border is present */
+  border-radius: 30px; /* Ensure border-radius is present */
+  background-color: rgba(221, 165, 96, 0.503); /* Ensure background color is present */
+  box-shadow: 0 0 5px #fff59b, 0 0 10px #fff59b; /* Re-apply the glow effect */
+  animation: pulseGlow 3s infinite ease-in-out; /* Re-apply the pulse animation */
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease; /* Re-apply transitions */
+  cursor: pointer; /* Ensure cursor is a pointer */
+  font-family: 'Times New Roman', Times, serif;
+  color: #fff;
+}
+
+#return-to-top:hover {
+  background-color: #fff59b; /* Re-apply hover background */
+  box-shadow: 0 0 10px #fff59b, 0 0 20px #fff59b; /* Re-apply stronger hover glow */
+  transform: scale(1.05); /* Re-apply hover scale */
+  opacity: 1; /* Ensure full opacity on hover */
+}
+
+    #meal-of-the-day {
+      display: none; /* Hide meal of the day on mobile */
+    }
+
+    #meal-image {
+      width: 120px; /* Reduce image size for smaller screens */
+      margin: 0.5rem auto; /* Adjust margin */
+    }
+
+    #meal-name {
+      font-size: 0.9rem; /* Adjust font size */
+      margin-top: 0; /* Remove negative margin */
+    }
+
+    .faq-popup {
+      width: 90%;
+      left: 5%;
+      transform: none;
+      top: 5%;
+      padding: 1rem;
+      box-sizing: border-box; /* Include padding in width */
+      max-height: 90vh; /* Allow more height for content */
     }
 
     .faq-popup h2 {
-      text-align: center;
-      margin-bottom: 5rem;
-      margin-top: 2rem;
-      letter-spacing: 2px;
-    }
-
-    .faq-item {
-      margin-bottom: 2rem;
-      border-bottom: 1px solid #ccc;
-    }
-
-    .faq-question {
-      cursor: pointer;
-      font-weight: bold;
-      display: flex;
-      justify-content: space-between;
-      font-size:  110%;
-      letter-spacing: 1px;
-    }
-
-    .faq-answer {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.4s ease, opacity 0.4s ease;
-      opacity: 0;
-      margin-top: 0;
-      font-size: 0.9rem;
-      letter-spacing: 1px;
-    }
-
-    .faq-answer.open {
-      max-height: 200px; /* adjust as needed */
-      opacity: 1;
-      margin-top: 0.5rem;
+      font-size: 1rem; /* Adjust heading size */
+      margin-bottom: 1rem; /* Adjust margin */
     }
 
     .close-faq {
-      float: right;
-      cursor: pointer;
-      font-weight: bold;
-      background: #ff9b9b;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 10px;
-      margin-bottom: 1rem;
-      margin-top:-0.5%;
-      font-size: 1rem;
+      margin-top: 0;
+      font-size: 0.8rem;
+      padding: 3px 8px; /* Smaller close button */
     }
+
+    .faq-question {
+      font-size: 95%; /* Adjust font size */
+    }
+
+    .faq-answer {
+      font-size: 0.8rem; /* Adjust font size */
+    }
+  }
+</style>
+
   </style>
 </head>
 <body>
 
-  <!-- Navigation Buttons -->
-  <div class="randomizer-link"><a href="categories.html">RANDOMIZER</a></div>
-  <div class="dishclopedia-link"><a href="Dishclopedia/dishclopedia.html">DISHCLOPEDIA</a></div>
-  <div class="about-link"><a href="#about-section" id="about-btn">ABOUT</a></div>
-  <div class="help-link"><a href="#" id="help-btn">HELP</a></div>
-
-  <!-- Return to Top Button -->
-  <button id="return-to-top" title="Return to Top">RETURN</button>
-
-  <!-- Main Section -->
   <section class="main-section" id="top">
     <div class="container">
       <img src="images/dishcovery.png" class="dishcoverypic" />
@@ -335,19 +487,24 @@
       <h1 class="tagline">Your Interactive Food Discovery Helper</h1>
     </div>
 
-    <!-- Mobile About Section -->
+    <div class="buttons-container">
+      <div class="randomizer-link"><a href="categories.html">RANDOMIZER</a></div>
+      <div class="dishclopedia-link"><a href="Dishclopedia/dishclopedia.html">DISHCLOPEDIA</a></div>
+      <div class="about-link"><a href="#about-section" id="about-btn">ABOUT</a></div>
+      <div class="help-link"><a href="#" id="help-btn">HELP</a></div>
+    </div>
+
     <div class="about-mobile">
       <div class="container">
         <img src="images/aboutmain.png" class="about" />
       </div>
-      <p class="aboutdish">DishCovery is an interactive food decision helper...</p>
-      <p class="aboutdish2">Don’t know what to cook? We’ve got recipe suggestions...</p>
-      <p class="aboutdish3"><b>Start your food journey with DishCovery...</b></p>
+      <p class="aboutdish">DishCovery is an interactive food decision helper designed to make choosing what to eat quick, fun, and stress-free. Whether you’re stuck between cravings or just looking for inspiration, DishCovery guides you through a simple process to help you discover the perfect meal tailored to your mood, preferences, and available time.</p>
+      <div class="last-paragraph-and-button-wrapper"> <p class="aboutdish3"><b>Start your food journey with DishCovery! Because great meals begin with great decisions.</b></p>
+        <button id="return-to-top" title="Return to Top">RETURN</button> </div>
     </div>
   </section>
 
-   <!-- Desktop About Section with Scroll Target -->
-  <section id="about-section" class="about-desktop">
+   <section id="about-section" class="about-desktop">
     <div class="container">
       <img src="images/aboutmain.png" class="about" />
     </div>
@@ -366,10 +523,8 @@
     </div>
   </section>
 
-  <!-- Secret Logo -->
   <img src="images/dishcovery.png" alt="Secret Logo" id="secret-logo" onclick="redirectToAdmin()" />
 
-<!-- FAQ Popup -->
 <div class="faq-popup" id="faq-popup">
   <button class="close-faq" onclick="toggleFAQ()">X</button>
   <h2>FREQUENTLY ASKED QUESTIONS</h2>
@@ -427,7 +582,6 @@
 </div>
 
 
-<!-- JavaScript -->
 <script>
   function redirectToAdmin() {
     window.location.href = "../admin-login/login.html";
@@ -468,7 +622,6 @@
     }
   }
 </script>
-  </script>
   <script>
   const meals = [
     { name: "Pork Sinigang", image: "images/sinigang.jpg" },
