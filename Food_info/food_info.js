@@ -574,9 +574,9 @@ if ("webkitSpeechRecognition" in window) {
     // Filters
     const filtersIntent = await isSimilarIntent(transcript, "what are the filters of the food");
     if (filtersIntent || transcript.includes("filter")) {
-      const filters = document.getElementById("food-filters").textContent.replace("Filters included:", "").trim();
+      const filters = document.getElementById("food-filters").textContent.replace("Category:", "").trim();
       let text = filters
-        ? "The filters included are: " + filters
+        ? "The category is: " + filters
         : "No filters available.";
       speechPausedByVoice = false;
       instructionsQueue = splitIntoSentences(text);
