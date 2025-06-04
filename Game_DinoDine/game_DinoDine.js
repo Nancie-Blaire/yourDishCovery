@@ -55,7 +55,7 @@ let paused = false; // Add paused state
 window.waitingToStart = waitingToStart;
 
 const bgImage = new Image();
-bgImage.src = "images/sinigang.jpg";
+bgImage.src = "images/gamebg.jpg";
 // Global mapping of placeholder IDs to food details
 const foodMapping = {};
 
@@ -127,9 +127,13 @@ function getScaleRatio() {
 }
 
 function showGameOver() {
-  const fontSize = 24 * scaleRatio; // Font size for the main text
-  ctx.font = `${fontSize}px Verdana`;
-  ctx.fillStyle = "grey";
+  const fontSize = 22 * scaleRatio; // Font size for the main text
+  ctx.font = `bold ${fontSize}px Verdana`;
+  ctx.fillStyle = "white";
+    ctx.shadowColor = "rgba(0,0,0,0.5)";
+  ctx.shadowBlur = 6;
+  ctx.shadowOffsetX = 2;
+  ctx.shadowOffsetY = 2;
   const mainText = "Bam!! Look's like Dino's got something to eat now.";
   const xMain = (canvas.width - ctx.measureText(mainText).width) / 2; // Center horizontally
   const yMain = canvas.height / 2;
@@ -222,9 +226,13 @@ window.addEventListener("mousedown", reset, { once: true });
 window.addEventListener("touchstart", reset, { once: true });
 
 function showStartGameText() {
-  const fontSize = 24 * scaleRatio; // Font size for the main text
-  ctx.font = `${fontSize}px Verdana`;
-  ctx.fillStyle = "grey";
+  const fontSize = 22 * scaleRatio; // Font size for the main text
+  ctx.font = `bold ${fontSize}px Verdana`;
+  ctx.fillStyle = "white";
+    ctx.shadowColor = "rgba(0,0,0,0.5)";
+  ctx.shadowBlur = 1;
+  ctx.shadowOffsetX = 2;
+  ctx.shadowOffsetY = 2;
   const mainText = "Help Dino pick what to eat—one leap at a time!";
   const xMain = (canvas.width - ctx.measureText(mainText).width) / 2;
   const yMain = canvas.height / 2;

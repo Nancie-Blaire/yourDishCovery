@@ -9,18 +9,19 @@
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@500;600&display=swap"
       rel="stylesheet"
     />
+     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
       * {
         padding: 0px;
         margin: 0px;
       }
       body {
+        position: relative;
         display: flex;
         align-items: center;
         justify-content: center;
         flex-direction: column;
         height: 100vh;
-
         user-select: none;
         touch-action: none;
         -webkit-touch-callout: none;
@@ -31,23 +32,47 @@
         user-select: none;
         outline: none;
         -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
-          background: url('images/sinigang.jpg') no-repeat center center fixed;
-  background-size: cover;
+        background: none; /* Remove direct background image */
+        overflow: hidden;
+      }
+      
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        z-index: -1;
+        background: url('images/gamebg.jpg') no-repeat center center fixed;
+        background-size: cover;
+        filter: blur(5px); /* Adjust blur as needed */
+        width: 100vw;
+        height: 100vh;
       }
       canvas {
          background: transparent !important;
         border: 0.1px solid rgba(128, 128, 128, 0.733);
       }
-      h1 {
-        font-size: 7vh;
-      }
-      h2 {
+        h1 {
+            font-size: 10vh;
+            color: #753406ed;
+            font-family: "Poppins", sans-serif;
+            font-weight: 800;
+            text-shadow: 
+                3px 3px 0px #d4aa80,
+                6px 6px 0px #8B6914,
+                2px 2px 6px rgba(0,0,0,0.5);
+            margin: 0;
+            text-align: center;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+      .foodname{
         font-size: 5vh;
         color: #000000;
         text-align: center;
         margin-top: 20px;
-        letter-spacing: 2vh;
-        font-family: "Poppins", sans-serif;;
+        letter-spacing: 1.5vh;
+        font-family: "Poppins", sans-serif;
+         text-shadow: 2px 4px 0px black;
       }
       h2.got-food {
         letter-spacing: 0vh;
@@ -77,13 +102,13 @@
       }
       #game-menu-btn {
         background: #fffbe7;
-        border: 2px solid #c78456;
+        border:transparent;
         border-radius: 0 0 12px 0;
         font-size: 1.7em;
         width: 48px;
         height: 48px;
         cursor: pointer;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    
         display: flex;
         align-items: center;
         justify-content: center;
@@ -147,8 +172,8 @@
       }
       
       @media (max-width: 300px) {
-        h2 {
-          font-size: 7vw;
+        h1 {
+          font-size: 10vw;
           margin-top: 4vw;
           letter-spacing: 0.2vw;
           max-width: 98vw;
@@ -156,12 +181,32 @@
         }
       }
       @media (max-width: 480px) {
-        h2 {
-          font-size: 7vw;
+        h1{
+          font-size: 10vw;
           margin-top: 4vw;
           letter-spacing: 0.2vw;
           max-width: 98vw;
           font-family: "Poppins", sans-serif;
+        }
+      }
+
+            @media (max-width: 300px) {
+        .foodname{
+          font-size: 4vw;
+          margin-top: 4vw;
+          letter-spacing: 0.2vw;
+          max-width: 98vw;
+          font-family: "Poppins", sans-serif;
+        }
+      }
+      @media (max-width: 480px) {
+        .foodname{
+          font-size: 4vw;
+          margin-top: 4vw;
+          letter-spacing: 0.2vw;
+          max-width: 98vw;
+          font-family: "Poppins", sans-serif;
+            text-shadow: 2px 2px 0px black;
         }
       }
 
@@ -219,11 +264,11 @@ React fast! You can’t stack or choose foods — it’s all about instinct. One
     <button id="home">Home</button>
     <h1>Dino Dine</h1>
     <canvas id="game"></canvas>
-    <h2></h2>
+    <h2 class="foodname" style="color: #fdfdfd; margin-bottom: 0px;"></h2>
     <!-- Add modal for food info -->
     <div id="food-info-modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.7); justify-content:center; align-items:center; z-index:2000;">
-      <div style="background: white; padding: 20px; border-radius: 12px; text-align: center; width: 90%; max-width: 400px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
-        <h2 style="color: #d88a40; margin-bottom: 15px; font-size: 24px;">You got:</h2>
+      <div style="background: white; padding: 20px;  font-family: 'Poppins', sans-serif; border-radius: 12px; text-align: center; width: 80%; max-width: 400px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+        <h2 style="color: #d88a40; margin-bottom: 15px; font-size: 24px; letter-spacing: 0px;">You got:</h2>
         <div id="modal-food-image" style="width: 200px; height: 200px; border-radius: 8px; margin: 0 auto 15px; background-size: cover; background-position: center; border: 3px solid #fdcf3b;"></div>
         <h3 id="modal-food-name" style="margin-bottom: 20px; font-size: 22px; color: #333;"></h3>
         <p style="margin-bottom: 20px; color: #666;">Would you like to see more information about this dish?</p>
