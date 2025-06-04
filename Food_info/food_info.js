@@ -227,7 +227,7 @@ async function displayFoodDetails() {
   if (foodDetails) {
     document.getElementById("food-name").textContent = foodDetails.name;
     document.getElementById("food-budget").textContent = `Estimated budget: ₱${foodDetails.budget || "N/A"}`;
-    document.getElementById("food-filters").textContent = `Filters included: ${foodDetails.filters || "none"}`;
+    document.getElementById("food-filters").textContent = `Category: ${foodDetails.filters || "none"}`;
     document.getElementById("food-allergens").textContent = `Allergens: ${foodDetails.allergens || "none"}`;
     if (foodDetails.image) {
       document.getElementById("food-image").src = foodDetails.image;
