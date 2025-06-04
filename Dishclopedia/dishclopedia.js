@@ -112,54 +112,49 @@ function setCategoryUI(category) {
 
 // Initialize dropdown toggles
 document.addEventListener('DOMContentLoaded', function () {
-    const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
-    dropdownToggles.forEach(toggle => {
+    // Dropdown toggle logic for all dropdowns
+    document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
+        // Make the entire li clickable (including the text and icon)
         toggle.addEventListener('click', function (event) {
             event.stopPropagation();
             toggleDropdown(this);
-        });
-        const homeDropdown = document.getElementById('home-dropdown');
-    const homeLink = document.getElementById('home-link');
-    const dropdownMenu = homeDropdown ? homeDropdown.querySelector('.dropdown-menu') : null;
 
-    if (homeLink && dropdownMenu) {
-        homeLink.addEventListener('click', function (e) {
-            e.preventDefault();
-            // Show all home recipes
-            const introText = document.getElementById('intro-text');
-            const appTitle = document.getElementById('app-title');
-            const staticCards = document.getElementById('home-static-cards');
-            const categoryTitle = document.getElementById('category-title');
-            if (introText) introText.style.display = 'none';
-            if (appTitle) appTitle.style.display = 'none';
-            if (staticCards) staticCards.style.display = 'none';
-            if (categoryTitle) {
-                categoryTitle.textContent = "HOME";
-                categoryTitle.style.display = 'block';
+            // Only Recipe dropdown should fetch home recipes
+            if (toggle.id === 'recipe-dropdown') {
+                const recipeLink = toggle.querySelector('a');
+                if (recipeLink) {
+                    recipeLink.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        toggleDropdown(toggle);
+
+                        // Fetch home recipes as above
+                        const cardContainer = document.querySelector('.card-container');
+                        const introText = document.getElementById('intro-text');
+                        const appTitle = document.getElementById('app-title');
+                        const categoryTitle = document.getElementById('category-title');
+                        const staticCards = document.getElementById('home-static-cards');
+                        if (introText) introText.style.display = 'none';
+                        if (appTitle) appTitle.style.display = 'none';
+                        if (categoryTitle) {
+                            categoryTitle.textContent = "HOME";
+                            categoryTitle.style.display = 'block';
+                        }
+                        if (staticCards) staticCards.style.display = 'none';
+                        showGlobalLoading("Fetching data...");
+                        renderCardsForCategoryWithLoading('home');
+                    });
+                }
             }
-            document.querySelectorAll('#sidebar li').forEach(li => li.classList.remove('active'));
-            homeDropdown.classList.add('active');
-            renderCardsForCategoryWithLoading('home');
-            // Show the dropdown menu
-            dropdownMenu.style.display = 'block';
         });
-
-        // Optional: clicking the arrow also toggles the dropdown
-        const dropdownArrow = homeLink.querySelector('.dropdown-arrow');
-        if (dropdownArrow) {
-            dropdownArrow.addEventListener('click', function (e) {
-                e.stopPropagation();
-                e.preventDefault();
-                dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
-            });
-        }
-    }
     });
 
-    // Attach sidebar handler only to sidebar links (not static cards)
+    // Only fetch recipes on <a> click, but skip the "Recipe" sidebar <a>
     document.querySelectorAll('#sidebar a[data-category]').forEach(link => {
         link.addEventListener('click', function (e) {
             e.preventDefault();
+            e.stopPropagation();
+
             const category = this.getAttribute('data-category');
             // --- Fix: Show intro if Dishclopedia is clicked ---
             if (category === 'dishclopedia') {
@@ -168,6 +163,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const appTitle = document.getElementById('app-title');
                 const cardContainer = document.querySelector('.card-container');
                 const categoryTitle = document.getElementById('category-title');
+                const staticCards = document.getElementById('home-static-cards');
                 if (introText) introText.style.display = '';
                 if (appTitle) appTitle.style.display = '';
                 if (categoryTitle) {
@@ -180,7 +176,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 const dishLi = document.getElementById('dishclopedia-link-li');
                 if (dishLi) dishLi.classList.add('active');
                 // Show static cards
-                const staticCards = document.getElementById('home-static-cards');
                 if (staticCards) staticCards.style.display = 'flex';
                 return; // Do not fetch recipes for "dishclopedia"
             }
@@ -226,8 +221,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // Attach static card handler only to static card links
     document.querySelectorAll('.static-card-container .card-link[data-category]').forEach(link => {
         link.addEventListener('click', function (e) {
+            // Prevent double fetch: stop event from bubbling up
             e.preventDefault();
-            e.stopPropagation();
+            e.stopPropagation(); // <-- Add this line
+
             const category = this.getAttribute('data-category');
             // Hide static cards before rendering recipes
             const staticCards = document.getElementById('home-static-cards');
@@ -486,6 +483,112 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // --- Dynamic Recipe Filter Dropdown ---
+    const recipeFilterMenu = document.getElementById('recipe-filter-menu');
+    function populateRecipeFilters() {
+        if (!recipeFilterMenu) return;
+        recipeFilterMenu.innerHTML = '<li style="padding:8px 15px;color:#aaa;">Loading...</li>';
+        db.ref('recipes/home').once('value').then(snapshot => {
+            const filtersSet = new Set();
+            snapshot.forEach(childSnap => {
+                const recipe = childSnap.val();
+                // Assume filters are in recipe.filters as array or string
+                if (recipe.filters) {
+                    if (Array.isArray(recipe.filters)) {
+                        recipe.filters.forEach(f => filtersSet.add(f));
+                    } else if (typeof recipe.filters === 'string') {
+                        // Support comma-separated string
+                        recipe.filters.split(',').map(f => f.trim()).forEach(f => filtersSet.add(f));
+                    }
+                }
+            });
+            recipeFilterMenu.innerHTML = '';
+            if (filtersSet.size === 0) {
+                recipeFilterMenu.innerHTML = '<li style="padding:8px 15px;color:#aaa;">No filters found</li>';
+                console.log("[Dishclopedia] No filters found in 'home' category.");
+            } else {
+                Array.from(filtersSet).sort().forEach(filter => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<a href="#" data-filter="${filter}">${filter}</a>`;
+                    recipeFilterMenu.appendChild(li);
+                });
+                console.log("[Dishclopedia] Successfully fetched filters:", Array.from(filtersSet));
+            }
+        }).catch(err => {
+            recipeFilterMenu.innerHTML = '<li style="padding:8px 15px;color:#aaa;">Error loading filters</li>';
+            console.error("[Dishclopedia] Error fetching filters:", err);
+        });
+    }
+    populateRecipeFilters();
+
+    // --- Filter click handler ---
+    if (recipeFilterMenu) {
+        recipeFilterMenu.addEventListener('click', function (e) {
+            const target = e.target.closest('a[data-filter]');
+            if (target) {
+                e.preventDefault();
+                e.stopPropagation();
+                const filter = target.getAttribute('data-filter');
+                // Show only home recipes with this filter
+                const cardContainer = document.querySelector('.card-container');
+                const introText = document.getElementById('intro-text');
+                const appTitle = document.getElementById('app-title');
+                const categoryTitle = document.getElementById('category-title');
+                const staticCards = document.getElementById('home-static-cards');
+                if (introText) introText.style.display = 'none';
+                if (appTitle) appTitle.style.display = 'none';
+                if (categoryTitle) {
+                    categoryTitle.textContent = filter.toUpperCase();
+                    categoryTitle.style.display = 'block';
+                }
+                if (staticCards) staticCards.style.display = 'none';
+                cardContainer.innerHTML = "<p style='color:#333;text-align:center;'>Loading...</p>";
+                showGlobalLoading("Fetching recipes...");
+                const shownRecipes = new Set();
+                db.ref('recipes/home').once('value').then(snapshot => {
+                    let found = false;
+                    cardContainer.innerHTML = '';
+                    snapshot.forEach(childSnap => {
+                        const recipe = childSnap.val();
+                        // Support both array and string for filters
+                        let recipeFilters = [];
+                        if (recipe.filters) {
+                            if (Array.isArray(recipe.filters)) {
+                                recipeFilters = recipe.filters.map(f => f.trim());
+                            } else if (typeof recipe.filters === 'string') {
+                                recipeFilters = recipe.filters.split(',').map(f => f.trim());
+                            }
+                        }
+                        if (
+                            recipe.name &&
+                            recipe.image &&
+                            recipeFilters.includes(filter) &&
+                            !shownRecipes.has(recipe.name.toLowerCase())
+                        ) {
+                            found = true;
+                            shownRecipes.add(recipe.name.toLowerCase());
+                            const card = document.createElement('div');
+                            card.className = 'card';
+                            card.innerHTML = `
+                                <a href="../Food_info/food_info.html?food=${encodeURIComponent(recipe.name)}" class="card-link">
+                                    <img src="${recipe.image}" alt="${recipe.name}">
+                                    <div class="card-content">
+                                        <p class="recipe-name">${recipe.name}</p>
+                                    </div>
+                                </a>
+                            `;
+                            cardContainer.appendChild(card);
+                        }
+                    });
+                    if (!found) {
+                        cardContainer.innerHTML = "<p style='color:#333;text-align:center;'>No recipes found for this filter.</p>";
+                    }
+                }).finally(() => {
+                    hideGlobalLoading();
+                });
+            }
+        });
+    }
 });
 
 

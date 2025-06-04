@@ -22,54 +22,55 @@
   <nav id="sidebar">
     <ul>
       <button onclick="toggleSidebar()" id="toggle-btn">
-          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m313-480 155 156q11 11 11.5 27.5T468-268q-11 11-28 11t-28-11L228-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l184-184q11-11 27.5-11.5T468-692q11 11 11 28t-11 28L313-480Zm264 0 155 156q11 11 11.5 27.5T732-268q-11 11-28 11t-28-11L492-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l184-184q11-11 27.5-11.5T732-692q11 11 11 28t-11 28L577-480Z"/></svg>
-        </button>
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
+          <path d="m313-480 155 156q11 11 11.5 27.5T468-268q-11 11-28 11t-28-11L228-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l184-184q11-11 27.5-11.5T468-692q11 11 11 28t-11 28L313-480Zm264 0 155 156q11 11 11.5 27.5T732-268q-11 11-28 11t-28-11L492-452q-6-6-8.5-13t-2.5-15q0-8 2.5-15t8.5-13l184-184q11-11 27.5-11.5T732-692q11 11 11 28t-11 28L577-480Z"/>
+        </svg>
+      </button>
       <!-- Dishclopedia link at the top -->
       <li id="dishclopedia-link-li" class="active">
         <a href="#" id="dishclopedia-link" data-category="dishclopedia">
-           <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M240-200h120v-200q0-17 11.5-28.5T400-440h160q17 0 28.5 11.5T600-400v200h120v-360L480-740 240-560v360Zm-80 0v-360q0-19 8.5-36t23.5-28l240-180q21-16 48-16t48 16l240 180q15 11 23.5 28t8.5 36v360q0 33-23.5 56.5T720-120H560q-17 0-28.5-11.5T520-160v-200h-80v200q0 17-11.5 28.5T400-120H240q-33 0-56.5-23.5T160-200Zm320-270Z"/></svg>
-          <circle cx="480" cy="-480" r="220"/>
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
+            <path d="M240-200h120v-200q0-17 11.5-28.5T400-440h160q17 0 28.5 11.5T600-400v200h120v-360L480-740 240-560v360Zm-80 0v-360q0-19 8.5-36t23.5-28l240-180q21-16 48-16t48 16l240 180q15 11 23.5 28t8.5 36v360q0 33-23.5 56.5T720-120H560q-17 0-28.5-11.5T520-160v-200h-80v200q0 17-11.5 28.5T400-120H240q-33 0-56.5-23.5T160-200Zm320-270Z"/>
           </svg>
           <span>Home</span>
         </a>
       </li>
-      <!-- Home link -->
-      <li class="dropdown-toggle" id="home-dropdown">
-        <a href="#" id="home-link" data-category="home">
+      <!-- Recipe dropdown with filter menu -->
+      <li class="dropdown-toggle" id="recipe-dropdown">
+        <a href="#" id="recipe-link">
           <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
-            <path d="m160-120-80-80h800l-80 80H160Zm-40-120q6-18 16-34t24-30v-296h-40v-60h40v-30h-40v-60h40v-30h-40v-60h280q33 0 56.5 23.5T480-760v10h360v60H480v10q0 33-23.5 56.5T400-600h-80v244q14 2 28 6t26 12q26-65 83-103.5T583-480q90 0 153.5 61.5T800-268v28H120Zm334-80h252q-17-36-50-58t-73-22q-42 0-77 21t-52 59ZM320-750h80v-30h-80v30Zm0 90h80v-30h-80v30Zm-100-90h40v-30h-40v30Zm0 90h40v-30h-40v30Zm0 314q10-5 19.5-7.5T260-358v-242h-40v254Zm360 26Z" />
+            <path d="m160-120-80-80h800l-80 80H160Zm-40-120q6-18 16-34t24-30v-296h-40v-60h40v-30h-40v-60h40v-30h-40v-60h280q33 0 56.5 23.5T480-760v10h360v60H480v10q0 33-23.5 56.5T400-600h-80v244q14 2 28 6t26 12q26-65 83-103.5T583-480q90 0 153.5 61.5T800-268v28H120Zm334-80h252q-17-36-50-58t-73-22q-42 0-77 21t-52 59ZM320-750h80v-30h-80v30Zm0 90h80v-30h-80v30Zm-100-90h40v-30h-40v30Zm0 90h40v-30h-40v30Zm0 314q10-5 19.5-7.5T260-358v-242h-40v254Zm360 26Z"/>
           </svg>
           <span>Recipe</span>
         </a>
-        <ul class="dropdown-menu" style="display:none;">
-          <li><a href="#" data-category="Fried">Fried</a></li>
-          <li><a href="#" data-category="Soup">Soup</a></li>
-          <li><a href="#" data-category="Stir-Fry">Stir-Fry</a></li>
-          <li><a href="#" data-category="Braised">Braised</a></li>
+        <ul class="dropdown-menu" id="recipe-filter-menu">
+          <!-- Filters will be dynamically inserted here -->
         </ul>
       </li>
-
-<li class="dropdown-toggle">
-  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="2px" fill="#e8eaed"><path d="M533-440q-32-45-84.5-62.5T340-520q-56 0-108.5 17.5T147-440h386ZM40-360q0-109 91-174.5T340-600q118 0 209 65.5T640-360H40Zm0 160v-80h600v80H40ZM720-40v-80h56l56-560H450l-10-80h200v-160h80v160h200L854-98q-3 25-22 41.5T788-40h-68Zm0-80h56-56ZM80-40q-17 0-28.5-11.5T40-80v-40h600v40q0 17-11.5 28.5T600-40H80Zm260-400Z"/></svg>
-  <span>Resto</span>
-  <ul class="dropdown-menu">
-    <li><a href="#" data-category="mcdo">McDonalds</a></li>
-    <li><a href="#" data-category="jollibee">Jolibee</a></li>
-    <li><a href="#" data-category="kfc">KFC</a></li>
-  </ul>
-</li>
-
-<li class="active">
-  <a href="../index.html" id="indexpage">
-<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/></svg>
-    <span>Back</span>
-  </a>
-</li>
-
+      <!-- Resto dropdown -->
+      <li class="dropdown-toggle">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
+          <path d="M533-440q-32-45-84.5-62.5T340-520q-56 0-108.5 17.5T147-440h386ZM40-360q0-109 91-174.5T340-600q118 0 209 65.5T640-360H40Zm0 160v-80h600v80H40ZM720-40v-80h56l56-560H450l-10-80h200v-160h80v160h200L854-98q-3 25-22 41.5T788-40h-68Zm0-80h56-56ZM80-40q-17 0-28.5-11.5T40-80v-40h600v40q0 17-11.5 28.5T600-40H80Zm260-400Z"/>
+        </svg>
+        <span>Resto</span>
+        <ul class="dropdown-menu">
+          <li><a href="#" data-category="mcdo">McDonalds</a></li>
+          <li><a href="#" data-category="jollibee">Jolibee</a></li>
+          <li><a href="#" data-category="kfc">KFC</a></li>
+        </ul>
+      </li>
+      <!-- Back link -->
+      <li class="active">
+        <a href="../index.html" id="indexpage">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
+            <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"/>
+          </svg>
+          <span>Back</span>
+        </a>
+      </li>
   </nav>
 <!-- Add this where you want the cards to appear -->
 <main>
-  <main>
         <div id="search-container">
         <input type="text" id="search-input" placeholder="Search dishes...">
         <button id="clear-search" style="display:none;" aria-label="Clear search">
@@ -128,7 +129,7 @@
     <h2 id="category-title" style="display:none; text-align:center; margin-top: 1em;"></h2>
     <div class="card-container">
     <!-- Cards will be rendered here -->
-  </div>
+    </div>
 </main>
 
 
@@ -151,37 +152,6 @@
 
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
-
-  // Helper to render cards for a given category
-  function renderCardsForCategory(category) {
-    const cardContainer = document.querySelector('.card-container');
-    cardContainer.innerHTML = ""; // Clear previous cards
-
-    db.ref('recipes/' + category).once('value').then(snapshot => {
-      let found = false;
-      snapshot.forEach(childSnapshot => {
-        const recipe = childSnapshot.val();
-        const recipeId = childSnapshot.key;
-        if (recipe.name && recipe.image) {
-          found = true;
-          const card = document.createElement('div');
-          card.className = 'card';
-          card.innerHTML = `
-            <a href="../Food_info/food_info.html?food=${encodeURIComponent(recipe.name)}" class="card-link">
-              <img src="${recipe.image}" alt="${recipe.name}">
-              <div class="card-content">
-                <p class="recipe-name">${recipe.name}</p>
-              </div>
-            </a>
-          `;
-          cardContainer.appendChild(card);
-        }
-      });
-      if (!found) {
-        cardContainer.innerHTML = "<p style='color:#333;text-align:center;'>No recipes found for this category.</p>";
-      }
-    });
-  }
 
   document.addEventListener('DOMContentLoaded', function () {
     // --- Dishclopedia sidebar link logic ---
