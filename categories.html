@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DishCovery Categories</title>
+ <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" />
+
   <style>
     * {
       box-sizing: border-box;
@@ -142,6 +144,29 @@
         height: auto;
         cursor: pointer;
     }
+    #home-logo .material-symbols-outlined{
+  font-size: 40px !important;
+  color: #000000;
+  vertical-align: middle;
+  transition: color 0.3s, transform 0.2s cubic-bezier(.34,1.56,.64,1), box-shadow 0.2s;
+}
+
+#home-logo:hover .material-symbols-outlined {
+  color: #9d3f05;
+  transform: scale(1.2);
+  box-shadow: 0 4px 16px rgba(255, 152, 0, 0.15);
+}
+
+  #home-logo {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  margin: 0;
+  text-align: left;
+  text-decoration: none;
+  z-index: 10;
+}
+
 
   </style>
 </head>
@@ -167,9 +192,9 @@
     />
 
     <!-- Navigation Buttons -->
-      <a href="index.html" class="nav-button back-btn">
-        <img src="images/back.png" alt="Back Button" />
-    </a>
+    <a href="../index.html" id="home-logo" title="Home">
+    <span class="material-symbols-outlined">house</span>
+  </a>
 
     <!-- Resto board -->
       <!-- Should go to user_preference.html -->
