@@ -231,12 +231,16 @@ body {
     .aboutdish3 {
       font-size: 1.3rem;
       font-style: italic;
-      background: linear-gradient(45deg, #f39c12, #e74c3c);
+      background: linear-gradient(90deg, #000000 0%, #fff59b 50%, #000000 100%);
+      background-size: 200% auto;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      background-clip: text;
-      text-align: center;
-      margin-top: 30px;
+      animation: goldShine 18s linear infinite;
+    }
+
+    @keyframes goldShine {
+      0% { background-position: 200% center; }
+      100% { background-position: -200% center; }
     }
 
     /* Return to top button */
