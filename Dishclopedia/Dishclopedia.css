@@ -368,7 +368,7 @@ box-sizing: border-box;
     font-size: 16px;
     width: 30%;
     left: 70%;
-    top: -40px; /* <-- Moves it up */
+    top: -30px; /* <-- Moves it up */
 }
 
 #search-input {
@@ -427,7 +427,7 @@ box-sizing: border-box;
     margin-top: 20px;
     margin-bottom: 10px;
     position: relative;
-    top: -15vh;
+    top: -14vh;
     border: 2px solid #a66230;
     padding: 20px 40px;
     border-radius: 8px;
