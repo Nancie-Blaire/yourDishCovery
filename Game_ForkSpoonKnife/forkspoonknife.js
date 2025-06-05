@@ -65,13 +65,13 @@ function setupUI() {
   menuBtn.id = "game-menu-btn";
   menuBtn.innerHTML = "☰";
   menuBtn.style.background = "#fffbe7";
-  menuBtn.style.border = "2px solid #c78456";
-  menuBtn.style.borderRadius = "0 0 12px 0";
+menuBtn.style.border = "none";
+  
   menuBtn.style.fontSize = "1.7em";
   menuBtn.style.width = "48px";
   menuBtn.style.height = "48px";
   menuBtn.style.cursor = "pointer";
-  menuBtn.style.boxShadow = "0 2px 8px rgba(0,0,0,0.08)";
+
   menuBtn.style.display = "flex";
   menuBtn.style.alignItems = "center";
   menuBtn.style.justifyContent = "center";
